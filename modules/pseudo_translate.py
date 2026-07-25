@@ -9,10 +9,12 @@ action and writes the result into each segment's target.
 
 Three things are done to the *visible* words of a segment, all orthogonal:
 
-1. **Tags are preserved verbatim.** Inline tags (HTML/XML, Trados/SDLXLIFF
-   numeric, memoQ) are never touched or reordered — only the text between them
-   is transformed. If pseudo mangled tags it would invalidate the very tag
-   round-trip the export test is meant to verify.
+1. **Tags are preserved verbatim.** Inline tags are never touched or reordered —
+   only the text between them is transformed. If pseudo mangled tags it would
+   invalidate the very tag round-trip the export test is meant to verify. Which
+   substrings count as tags comes from :mod:`modules.tag_protection`, the same
+   model the translation grid protects, so pseudo cannot disagree with the editor
+   about where a tag begins and ends.
 2. **Length expansion.** The text is padded with word-like filler to the
    requested ratio (e.g. ``0.3`` → +30%) to surface overflow, clipped cells,
    reflow and truncation that identical-length copy-source can't.
@@ -25,18 +27,7 @@ merged or misplaced segment is obvious at a glance in the exported file.
 
 from __future__ import annotations
 
-import re
-
-# Canonical inline-tag pattern. MUST stay in sync with
-# Supervertaler.extract_all_tags() — it matches the same three tag families:
-#   memoQ:           [N}   {N]   [N]
-#   HTML / XML:      <tag>  </tag>  <tag/>  <tag attr="v">  (incl. hyphenated)
-#   Trados/SDLXLIFF: <N>   </N>
-# The single capturing group lets re.split() keep the tags in the result so we
-# can put them back untouched.
-_TAG_RE = re.compile(
-    r'(\[\d+\}|\{\d+\]|\[\d+\]|</?[a-zA-Z][a-zA-Z0-9-]*(?:\s+[^>]*)?>|</?\d+>)'
-)
+from modules.tag_protection import parse_tags
 
 # Character mode "accents": one accented char per source char, so it stresses
 # diacritics / encoding / fonts WITHOUT changing length (length is handled
@@ -134,14 +125,18 @@ def pseudo_translate_text(
     if not text or not text.strip():
         return text
 
-    # Split keeps tags (odd indices) separate from text (even indices).
-    parts = _TAG_RE.split(text)
+    # Every recognised tag is copied verbatim; only the stretches between them
+    # are transformed. Default families = all of them, which matters here: a
+    # Phrase export's {0} placeholders and a Déjà Vu {00108} code are as
+    # untouchable as an <b>, and the genuineness rules keep prose like
+    # "a<b and b>c" as prose instead of freezing "and b" inside a fake tag.
     out = []
-    for idx, part in enumerate(parts):
-        if idx % 2 == 1:
-            out.append(part)  # a tag — never touch it
-        else:
-            out.append(_pseudo_run(part, expansion, mode))
+    pos = 0
+    for token in parse_tags(text):
+        out.append(_pseudo_run(text[pos:token.start], expansion, mode))
+        out.append(token.raw)
+        pos = token.end
+    out.append(_pseudo_run(text[pos:], expansion, mode))
     result = "".join(out)
 
     if markers:

@@ -20,14 +20,14 @@ from modules.pseudo_translate import (
     DEFAULT_OPEN,
     MODE_ACCENTS,
     MODE_PLAIN,
-    _TAG_RE,
     pseudo_translate_text,
 )
+from modules.tag_protection import extract_raw_tags
 
 
 def _tags(text: str):
-    """All inline tags in order of appearance (mirrors extract_all_tags)."""
-    return [m.group(0) for m in _TAG_RE.finditer(text)]
+    """All inline tags in order of appearance, per the canonical tag model."""
+    return extract_raw_tags(text)
 
 
 def _strip_markers(text: str) -> str:
@@ -60,6 +60,31 @@ def test_tag_with_attributes_preserved_verbatim():
     out = pseudo_translate_text(src, expansion=0.3, mode=MODE_ACCENTS)
     assert '<bmk id="0" name="_Toc1">' in out
     assert "</bmk>" in out
+
+
+def test_software_placeholders_are_preserved():
+    """{0}-style placeholders come from the source document and must reach the
+    translation intact. The old private regex did not know them, so they were
+    only safe by luck — no letter in "{0}" happens to have an accent mapping."""
+    src = "Wir konnten {0} {1} aus Rechnung {2} nicht zuordnen"
+    out = pseudo_translate_text(src, expansion=0.5, mode=MODE_ACCENTS)
+    assert _tags(out) == ["{0}", "{1}", "{2}"]
+
+
+def test_dejavu_codes_are_preserved():
+    src = "Zie {00108} voor details."
+    out = pseudo_translate_text(src, expansion=0.4, mode=MODE_ACCENTS)
+    assert "{00108}" in out
+
+
+def test_prose_that_looks_like_markup_is_still_translated():
+    """"a<b and b>c" is arithmetic, not a tag. The old regex read "<b and b>" as
+    one tag and left "and b" untransformed, so a pseudo-translated export looked
+    like a font-coverage problem in text that was never processed at all."""
+    out = pseudo_translate_text("a<b and b>c", expansion=0.0, mode=MODE_ACCENTS,
+                                markers=False)
+    assert out == "á<b áñd b>ç"
+    assert _tags(out) == []
 
 
 def test_tag_text_is_not_accented():
