@@ -46,6 +46,7 @@ __all__ = [
     "KIND_OPEN", "KIND_CLOSE", "KIND_EMPTY",
     "FAMILY_HTML", "FAMILY_TRADOS_NUMERIC", "FAMILY_MEMOQ_BRACKET",
     "FAMILY_MEMOQ_CONTENT", "FAMILY_DEJAVU", "FAMILY_COMPACT",
+    "FAMILY_PLACEHOLDER",
     "LEGACY_FAMILIES", "ALL_FAMILIES",
     "ORIGIN_STRUCTURED", "ORIGIN_HEURISTIC",
     "WORD_JOINER", "LEGACY_TAG_PATTERN",
@@ -74,14 +75,22 @@ FAMILY_TRADOS_NUMERIC = "trados_numeric"  # <1>, </1>, <1/>   (SDLXLIFF g/x)
 FAMILY_MEMOQ_BRACKET = "memoq_bracket"    # [1}, {1], [1]
 FAMILY_MEMOQ_CONTENT = "memoq_content"    # [uicontrol id="…"], {uicontrol}
 FAMILY_DEJAVU = "dejavu"                  # {00108}
-FAMILY_COMPACT = "compact"                # {1}, {/1}, {1/}  (internal display)
+FAMILY_COMPACT = "compact"                # {/1}, {1/}  (internal display only)
+#: Software-localisation placeholders carried by the source document — ``{0}``,
+#: ``{1}`` — as seen throughout a real Phrase XLF export. Distinct from
+#: FAMILY_COMPACT even though a bare ``{1}`` looks identical: these belong to the
+#: source text and must be preserved in the translation, whereas compact
+#: placeholders are something Supervertaler generates for display and reverses
+#: before saving. Only all-digit braces qualify, so ``{x_i}`` in a formula stays
+#: ordinary text.
+FAMILY_PLACEHOLDER = "placeholder"        # {0}, {1}  (from the source file)
 
 #: The three families the legacy string helpers have always covered.
 LEGACY_FAMILIES = (FAMILY_MEMOQ_BRACKET, FAMILY_HTML, FAMILY_TRADOS_NUMERIC)
 
 #: Every family this module knows how to parse.
 ALL_FAMILIES = (
-    FAMILY_DEJAVU, FAMILY_MEMOQ_BRACKET, FAMILY_COMPACT,
+    FAMILY_DEJAVU, FAMILY_MEMOQ_BRACKET, FAMILY_COMPACT, FAMILY_PLACEHOLDER,
     FAMILY_TRADOS_NUMERIC, FAMILY_HTML, FAMILY_MEMOQ_CONTENT,
 )
 
@@ -135,9 +144,13 @@ _TOKEN_RE = re.compile(
     r"(?P<dejavu>\{(?P<dvx_num>\d{5})\})"
     # [1} {1] [1] — memoQ numeric brackets
     r"|(?P<mqb>\[(?P<mqb_open>\d+)\}|\{(?P<mqb_close>\d+)\]|\[(?P<mqb_empty>\d+)\])"
-    # {1} {/1} {1/} — internal compact placeholders (1–4 digits)
-    r"|(?P<compact>\{" + _WJ + r"(?P<c_slash>/?)" + _WJ +
-    r"(?P<c_num>\d{1,4})(?P<c_self>/?)" + _WJ + r"\})"
+    # {/1} {1/} — Supervertaler's own compact placeholders. A slash is what
+    # distinguishes them from a source-document placeholder; the bare {N} form is
+    # handled by the placeholder family below.
+    r"|(?P<compact>\{" + _WJ + r"(?:(?P<c_slash>/)" + _WJ +
+    r"(?P<c_num>\d{1,4})|(?P<c_num2>\d{1,4})(?P<c_self>/))" + _WJ + r"\})"
+    # {0} {1} — software-localisation placeholders from the source document.
+    r"|(?P<ph>\{(?P<ph_num>\d{1,4})\})"
     # <1> </1> <1/> — Trados/SDLXLIFF numeric. No attributes, no whitespace.
     r"|(?P<num><" + _WJ + r"(?P<num_slash>/?)" + _WJ +
     r"(?P<num_id>\d+)(?P<num_self>/?)" + _WJ + r">)"
@@ -297,13 +310,13 @@ def parse_tags(
             else:
                 kind, name = KIND_EMPTY, m.group("mqb_empty")
         elif m.group("compact") is not None:
-            fam, name = FAMILY_COMPACT, m.group("c_num")
-            if m.group("c_slash") == "/":
-                kind = KIND_CLOSE
-            elif m.group("c_self") == "/":
-                kind = KIND_EMPTY
-            else:
-                kind = KIND_OPEN
+            fam = FAMILY_COMPACT
+            name = m.group("c_num") or m.group("c_num2")
+            kind = KIND_CLOSE if m.group("c_slash") == "/" else KIND_EMPTY
+        elif m.group("ph") is not None:
+            # A software placeholder stands alone: it has no partner, so it is
+            # "empty" in memoQ's vocabulary and gets its own number.
+            fam, kind, name = FAMILY_PLACEHOLDER, KIND_EMPTY, m.group("ph_num")
         elif m.group("num") is not None:
             fam, name = FAMILY_TRADOS_NUMERIC, m.group("num_id")
             if m.group("num_slash") == "/":

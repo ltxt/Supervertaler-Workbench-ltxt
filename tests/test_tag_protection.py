@@ -18,6 +18,7 @@ from modules.tag_protection import (  # noqa: E402
     FAMILY_HTML,
     FAMILY_MEMOQ_BRACKET,
     FAMILY_MEMOQ_CONTENT,
+    FAMILY_PLACEHOLDER,
     FAMILY_TRADOS_NUMERIC,
     KIND_CLOSE,
     KIND_EMPTY,
@@ -338,17 +339,36 @@ def test_dejavu_five_digit_codes():
     assert all(t.family == FAMILY_DEJAVU for t in toks)
 
 
-def test_dejavu_wins_over_compact_placeholder_for_five_digits():
-    """Defect 3.4: {00108} matches the compact placeholder shape too. The
-    narrower Déjà Vu family must win so a DVX project is not misread."""
+def test_dejavu_wins_over_the_shorter_brace_families():
+    """Defect 3.4: {00108} matches the bare-brace shape too. The narrower Déjà Vu
+    family (exactly five digits) must win so a DVX project is not misread."""
     assert parse_tags("{00108}")[0].family == FAMILY_DEJAVU
-    assert parse_tags("{1}")[0].family == FAMILY_COMPACT
+
+
+def test_bare_brace_digits_are_source_placeholders_not_display_ones():
+    """A real Phrase XLF is full of {0}/{1} software placeholders. They look
+    identical to Supervertaler's own compact display placeholders, but they belong
+    to the source document and must survive into the translation, so they get
+    their own family. Only the slashed forms are ours."""
+    assert parse_tags("{1}")[0].family == FAMILY_PLACEHOLDER
+    assert parse_tags("{/1}")[0].family == FAMILY_COMPACT
+    assert parse_tags("{1/}")[0].family == FAMILY_COMPACT
+
+
+def test_software_placeholders_are_standalone():
+    """{0} has no partner, so it is "empty" in memoQ's vocabulary. Treating it as
+    an opening tag made it look like an unclosed pair."""
+    toks = parse_tags("Betrag {0} {1} aus {2}", number=True)
+    assert [(t.raw, t.kind, t.number) for t in toks] == [
+        ("{0}", KIND_EMPTY, 1),
+        ("{1}", KIND_EMPTY, 2),
+        ("{2}", KIND_EMPTY, 3),
+    ]
 
 
 def test_compact_placeholder_kinds():
-    toks = parse_tags("{1}x{/1}y{2/}")
+    toks = parse_tags("x{/1}y{2/}")
     assert [(t.raw, t.kind) for t in toks] == [
-        ("{1}", KIND_OPEN),
         ("{/1}", KIND_CLOSE),
         ("{2/}", KIND_EMPTY),
     ]

@@ -195,3 +195,40 @@ def test_real_standalone_tags_are_visible_to_the_insert_shortcut():
     segment = "Page <1/> of <3/>"
     assert tp.next_tag_sequence(segment, "") == "<1/>"
     assert tp.next_tag_sequence(segment, "Pagina <1/> van ") == "<3/>"
+
+
+# ---------------------------------------------------------------------------
+# Software placeholders (Phrase)
+# ---------------------------------------------------------------------------
+
+def test_phrase_placeholders_have_their_own_family():
+    """{0}-style placeholders look identical to Supervertaler's internal compact
+    display placeholders but are a different thing: they belong to the source
+    document and must survive into the translation. Sharing a family meant they
+    were classified as display artefacts, and as opening tags rather than
+    standalone ones."""
+    phrase = [t for k, v in CORPUS.items() if "phrase" in k for t in v]
+    with_placeholders = [t for t in phrase if tp.parse_tags(t) and all(
+        x.family == tp.FAMILY_PLACEHOLDER for x in tp.parse_tags(t))]
+    assert with_placeholders, "fixture no longer holds a placeholder-only segment"
+    for text in with_placeholders:
+        for token in tp.parse_tags(text, number=True):
+            assert token.family == tp.FAMILY_PLACEHOLDER
+            assert token.kind == tp.KIND_EMPTY, "a placeholder never pairs"
+
+
+def test_placeholders_render_verbatim_at_every_level():
+    """Showing {0} as "1" because it is the first tag in the segment would be
+    actively wrong — the number is part of the placeholder's meaning."""
+    from modules import tag_atoms as ta
+
+    token = tp.parse_tags("Betrag {0} und {7}", number=True)
+    assert [t.raw for t in token] == ["{0}", "{7}"]
+    for detail in ta.DETAIL_LEVELS:
+        assert [ta.atom_label(t, detail) for t in token] == ["{0}", "{7}"]
+
+
+def test_dropping_a_placeholder_is_reported():
+    source = "Wir konnten {0} {1} aus Rechnung {2} nicht zuordnen"
+    issues = tp.verify_tags(source, "Kon {1} uit factuur {2} niet toewijzen")
+    assert [i.tag for i in issues if i.kind == tp.ISSUE_MISSING] == ["{0}"]

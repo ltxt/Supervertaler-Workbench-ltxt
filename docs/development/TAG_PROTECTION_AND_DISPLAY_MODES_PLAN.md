@@ -465,13 +465,22 @@ Three things the synthetic tests had missed:
 | **`{name}` content closers matched mathematics** | `Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.` in a real IDML export parsed `{x_i}` and `{x_j}` as memoQ content tags | Protecting those would have made the formula uneditable. A `{name}` closer now requires a matching `[name …]` opener in the same segment. |
 | **Software placeholders were not verified** | A Phrase XLF full of `{0}` / `{1}` / `{2}` | `verify_tags()` defaulted to `LEGACY_FAMILIES`, which excludes them, so dropping `{0}` — which ships a broken software string — went unreported. It now defaults to every family. |
 
-The third one leaves an **open design question**: `{0}`-style placeholders are
-currently classified as `FAMILY_COMPACT`, the same family as Supervertaler's own
-internal `{1}` display placeholders. They are semantically different things that
-happen to share a syntax, and the collision is the §3.4 Déjà Vu problem in a
-more common form. Verification treats them correctly now, but they deserve their
-own family before Partial view is used on software-localisation projects with
-protection on. Not yet done.
+The third one has since been resolved properly. `{0}`-style placeholders now have
+their **own family** (`FAMILY_PLACEHOLDER`), separate from Supervertaler's internal
+`{1}` display placeholders:
+
+- Only **all-digit braces** qualify, so the `{x_i}` maths fix stays intact.
+- A slash is what marks a placeholder as *ours*: `{/1}` and `{1/}` are
+  `FAMILY_COMPACT`, a bare `{N}` belongs to the source document. This is safe
+  because internal placeholders never reach stored segment text — they are
+  reversed before saving, and skipped entirely when protection is on.
+- Their kind is **empty**, not open. Treating `{0}` as an opening tag made it look
+  like an unclosed pair.
+- Compact view does **not** renumber them (`FAMILY_PLACEHOLDER` is excluded from
+  `_COMPACT_TAG_FAMILIES`) and they render **verbatim at every detail level**:
+  showing `{0}` as "1" because it happens to be the first tag in the segment
+  would be actively wrong, since the number is part of the placeholder's meaning.
+- Déjà Vu's five-digit `{00108}` still wins, being the narrower family.
 
 Also confirmed against real data: `Page <1/> of <3/>` is an actual Trados
 segment, so the Phase 0 self-closing-tag fix was not hypothetical — before it,

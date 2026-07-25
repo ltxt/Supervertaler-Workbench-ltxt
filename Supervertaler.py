@@ -1048,6 +1048,9 @@ _COMPACT_TAG_FAMILIES = (
     _tag_protection.FAMILY_MEMOQ_CONTENT,
     _tag_protection.FAMILY_DEJAVU,
 )
+# FAMILY_PLACEHOLDER is absent as well: a software placeholder like {0} is
+# already as short as it gets, and renumbering it to {1} would actively mislead —
+# the number in a placeholder is part of its meaning, not a display artefact.
 
 
 def compact_tags(text: str, tag_map: dict = None) -> str:

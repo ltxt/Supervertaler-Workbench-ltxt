@@ -88,6 +88,12 @@ DETAIL_LEVELS = (DETAIL_SHORT, DETAIL_MEDIUM, DETAIL_FILTERED, DETAIL_LONG)
 
 def atom_label(token: TagToken, detail: str) -> str:
     """The text shown inside the pill for ``token`` at this detail level."""
+    if token.family == _tp.FAMILY_PLACEHOLDER:
+        # A software placeholder is already minimal, and its number is part of
+        # its meaning: showing {0} as "1" because it happens to be the first tag
+        # in the segment would be actively wrong. Render it verbatim at every
+        # level.
+        return token.raw
     if detail == DETAIL_LONG:
         return token.raw
     if detail == DETAIL_MEDIUM:
