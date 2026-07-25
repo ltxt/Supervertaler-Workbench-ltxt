@@ -347,6 +347,28 @@ Consequence: `if x < y and y > z` is never protected; `<cf color="#227acb" font=
 - Add `document_to_raw()` — the atom serialiser — and route the write-back funnel through it (`:43949-43977`, plus the duplicate sites `:44045`, `:48486`). **Consolidate that duplicated chain into one function while touching it**, so the funnel is a funnel by construction.
 - Keep `TagHighlighter` for invisibles, NBSP, CafeTran pipes, Markdown and spellcheck; **remove its tag-colouring branch** when protection is on — the atoms carry their own appearance. This also removes a per-block regex scan (see Phase 5).
 - Audit read-back: 74 `toPlainText()` sites in `Supervertaler.py`, but only grid-cell reads matter and the funnel already localises the important ones. `get_raw_text()` (`:3436`) already exists as the intended abstraction and currently has **zero callers** — make it the single sanctioned accessor.
+
+**Audit result (completed).** Two seam functions — `apply_grid_cell_text()` and
+`read_grid_cell_text()` — are now the only places that know whether protection is
+on, and `read_grid_cell_text()` is a strict drop-in for `toPlainText()` (byte-identical
+with the flag off, verified by test). Converted:
+
+| Category | Sites | Risk had they been missed |
+|---|---|---|
+| Grid-cell reads feeding `segment.target` or an export | 7 | **Data corruption** — U+FFFC written into segments/exports |
+| Grid-cell writes (`setPlainText`) | 22 | Silent loss of protection (data stayed correct) |
+| Voice-dictation append (read + write) | 1 | Corruption |
+| LLM quick-launcher selection | 1 | U+FFFC sent to the model |
+
+**Deliberately not converted:** the word-selection helpers at `:3072` and `:3123`
+index into *display* coordinates, where one atom is correctly one character —
+converting them would break double-click word selection. Also excluded:
+`panel.editor_widget.*` (the under-grid editor panel, whose read-back path is not
+yet audited) and `log_display`. A test (`test_no_grid_cell_bypasses_the_seam`)
+fails if any grid-cell call site regresses to a raw `toPlainText`/`setPlainText`.
+
+**Phase 4 prerequisite:** audit the under-grid editor panel before the protection
+flag is switched on by default.
 - Preserve: Ctrl+, insertion (`:2792`, `:6207`) must insert an atom; find/replace; comment anchors (`_apply_comment_anchors_to_all_cells`); termbase highlighting offsets (`clean_to_display` mapping at `:3467-3478` must skip atoms); AutoTagger; `protect_tags_from_linebreak` becomes unnecessary for atoms (they cannot split).
 
 ### Phase 2 — Display modes switch

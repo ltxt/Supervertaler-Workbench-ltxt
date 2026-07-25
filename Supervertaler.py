@@ -99,6 +99,7 @@ from modules.ui_scale import scaled_pt
 # Canonical inline-tag model — one definition of "what is a tag", shared by the
 # tag helpers below (see docs/development/TAG_PROTECTION_AND_DISPLAY_MODES_PLAN.md).
 from modules import tag_protection as _tag_protection
+from modules import tag_atoms as _tag_atoms
 
 
 def _import_language_pairs():
@@ -1220,6 +1221,74 @@ def strip_all_tags(text: str) -> str:
     Used by AutoTagger to get the tag-free target and to verify the AI only
     moved tags (never changed wording)."""
     return _tag_protection.strip_tags(text)
+
+
+# ============================================================================
+# PROTECTED (ATOMIC) TAGS — grid-cell seam
+# ============================================================================
+# Phase 1 of docs/development/TAG_PROTECTION_AND_DISPLAY_MODES_PLAN.md.
+#
+# When protection is on, a grid cell renders each inline tag as a single
+# indivisible object (see modules/tag_atoms.py) instead of as editable
+# characters, so a stray keystroke can no longer turn "<b>" into "<>". The two
+# helpers below are the ONLY places that need to know which mode is active:
+#
+#   apply_grid_cell_text(editor, text)  replaces  editor.setPlainText(text)
+#   read_grid_cell_text(editor)         replaces  editor.toPlainText()
+#
+# read_grid_cell_text() is a strict drop-in for toPlainText(): with protection
+# off, or on a cell that has no tags, it returns exactly the same string. That
+# is what lets the rest of the write-back chain (compact-tag expansion,
+# invisible-marker stripping, outer-tag re-attachment) stay untouched.
+#
+# The switch itself defaults OFF; Phase 4 adds the Settings toggle.
+
+
+def _protected_tags_active() -> bool:
+    """True when grid cells should render tags as protected atoms."""
+    return bool(getattr(EditableGridTextEditor, 'tag_protection_enabled', False))
+
+
+def _tag_detail_level() -> str:
+    """Current tag detail level (Partial ⇄ Full and the two in between)."""
+    return getattr(EditableGridTextEditor, 'tag_detail_level',
+                   _tag_atoms.DETAIL_SHORT)
+
+
+def apply_grid_cell_text(editor, text: str) -> None:
+    """Show ``text`` in a grid cell, as protected tag atoms when enabled.
+
+    Falls back to plain text if anything goes wrong, so a problem in the atom
+    layer degrades to today's behaviour rather than losing the segment.
+    """
+    if _protected_tags_active():
+        try:
+            _tag_atoms.install_atoms(
+                editor.document(), text or '', detail=_tag_detail_level())
+            return
+        except Exception as exc:  # pragma: no cover - defensive
+            print(f"⚠ Tag protection disabled for this cell: {exc}")
+    editor.setPlainText(text or '')
+
+
+def read_grid_cell_text(editor) -> str:
+    """Read a grid cell back as segment text. Drop-in for ``toPlainText()``."""
+    if _protected_tags_active():
+        try:
+            doc = editor.document()
+            if _tag_atoms.has_atoms(doc):
+                return _tag_atoms.document_to_raw(doc)
+        except Exception as exc:  # pragma: no cover - defensive
+            print(f"⚠ Falling back to plain read-back: {exc}")
+    return editor.toPlainText()
+
+
+def sync_tag_atom_color(color: str) -> None:
+    """Point the atom renderer at the configured tag highlight colour."""
+    try:
+        _tag_atoms.renderer().set_color(color)
+    except Exception:
+        pass
 
 
 def _normalize_ws_for_compare(text: str) -> str:
@@ -2892,7 +2961,15 @@ class GridTextEditor(QTextEdit):
                             if full_tag == next_tag:
                                 insert_text = placeholder
                                 break
-                    cursor.insertText(insert_text)
+                    # Insert as a protected atom when tag protection is
+                    # on, so an inserted tag is as indivisible as an
+                    # imported one. Falls back to literal text (which
+                    # still round-trips correctly) if it will not parse.
+                    if not (_protected_tags_active()
+                            and _tag_atoms.insert_tag_atom(
+                                cursor, insert_text,
+                                detail=_tag_detail_level())):
+                        cursor.insertText(insert_text)
                     if hasattr(main_window, 'log'):
                         main_window.log(f"🏷️ Inserted tag: {insert_text}")
                     return
@@ -3089,7 +3166,7 @@ class ReadOnlyGridTextEditor(QTextEdit):
         # Distinct from allow_source_edit which mirrors the global setting.
         self._ephemeral_source_edit = False
         self.setReadOnly(not allow_edit)
-        self.setPlainText(text)
+        apply_grid_cell_text(self, text)
 
         # CRITICAL: Enable keyboard focus and text selection
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -3432,17 +3509,24 @@ class ReadOnlyGridTextEditor(QTextEdit):
             show_tags: If True, show raw tags. If False, show formatted WYSIWYG.
         """
         self._raw_text = text
-        
+
         if show_tags:
-            # Show raw tags as plain text
-            self.setPlainText(text)
+            # Tags visible — as protected atoms when enabled, otherwise as
+            # plain text coloured by TagHighlighter.
+            apply_grid_cell_text(self, text)
         else:
             # Show WYSIWYG - convert tags to actual formatting
             html = get_formatted_html_display(text)
             self.setHtml(html)
-    
+
     def get_raw_text(self) -> str:
-        """Get the raw text with tags, regardless of display mode."""
+        """Get the raw text with tags, regardless of display mode.
+
+        Prefers a live read of the document (reconstructing markup from tag
+        atoms) so an F2 source edit is not lost in favour of the cached text.
+        """
+        if _protected_tags_active() and _tag_atoms.has_atoms(self.document()):
+            return _tag_atoms.document_to_raw(self.document())
         return getattr(self, '_raw_text', self.toPlainText())
 
     def highlight_termbase_matches(self, matches_dict: Dict):
@@ -4931,7 +5015,13 @@ class EditableGridTextEditor(QTextEdit):
     
     # Class variable for tag highlight color (shared across all instances)
     tag_highlight_color = '#7f0001'  # Default memoQ dark red
-    
+
+    # Protected (atomic) tags. Off by default; Phase 4 adds the Settings
+    # toggle. Both editors read these off this class so there is a single
+    # switch — ReadOnlyGridTextEditor deliberately does not shadow them.
+    tag_protection_enabled = False
+    tag_detail_level = _tag_atoms.DETAIL_SHORT
+
     # Class variables for focus border customization
     focus_border_color = '#f1b79a'  # Default peach/salmon
     focus_border_thickness = 2  # Default 2px (slightly thicker than before)
@@ -4958,7 +5048,7 @@ class EditableGridTextEditor(QTextEdit):
         # when setText is called. Signals will be unblocked AFTER signal handler is connected
         # in load_segments_to_grid. This prevents ANY textChanged events during grid loading.
         self.blockSignals(True)
-        self.setPlainText(text)
+        apply_grid_cell_text(self, text)
         # The initial population must NOT be an undoable step. Otherwise the
         # first Ctrl+Z in a freshly-built cell undoes the cell's own setPlainText
         # (reverting it toward empty) instead of falling through to the app-level
@@ -6306,7 +6396,15 @@ class EditableGridTextEditor(QTextEdit):
                             if full_tag == next_tag:
                                 insert_text = placeholder
                                 break
-                    cursor.insertText(insert_text)
+                    # Insert as a protected atom when tag protection is
+                    # on, so an inserted tag is as indivisible as an
+                    # imported one. Falls back to literal text (which
+                    # still round-trips correctly) if it will not parse.
+                    if not (_protected_tags_active()
+                            and _tag_atoms.insert_tag_atom(
+                                cursor, insert_text,
+                                detail=_tag_detail_level())):
+                        cursor.insertText(insert_text)
                     if hasattr(main_window, 'log'):
                         main_window.log(f"🏷️ Inserted tag: {insert_text}")
                     return
@@ -6450,9 +6548,9 @@ class EditableGridTextEditor(QTextEdit):
         
         self.blockSignals(True)
         if show_tags:
-            # Tag view: Show plain text with visible tags
-            # The TagHighlighter will colorize the tags
-            self.setPlainText(text)
+            # Tag view: tags are visible — as protected atoms when enabled,
+            # otherwise as plain text coloured by TagHighlighter.
+            apply_grid_cell_text(self, text)
         else:
             # WYSIWYG view: Apply formatting
             if has_formatting_tags(text):
@@ -6462,9 +6560,16 @@ class EditableGridTextEditor(QTextEdit):
                 # No tags, just plain text
                 self.setPlainText(text)
         self.blockSignals(False)
-    
+
     def get_raw_text(self) -> str:
-        """Get the raw text with tags, regardless of display mode."""
+        """Get the raw text with tags, regardless of display mode.
+
+        Prefers a live read of the document (which reconstructs the markup from
+        tag atoms) over the cached _raw_text, so edits made since the cell was
+        populated are not lost.
+        """
+        if _protected_tags_active() and _tag_atoms.has_atoms(self.document()):
+            return _tag_atoms.document_to_raw(self.document())
         return getattr(self, '_raw_text', self.toPlainText())
 
     def set_file_boundary(self, is_boundary: bool):
@@ -7227,7 +7332,7 @@ class DetachedLogWindow(QWidget):
         elif hasattr(parent, 'session_log') and parent.session_log:
             source_widget = parent.session_log
         if source_widget is not None:
-            self.log_display.setPlainText(source_widget.toPlainText())
+            self.log_display.setPlainText(read_grid_cell_text(source_widget))
             # Scroll to bottom
             scrollbar = self.log_display.verticalScrollBar()
             if scrollbar:
@@ -10932,7 +11037,7 @@ class SupervertalerQt(QMainWindow):
                     if not source_widget or not hasattr(source_widget, 'toPlainText'):
                         self.log("⚠️ Could not get source text")
                         return
-                    text_to_translate = source_widget.toPlainText().strip()
+                    text_to_translate = read_grid_cell_text(source_widget).strip()
 
             # v1.9.306: Strip any invisible character markers from text before translation
             if hasattr(self, 'reverse_invisible_replacements'):
@@ -10976,16 +11081,16 @@ class SupervertalerQt(QMainWindow):
                         self.log(f"✅ Replaced selection with MT translation")
                     else:
                         # No selection in target, replace entire target
-                        target_widget.setPlainText(translation)
+                        apply_grid_cell_text(target_widget, translation)
                         self.log(f"✅ Inserted MT translation")
                 else:
                     # Focus was elsewhere, replace entire target
-                    target_widget.setPlainText(translation)
+                    apply_grid_cell_text(target_widget, translation)
                     self.log(f"✅ Inserted MT translation")
 
                 # Mark segment as modified
                 if hasattr(self, 'segments') and current_row < len(self.segments):
-                    new_target = target_widget.toPlainText()
+                    new_target = read_grid_cell_text(target_widget)
                     # v1.9.306: Strip invisible markers before saving to segment data
                     if hasattr(self, 'reverse_invisible_replacements'):
                         new_target = self.reverse_invisible_replacements(new_target)
@@ -12415,7 +12520,7 @@ class SupervertalerQt(QMainWindow):
                 display = (self.apply_invisible_replacements(target)
                            if hasattr(self, 'apply_invisible_replacements') else target)
                 target_widget.blockSignals(True)
-                target_widget.setPlainText(display)
+                apply_grid_cell_text(target_widget, display)
                 target_widget.blockSignals(False)
             # Status column (4) is refreshed via its dedicated helper.
             self._update_status_cell(row, segment)
@@ -29701,6 +29806,7 @@ class SupervertalerQt(QMainWindow):
             if tag_color:
                 general_settings['tag_highlight_color'] = tag_color
                 EditableGridTextEditor.tag_highlight_color = tag_color
+                sync_tag_atom_color(tag_color)
 
         # Add badge text color if provided
         if badge_text_color_btn:
@@ -32275,7 +32381,7 @@ class SupervertalerQt(QMainWindow):
                     cursor.insertText(match_text)
 
                     # Update the segment data
-                    new_target = target_widget.toPlainText()
+                    new_target = read_grid_cell_text(target_widget)
                     # v1.9.306: Strip invisible markers before saving to segment data
                     if hasattr(self, 'reverse_invisible_replacements'):
                         new_target = self.reverse_invisible_replacements(new_target)
@@ -32301,7 +32407,7 @@ class SupervertalerQt(QMainWindow):
 
                     # Try to update via cellWidget first
                     if target_widget:
-                        target_widget.setPlainText(match_text)
+                        apply_grid_cell_text(target_widget, match_text)
 
                     self.log(f"✓ Match inserted into segment {row + 1}")
                 else:
@@ -40761,7 +40867,7 @@ class SupervertalerQt(QMainWindow):
             for row in range(self.table.rowCount()):
                 target_widget = self.table.cellWidget(row, 3)  # Target column
                 if target_widget:
-                    target_text = target_widget.toPlainText().strip()
+                    target_text = read_grid_cell_text(target_widget).strip()
                     # v1.9.306: Strip invisible markers before export
                     if hasattr(self, 'reverse_invisible_replacements'):
                         target_text = self.reverse_invisible_replacements(target_text).strip()
@@ -43963,11 +44069,13 @@ class SupervertalerQt(QMainWindow):
                     try:
                         new_text = self._wysiwyg_document_to_tagged_text(editor_widget)
                     except Exception as _e:
-                        new_text = editor_widget.toPlainText()
+                        new_text = read_grid_cell_text(editor_widget)
                         if getattr(self, 'debug_mode_enabled', False):
                             self.log(f"⚠ WYSIWYG tag rebuild failed, kept plain text: {_e}")
                 else:
-                    new_text = editor_widget.toPlainText()
+                    # Reconstructs the markup when tags are protected atoms;
+                    # identical to toPlainText() otherwise.
+                    new_text = read_grid_cell_text(editor_widget)
 
                 # Reverse compact tag placeholders before saving
                 compact_map = getattr(editor_widget, '_compact_tag_map', None)
@@ -46714,9 +46822,9 @@ class SupervertalerQt(QMainWindow):
                 cursor = focus_widget.textCursor()
                 cursor.insertText(translation)
             else:
-                target_widget.setPlainText(translation)
+                apply_grid_cell_text(target_widget, translation)
             if hasattr(self, 'segments') and row < len(self.segments):
-                new_target = target_widget.toPlainText()
+                new_target = read_grid_cell_text(target_widget)
                 if hasattr(self, 'reverse_invisible_replacements'):
                     new_target = self.reverse_invisible_replacements(new_target)
                 self.segments[row].target = new_target
@@ -48362,6 +48470,8 @@ class SupervertalerQt(QMainWindow):
                 EditableGridTextEditor.tag_highlight_color = tag_color
                 ReadOnlyGridTextEditor.tag_highlight_color = tag_color
                 CompactMatchItem.tag_highlight_color = tag_color
+                # Protected-tag pills follow the same colour setting.
+                sync_tag_atom_color(tag_color)
                 for panel in self.results_panels:
                     if hasattr(panel, 'set_tag_color'):
                         panel.set_tag_color(tag_color)
@@ -48486,7 +48596,9 @@ class SupervertalerQt(QMainWindow):
             if getattr(self, '_suppress_source_change_handlers', False):
                 return
 
-            new_text = editor_widget.toPlainText()
+            # Reconstructs the markup when tags are protected atoms; identical
+            # to toPlainText() otherwise.
+            new_text = read_grid_cell_text(editor_widget)
 
             # Reverse display-only transforms before saving (mirrors the
             # target-cell handler): compact tags → expanded, invisible
@@ -50013,7 +50125,7 @@ class SupervertalerQt(QMainWindow):
                 if target_widget:
                     target_display = self.apply_invisible_replacements(source_text) if hasattr(self, 'apply_invisible_replacements') else source_text
                     target_widget.blockSignals(True)
-                    target_widget.setPlainText(target_display)
+                    apply_grid_cell_text(target_widget, target_display)
                     target_widget.blockSignals(False)
 
                 if old_target != source_text:
@@ -50137,7 +50249,7 @@ class SupervertalerQt(QMainWindow):
                     else transformed
                 )
                 target_widget.blockSignals(True)
-                target_widget.setPlainText(target_display)
+                apply_grid_cell_text(target_widget, target_display)
                 target_widget.blockSignals(False)
 
             # Refresh status icon
@@ -50203,7 +50315,7 @@ class SupervertalerQt(QMainWindow):
                 if target_widget:
                     target_display = self.apply_invisible_replacements(source_text) if hasattr(self, 'apply_invisible_replacements') else source_text
                     target_widget.blockSignals(True)
-                    target_widget.setPlainText(target_display)
+                    apply_grid_cell_text(target_widget, target_display)
                     target_widget.blockSignals(False)
 
                 if old_target != source_text:
@@ -51833,7 +51945,7 @@ class SupervertalerQt(QMainWindow):
                                     display_text = segment.target
                                     if self.hide_outer_wrapping_tags:
                                         display_text, _ = strip_outer_wrapping_tags(display_text)
-                                    target_widget.setPlainText(display_text)
+                                    apply_grid_cell_text(target_widget, display_text)
 
                                 # Update status column to reflect draft/confirmed
                                 try:
@@ -52609,7 +52721,7 @@ class SupervertalerQt(QMainWindow):
             segment.target = translation
             target_widget = self.table.cellWidget(row, 3)
             if target_widget and isinstance(target_widget, EditableGridTextEditor):
-                target_widget.setPlainText(translation)
+                apply_grid_cell_text(target_widget, translation)
 
             # Update status
             new_status = old_status
@@ -53201,7 +53313,7 @@ class SupervertalerQt(QMainWindow):
                     display_text = segment.target
                     if self.hide_outer_wrapping_tags:
                         display_text, _ = strip_outer_wrapping_tags(display_text)
-                    target_widget.setPlainText(display_text)
+                    apply_grid_cell_text(target_widget, display_text)
                     target_widget.blockSignals(False)
                 # Statuses may have been demoted to Draft during the batch.
                 if _demote:
@@ -55469,7 +55581,7 @@ class SupervertalerQt(QMainWindow):
                         source_for_display = compact_tags(source_for_display)
                     new_source_text = self.apply_invisible_replacements(source_for_display)
                     source_widget.blockSignals(True)
-                    source_widget.setPlainText(new_source_text)
+                    apply_grid_cell_text(source_widget, new_source_text)
                     source_widget.blockSignals(False)
 
                 # --- Target column (col 3) ---
@@ -55495,7 +55607,7 @@ class SupervertalerQt(QMainWindow):
                         target_widget._compact_tag_map = None
                     new_target_text = self.apply_invisible_replacements(target_for_display)
                     target_widget.blockSignals(True)
-                    target_widget.setPlainText(new_target_text)
+                    apply_grid_cell_text(target_widget, new_target_text)
                     # Keep signals blocked – user edits will unblock naturally when
                     # the widget is next focused and the handler fires from keystrokes.
                     # We restore signals here so the widget stays interactive, but
@@ -58532,11 +58644,11 @@ class SupervertalerQt(QMainWindow):
         focused_widget = QApplication.focusWidget()
 
         if isinstance(focused_widget, EditableGridTextEditor):
-            current_text = focused_widget.toPlainText()
+            current_text = read_grid_cell_text(focused_widget)
             if current_text:
-                focused_widget.setPlainText(current_text + " " + text)
+                apply_grid_cell_text(focused_widget, current_text + " " + text)
             else:
-                focused_widget.setPlainText(text)
+                apply_grid_cell_text(focused_widget, text)
             cursor = focused_widget.textCursor()
             cursor.movePosition(cursor.MoveOperation.End)
             focused_widget.setTextCursor(cursor)
@@ -58866,7 +58978,7 @@ class SupervertalerQt(QMainWindow):
         target_widget = self.table.cellWidget(current_row, 3)
         if target_widget and isinstance(target_widget, EditableGridTextEditor):
             display_text = self.apply_invisible_replacements(segment.source) if hasattr(self, 'apply_invisible_replacements') else segment.source
-            target_widget.setPlainText(display_text)
+            apply_grid_cell_text(target_widget, display_text)
 
         self.project_modified = True
         self.log(f"📋 Copied source to target in segment {segment.id}")
@@ -59342,7 +59454,7 @@ class SupervertalerQt(QMainWindow):
                 display_text = new_text
                 if self.hide_outer_wrapping_tags:
                     display_text, _ = strip_outer_wrapping_tags(display_text)
-                target_widget.setPlainText(display_text)
+                apply_grid_cell_text(target_widget, display_text)
             label = f" ({source_label})" if source_label else ""
             self.log(f"✓ Replaced target text in segment {segment_id}{label}")
             self._play_sound_effect('match_inserted')
@@ -59877,7 +59989,7 @@ class SupervertalerQt(QMainWindow):
             # Insert the match into the target cell
             target_widget = self.table.cellWidget(row, 3)
             if target_widget:
-                target_widget.setPlainText(match_target)
+                apply_grid_cell_text(target_widget, match_target)
                 seg.target = match_target
                 seg.status = 'confirmed'
                 self.update_status_icon(row, 'confirmed')
@@ -60057,7 +60169,7 @@ class SupervertalerQt(QMainWindow):
                             display_text = other.target
                             if getattr(self, 'hide_outer_wrapping_tags', False):
                                 display_text, _ = strip_outer_wrapping_tags(display_text)
-                            target_widget.setPlainText(display_text)
+                            apply_grid_cell_text(target_widget, display_text)
                         self._refresh_segment_status(other)
                 except Exception:
                     pass
@@ -60249,7 +60361,7 @@ class SupervertalerQt(QMainWindow):
             if row >= 0:
                 target_widget = self.table.cellWidget(row, 3)
                 if target_widget:
-                    text = target_widget.toPlainText().strip()
+                    text = read_grid_cell_text(target_widget).strip()
                     # Reverse invisible character display replacements (·→space, →→tab, etc.)
                     text = self.reverse_invisible_replacements(text)
                     # Re-add stripped outer wrapping tag if applicable
@@ -62578,7 +62690,7 @@ class SupervertalerQt(QMainWindow):
                 # Update grid (using cell widget)
                 target_widget = self.table.cellWidget(current_row, 3)
                 if target_widget and isinstance(target_widget, EditableGridTextEditor):
-                    target_widget.setPlainText(tm_match)
+                    apply_grid_cell_text(target_widget, tm_match)
                 else:
                     # Fallback if widget doesn't exist
                     self.table.setItem(current_row, 3, QTableWidgetItem(tm_match))
@@ -62789,7 +62901,7 @@ class SupervertalerQt(QMainWindow):
                 # Update grid - Column 3 is Target (using cell widget)
                 target_widget = self.table.cellWidget(current_row, 3)
                 if target_widget and isinstance(target_widget, EditableGridTextEditor):
-                    target_widget.setPlainText(translation)
+                    apply_grid_cell_text(target_widget, translation)
                 else:
                     # Fallback: create new widget if none exists
                     self.table.setItem(current_row, 3, QTableWidgetItem(translation))
@@ -63044,7 +63156,7 @@ class SupervertalerQt(QMainWindow):
 
         target_widget = self.table.cellWidget(current_row, 3)
         if target_widget and isinstance(target_widget, EditableGridTextEditor):
-            target_widget.setPlainText(new_target)
+            apply_grid_cell_text(target_widget, new_target)
         else:
             self.table.setItem(current_row, 3, QTableWidgetItem(new_target))
         self.update_status_icon(current_row, segment.status)
@@ -63062,7 +63174,7 @@ class SupervertalerQt(QMainWindow):
     def _quicklauncher_get_selection_text(self, widget: QTextEdit) -> str:
         """Get selected text (or full text) from a QTextEdit, normalized for LLMs."""
         cursor = widget.textCursor()
-        text = cursor.selectedText() if cursor.hasSelection() else widget.toPlainText()
+        text = cursor.selectedText() if cursor.hasSelection() else read_grid_cell_text(widget)
         text = (text or "").replace('\u2029', '\n')
 
         # Reverse invisible-character display markers if present
@@ -64414,7 +64526,7 @@ class SupervertalerQt(QMainWindow):
                         display_text, _ = strip_outer_wrapping_tags(display_text)
                     target_widget = self.table.cellWidget(row_index, 3)
                     if target_widget and isinstance(target_widget, EditableGridTextEditor):
-                        target_widget.setPlainText(display_text)
+                        apply_grid_cell_text(target_widget, display_text)
                     else:
                         self.table.setItem(row_index, 3, QTableWidgetItem(display_text))
                     self.update_status_icon(row_index, segment.status)
@@ -65787,7 +65899,7 @@ class SupervertalerQt(QMainWindow):
                             # CRITICAL: Do NOT block signals - we need textChanged to update segment.target
                             # The segment was already updated above (line ~13855), but the widget needs to trigger
                             # the handler so they stay in sync
-                            target_widget.setPlainText(target_text)
+                            apply_grid_cell_text(target_widget, target_text)
                             self.log(f"🔧 Auto-insert: Set widget text to '{target_text[:50]}...'")
                         else:
                             self.log(f"⚠️ Auto-insert: Widget has no setPlainText method!")
