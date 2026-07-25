@@ -671,3 +671,46 @@ done), so capture output before exit.
 
 Worth automating as a CI smoke test: the detail-level and placeholder-collision
 defects would both have been caught by asserting the rendered atom labels.
+
+
+---
+
+## 6.8 Plain-DOCX import loses run colour — measured, not theorised
+
+§2.2 flagged that `TagManager`'s closed whitelist (`b|i|u|bi|li|sub|sup`) cannot
+represent an attributed tag such as the request's own
+`<cf color="#227acb" font="tahoma">`. Running the real `docx/CAT_test_DOCX.docx`
+from the stress-test corpus establishes what that costs.
+
+The document contains two coloured runs (`w:color` = `0563C1`, `C00000`).
+`TagManager.runs_to_tagged_text()` emits **no tag at all** for either — the
+translator never sees that the text is coloured and cannot move or reproduce it.
+
+Colour is instead handled by a heuristic in `docx_handler.export_docx`
+(`modules/docx_handler.py:780-800`): before rebuilding a paragraph it records
+`original_run_colors[run.text.strip()] = rgb`, clears every run, rebuilds them
+from the tagged text, then re-applies colour **by matching the run text**.
+
+That matching only holds while the text is unchanged, which is to say never in a
+real translation:
+
+| Export | Colours in output |
+|---|---|
+| original document | `0563C1`, `C00000` |
+| target == source (a misleading test) | `0563C1`, `C00000` |
+| target actually translated | `C00000` only — **`0563C1` lost** |
+
+So this **is** data loss, not merely a visibility gap. An earlier note in this
+plan said colours survived export; that was an artefact of round-tripping with
+`target == source` and is corrected here.
+
+**The fix** is the one §2.2 implies, and it is now well-defined: have DOCX import
+emit real attributed tags for the run properties the whitelist cannot express
+(colour first, then font and size), and have export consume those tags instead of
+guessing from text. The canonical parser already handles attributed tags —
+`<cf color="#227acb" font="tahoma">` parses correctly today — so this is a
+`tag_manager.py` + `docx_handler.py` change, not a model change.
+
+**Deliberately not folded into this branch.** It is a DOCX round-trip change
+rather than a tag-protection change, it touches an export path every DOCX user
+depends on, and it deserves review on its own. Tracked as the next item.
