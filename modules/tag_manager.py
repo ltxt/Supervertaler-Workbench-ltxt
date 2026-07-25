@@ -23,12 +23,18 @@ class FormattingRun:
     underline: bool = False
     subscript: bool = False
     superscript: bool = False
+    #: Run colour as an upper-case RRGGBB hex string, or "" when the run uses
+    #: the document's default colour. Carried separately from the boolean
+    #: dimensions because it has a *value*, which is exactly what the old
+    #: whitelist of tag names could not express.
+    color: str = ""
     start_pos: int = 0
     end_pos: int = 0
-    
+
     def has_formatting(self) -> bool:
         """Check if this run has any formatting"""
-        return self.bold or self.italic or self.underline or self.subscript or self.superscript
+        return (self.bold or self.italic or self.underline
+                or self.subscript or self.superscript or bool(self.color))
     
     def get_tag_name(self) -> str:
         """Get the tag name for this formatting"""
@@ -50,11 +56,32 @@ class FormattingRun:
 class TagManager:
     """Manage inline formatting tags"""
     
-    # Tag patterns - includes list item tags and sub/sup
-    TAG_PATTERN = re.compile(r'<(/?)([biu]|bi|li|sub|sup)>')
+    # Tag patterns. The boolean formatting dimensions are plain names; character
+    # formatting that carries a *value* uses <cf …> with attributes, the same
+    # convention Supervertaler already shows for bilingual DOCX imports and the
+    # one memoQ uses. Before this, the pattern was a closed whitelist of names
+    # (b|i|u|bi|li|sub|sup) and there was no way to represent a colour at all, so
+    # DOCX import silently dropped it.
+    TAG_PATTERN = re.compile(
+        r'<(?P<slash>/?)(?P<name>cf|bi|[biu]|li|sub|sup)(?P<attrs>\s+[^<>]*?)?\s*>')
+
+    #: Matches a colour attribute inside a <cf …> tag.
+    COLOR_ATTR_PATTERN = re.compile(r'color="([0-9A-Fa-f]{6})"')
+
+    @classmethod
+    def parse_color(cls, attrs: str) -> str:
+        """Extract an RRGGBB colour from a <cf …> tag's attributes, or ""."""
+        match = cls.COLOR_ATTR_PATTERN.search(attrs or '')
+        return match.group(1).upper() if match else ''
+
+    @staticmethod
+    def format_color_tag(color: str) -> str:
+        """The opening tag for a coloured span."""
+        return f'<cf color="{color.upper()}">' 
     
     def __init__(self):
         self.tag_colors = {
+            'cf': '#227ACB',   # Blue for character formatting (colour/font)
             'b': '#CC0000',    # Red for bold
             'i': '#0066CC',    # Blue for italic
             'u': '#009900',    # Green for underline
@@ -104,6 +131,17 @@ class TagManager:
                 is_bold = run.bold if run.bold is not None else style_bold
                 is_italic = run.italic if run.italic is not None else style_italic
 
+                # Colour is a *value*, so it becomes a <cf color="…"> tag
+                # rather than one of the boolean dimensions. Theme colours
+                # (w:themeColor) have no rgb and are left alone.
+                color = ''
+                try:
+                    rgb = run.font.color.rgb if (run.font and run.font.color) else None
+                    if rgb is not None:
+                        color = str(rgb).upper()
+                except Exception:
+                    color = ''
+
                 return FormattingRun(
                     text=text,
                     bold=is_bold or False,
@@ -111,6 +149,7 @@ class TagManager:
                     underline=run.underline or False,
                     subscript=run.font.subscript or False if run.font else False,
                     superscript=run.font.superscript or False if run.font else False,
+                    color=color,
                     start_pos=0,  # Will be set later
                     end_pos=0     # Will be set later
                 )
@@ -148,18 +187,53 @@ class TagManager:
     
     def runs_to_tagged_text(self, runs: List[FormattingRun]) -> str:
         """
-        Convert formatting runs to tagged text
-        
+        Convert formatting runs to tagged text.
+
+        Colour is handled as an outer span, so a coloured bold run becomes
+        ``<cf color="C00000"><b>text</b></cf>`` — the same shape as the
+        attributed tags Supervertaler shows for bilingual CAT formats. Runs are
+        grouped by colour and each group is rendered by the boolean-dimension
+        algorithm below, which is left exactly as it was.
+
         Example:
             [Run("Hello ", bold=False), Run("world", bold=True), Run("!", bold=False)]
             → "Hello <b>world</b>!"
-        
+
         Args:
             runs: List of FormattingRun objects
-            
+
         Returns:
             Text with inline tags
         """
+        if not runs:
+            return ""
+
+        # Group consecutive runs sharing a colour, then delegate each group.
+        if any(r.color for r in runs):
+            parts = []
+            group: List[FormattingRun] = []
+            group_color = runs[0].color
+            for run in runs:
+                if run.color != group_color:
+                    parts.append(self._render_color_group(group, group_color))
+                    group, group_color = [], run.color
+                group.append(run)
+            parts.append(self._render_color_group(group, group_color))
+            return ''.join(parts)
+
+        return self._runs_to_tagged_text_uncoloured(runs)
+
+    def _render_color_group(self, runs: List[FormattingRun], color: str) -> str:
+        """Render one same-colour group, wrapped in <cf …> when it has a colour."""
+        if not runs:
+            return ""
+        inner = self._runs_to_tagged_text_uncoloured(runs)
+        if not color:
+            return inner
+        return f"{self.format_color_tag(color)}{inner}</cf>"
+
+    def _runs_to_tagged_text_uncoloured(self, runs: List[FormattingRun]) -> str:
+        """The original bold/italic/underline/sub/sup state machine, unchanged."""
         if not runs:
             return ""
         
@@ -247,9 +321,10 @@ class TagManager:
             List of run specifications (dicts with text and formatting)
         """
         runs = []
-        current_formatting = {'bold': False, 'italic': False, 'underline': False, 'subscript': False, 'superscript': False}
+        current_formatting = {'bold': False, 'italic': False, 'underline': False,
+                              'subscript': False, 'superscript': False, 'color': ''}
         current_text = []
-        
+
         pos = 0
         while pos < len(text):
             # Check for tag
@@ -263,15 +338,19 @@ class TagManager:
                         'italic': current_formatting['italic'],
                         'underline': current_formatting['underline'],
                         'subscript': current_formatting['subscript'],
-                        'superscript': current_formatting['superscript']
+                        'superscript': current_formatting['superscript'],
+                        'color': current_formatting['color']
                     })
                     current_text = []
-                
+
                 # Process tag
-                is_closing = match.group(1) == '/'
-                tag_name = match.group(2)
-                
-                if tag_name == 'bi':
+                is_closing = match.group('slash') == '/'
+                tag_name = match.group('name')
+
+                if tag_name == 'cf':
+                    current_formatting['color'] = (
+                        '' if is_closing else self.parse_color(match.group('attrs')))
+                elif tag_name == 'bi':
                     current_formatting['bold'] = not is_closing
                     current_formatting['italic'] = not is_closing
                 elif tag_name == 'b':
@@ -299,9 +378,10 @@ class TagManager:
                 'italic': current_formatting['italic'],
                 'underline': current_formatting['underline'],
                 'subscript': current_formatting['subscript'],
-                'superscript': current_formatting['superscript']
+                'superscript': current_formatting['superscript'],
+                'color': current_formatting['color']
             })
-        
+
         return runs
     
     def validate_tags(self, text: str) -> Tuple[bool, str]:
@@ -320,9 +400,9 @@ class TagManager:
         while pos < len(text):
             match = self.TAG_PATTERN.match(text, pos)
             if match:
-                is_closing = match.group(1) == '/'
-                tag_name = match.group(2)
-                
+                is_closing = match.group('slash') == '/'
+                tag_name = match.group('name')
+
                 if is_closing:
                     if not stack:
                         return False, f"Closing tag </{tag_name}> without opening tag"
@@ -354,9 +434,9 @@ class TagManager:
         while pos < len(text):
             match = self.TAG_PATTERN.match(text, pos)
             if match:
-                is_closing = match.group(1) == '/'
+                is_closing = match.group('slash') == '/'
                 if not is_closing:  # Only count opening tags
-                    tag_name = match.group(2)
+                    tag_name = match.group('name')
                     counts[tag_name] = counts.get(tag_name, 0) + 1
                 pos = match.end()
             else:

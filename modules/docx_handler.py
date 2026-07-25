@@ -818,10 +818,23 @@ class DOCXHandler:
             if original_font_size:
                 run.font.size = original_font_size
             
-            # Try to restore original color if this text matches an original run
-            text_stripped = spec['text'].strip()
-            if text_stripped in original_run_colors:
-                run.font.color.rgb = original_run_colors[text_stripped]
+            # Colour now travels in the tagged text as <cf color="RRGGBB">, so it
+            # follows the translator's wording wherever they move it.
+            spec_color = (spec.get('color') or '').strip()
+            if spec_color:
+                try:
+                    run.font.color.rgb = RGBColor.from_string(spec_color)
+                except Exception:
+                    pass
+            else:
+                # Fall back to the old text-matching heuristic only for content
+                # that carries no colour tag — e.g. a project imported before
+                # colour was tagged, whose segments still hold untagged text.
+                # It can only ever work while the wording is unchanged, which is
+                # why the tag exists.
+                text_stripped = spec['text'].strip()
+                if text_stripped in original_run_colors:
+                    run.font.color.rgb = original_run_colors[text_stripped]
         
         # Preserve paragraph style if provided
         if original_style:
