@@ -167,6 +167,12 @@ supervertaler-debug = "Supervertaler:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    # Builds the real application window headlessly and inspects the rendered
+    # grid. Slow (tens of seconds) and needs the app's runtime dependencies, so
+    # it is easy to exclude: `pytest -m "not gui"`.
+    "gui: headless end-to-end test of the application window",
+]
 # Both styles are present in the suite: some modules use pytest fixtures and
 # parametrisation, others are plain assert-based functions. Default discovery
 # handles both, so only the path needs pinning — that way `pytest` with no
