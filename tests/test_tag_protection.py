@@ -246,11 +246,11 @@ def test_id_attribute_is_captured():
 
 
 def test_id_vetoes_a_pair_only_when_both_halves_carry_one():
-    """Structured import knows the id of *both* halves of an SDLXLIFF
-    ``<g id="N">…</g>`` pair, so a closer must skip an inner opener whose id
-    differs. Text scanning can never produce this (a closing tag with
-    attributes is rejected as prose), so it is exercised at the numbering
-    level — which is how the import path will use it."""
+    """A closer must skip an inner opener whose id differs. Exercised at
+    the numbering level because that is how the structured import path uses it —
+    it knows the id of both halves of an SDLXLIFF ``<g id="N">…</g>`` pair.
+    Attributed closers do also occur in scanned text (see
+    test_closing_tag_may_carry_attributes)."""
     def tok(kind, name, tag_id, start):
         return TagToken(raw="", kind=kind, name=name, family=FAMILY_HTML,
                         start=start, end=start + 1, tag_id=tag_id,
@@ -264,9 +264,41 @@ def test_id_vetoes_a_pair_only_when_both_halves_carry_one():
     assert [t.number for t in numbered] == [1, 2, 1]
 
 
-def test_closing_tag_with_attributes_is_never_produced_by_scanning():
-    assert parse_tags('</g id="1">') == []
-    assert parse_tags('</g id="1">', strict=False) == []
+def test_closing_tag_may_carry_attributes():
+    """Corrected against real data. This test previously asserted the opposite,
+    on the assumption that a closing tag never has attributes. A real memoQ
+    MQXLIFF export of a DOCX contains::
+
+        <cmt id="0" transform="open">vague</cmt id="0" transform="close">
+
+    so rejecting attributed closers left the opener unpaired and unprotected.
+    Prose like "</b junk>" is still excluded, by the attribute well-formedness
+    rule rather than by a blanket ban."""
+    toks = parse_tags('</g id="1">')
+    assert [(t.raw, t.kind, t.tag_id) for t in toks] == [
+        ('</g id="1">', KIND_CLOSE, "1")]
+
+
+def test_memoq_comment_pair_from_a_real_export():
+    text = ('inherently <cmt id="0" transform="open">vague'
+            '</cmt id="0" transform="close">, as')
+    toks = parse_tags(text, number=True)
+    assert [(t.kind, t.number) for t in toks] == [
+        (KIND_OPEN, 1), (KIND_CLOSE, 1)]
+
+
+def test_content_tag_closer_needs_its_opener():
+    """memoQ content tags pair as ``[name …]`` … ``{name}``, but the closing
+    form is just an identifier in braces, which ordinary text hits constantly.
+    A real MQXLIFF export of an IDML file contained
+    ``e^{x_i} / Σ_j e^{x_j}`` — mathematics, not markup. Protecting those would
+    have made the formula uneditable."""
+    assert extract_raw_tags(
+        "Equation: softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.") == []
+    assert extract_raw_tags("let S = {a} union {b}") == []
+    # With its opener present it is a genuine tag pair again.
+    assert extract_raw_tags('[uicontrol id="GUID-1"]Save{uicontrol}') == [
+        '[uicontrol id="GUID-1"]', '{uicontrol}']
 
 
 def test_unmatched_closing_tag_gets_its_own_number():

@@ -318,9 +318,11 @@ def parse_tags(
                 m.group("h_slash"), m.group("h_attrs"), m.group("h_self"))
             if strict and not _attrs_well_formed(attrs):
                 continue
-            if kind == KIND_CLOSE and attrs.strip():
-                # "</b junk>" is not a closing tag.
-                continue
+            # A closing tag MAY carry attributes: memoQ emits
+            # ``</cmt id="0" transform="close">`` as the partner of
+            # ``<cmt id="0" transform="open">`` (seen in real MQXLIFF exports).
+            # Prose like "</b junk>" is already excluded by the attribute
+            # well-formedness check above.
         elif m.group("mqc") is not None:
             fam = FAMILY_MEMOQ_CONTENT
             body = raw[1:-1]
@@ -344,7 +346,31 @@ def parse_tags(
             attrs=attrs, tag_id=tag_id, origin=origin,
         ))
 
+    if strict:
+        tokens = _drop_unopened_content_tags(tokens)
+
     return assign_numbers(tokens) if number else tokens
+
+
+def _drop_unopened_content_tags(tokens: list[TagToken]) -> list[TagToken]:
+    """Reject ``{name}`` memoQ content closers with no ``[name …]`` opener.
+
+    memoQ content tags come in pairs — ``[uicontrol id="…"]`` … ``{uicontrol}``
+    — but the closing form is just an identifier in braces, which ordinary text
+    hits all the time. A real MQXLIFF export of an IDML file contained::
+
+        Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.
+
+    where ``{x_i}`` and ``{x_j}`` are mathematics, not markup. Protecting those
+    would make the formula uneditable. Requiring the opener keeps genuine memoQ
+    content tags and leaves maths, code and set notation alone.
+    """
+    openers = {t.name.lower() for t in tokens
+               if t.family == FAMILY_MEMOQ_CONTENT and t.kind == KIND_OPEN}
+    return [t for t in tokens
+            if not (t.family == FAMILY_MEMOQ_CONTENT
+                    and t.kind == KIND_CLOSE
+                    and t.name.lower() not in openers)]
 
 
 def assign_numbers(tokens: Iterable[TagToken]) -> list[TagToken]:
@@ -491,7 +517,7 @@ def _unpaired_tags(tokens: Sequence[TagToken]) -> list[str]:
 def verify_tags(
     source_text: str,
     target_text: str,
-    families: Sequence[str] | None = LEGACY_FAMILIES,
+    families: Sequence[str] | None = None,
     strict: bool = True,
 ) -> list[TagIssue]:
     """Compare a target's inline tags against its source.
@@ -506,9 +532,12 @@ def verify_tags(
     Args:
         source_text: The source segment.
         target_text: The translation.
-        families: Tag families to consider. Defaults to
-            :data:`LEGACY_FAMILIES`, matching what the tag-insertion shortcut
-            and AutoTagger operate on.
+        families: Tag families to consider. Defaults to **every** family, not
+            just the three the legacy string helpers cover. A real Phrase
+            export in the test corpus is full of ``{0}`` / ``{1}`` software
+            placeholders; dropping one ships a broken string, so verification
+            has to see them. Pass :data:`LEGACY_FAMILIES` for the narrower
+            behaviour.
         strict: Passed through to :func:`parse_tags`.
 
     Returns:

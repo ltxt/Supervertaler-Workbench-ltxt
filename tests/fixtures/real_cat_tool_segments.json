@@ -1,0 +1,44 @@
+{
+ "trados/CAT_test_DOCX.docx.sdlxliff": [
+  "Page <1/> of <3/>",
+  "<9>Bold</9>, <12>italic</12>, <15>underline</15>, <18>H2O subscript</18>, <21>E=mc2 superscript</21>, <24>coloured</24>.",
+  "Before the emergence of transformer-based models in 2017, some language models were considered <57>large</57> for their time.",
+  "<62/>.",
+  "<64/>.",
+  "<66/>.",
+  "Hyperlink field: <71/>"
+ ],
+ "memoq/CAT_test_DOCX.docx_lit.mqxliff": [
+  "Bold, italic, underline, H2O subscript, E=mc2 superscript, <rpr id=\"0\">coloured</rpr id=\"0\" transform=\"close\">.",
+  "The qualifier “large” is inherently <cmt id=\"0\" transform=\"open\">vague</cmt id=\"0\" transform=\"close\">, as there is no definitive parameter threshold.",
+  "<fld id=\"0\" /><instr id=\"0\" /><fld id=\"1\" />2026-07-25<fld id=\"2\" />.",
+  "<fld id=\"0\" /><instr id=\"1\" /><fld id=\"1\" />1<fld id=\"2\" />.",
+  "<fld id=\"0\" /><instr id=\"2\" /><fld id=\"1\" />L.TXT<fld id=\"2\" />.",
+  "<hlnk id=\"rId7\" history=\"1\" fileName=\"document.xml\" href=\"@243f2b07-8a6f-411f-982d-c0729cd726c3\"><rpr id=\"2\">Large language model</rpr id=\"2\" transform=\"close\"></hlnk>",
+  "Page <fld id=\"0\" /><instr id=\"1\" /><fld id=\"1\" />1<fld id=\"2\" /> of <fld id=\"0\" /><instr id=\"3\" /><fld id=\"1\" />1<fld id=\"2\" />"
+ ],
+ "memoq/CAT_test_IDML.idml_lit.mqxliff": [
+  "<uf ufcatid=\"1\">Bold</uf>, <uf ufcatid=\"2\">italic</uf>, and normal runs in one paragraph.",
+  "<tbl linid=\"0\" />"
+ ],
+ "phrase/Initial_Translation_SK.xlf": [
+  "Eine neue Gutschrift {0}",
+  "für Ihre Rechnung {0}",
+  "Wir konnten den Rechnungsbetrag von {0} {1} aus Ihrer letzten Rechnung mit der Rechnungsnummer {2} nicht abbuchen. Mögliche Gründe dafür sind, dass Ihr Zahlungsmittel abgelaufen ist oder es ein Problem mit der Transaktion gab.",
+  "der Rechnungsbetrag von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} ist noch nicht auf unserem Konto eingegangen. Möglicherweise ist die Überweisung fehlgeschlagen oder eine falsche oder fehlerhafte Bankverbindung wurde verwendet.",
+  "Wir konnten den Rechnungsbetrag von {0} {1} aus Ihrer letzten Rechnung mit der Rechnungsnummer {2} erneut nicht abbuchen. Mögliche Gründe dafür sind, dass Ihr Zahlungsmittel abgelaufen ist oder es ein Problem mit der Transaktion gab.",
+  "der Rechnungsbetrag von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} ist noch immer nicht auf unserem Konto eingegangen.",
+  "Wir informieren Sie hiermit darüber, dass es uns nach drei fehlgeschlagenen Versuchen nicht möglich ist, den offenen Betrag Ihrer Rechnung mit der Nummer {0} abzubuchen.",
+  "Bitte wenden Sie sich so bald wie möglich an unser {0}, um eine Lösung zu finden.",
+  "Wir informieren Sie hiermit darüber, dass wir nach zwei Zahlungserinnerungen weiterhin keinen Zahlungseingang des offenen Betrags von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} verzeichnen konnten.",
+  "Eine vollständige Übersicht über Ihre Flotte finden Sie im Abschnitt {0}.\nIm Abschnitt {1} erhalten Sie die Details zu allen  aktiven Services der Fahrzeuge Ihrer Flotte, einschließlich aller aktuellen Preise und Laufzeiten.",
+  "Ihr kostenloser Probezeitraum für den Service &lt;strong&gt;„{0}“&lt;/strong&gt; endet am &lt;strong&gt;{1}&lt;/strong&gt;.",
+  "Ihr kostenloser Probezeitraum für den Service &lt;b&gt;„{0}“&lt;/b&gt; endet am &lt;b&gt;{1}&lt;/b&gt;. \nDanach wird der Service kostenpflichtig und die Gebühren monatlich abgerechnet. \n\nSie können den Service jederzeit zum Ende des laufenden Monats kündigen. Wenn Sie vor dem Ende des Probezeitraums kündigen, entstehen keine Kosten.\nSie können den Service flexibel für Ihre Flottenfahrzeuge individuell anpassen.",
+  "Hallo {0} {1},",
+  "Ihre Connect Pro Rechnung für {0} {1} über {2} {3} steht jetzt im Bereich \\u201CZahlung und Abrechnung\\u201D für Sie bereit.",
+  "Bitte überweisen Sie den Betrag von &lt;strong&gt;{0} {1}&lt;/strong&gt; bis spätestens &lt;strong&gt;{2}&lt;/strong&gt; unter der Angabe der Rechnungsnummer &lt;strong&gt;{3}&lt;/strong&gt; auf folgendes Konto:",
+  "Ihre Connect Pro Monatsabrechnung für {0} {1}",
+  "Für dieses Fahrzeug wurden {0} neue Wartungsbedarfe angelegt.",
+  "Im Bereich {0} können Sie die Services für Ihre Fahrzeuge bearbeiten. Im Bereich {1} können Sie Ihre monatlichen Kosten im Auge behalten."
+ ]
+}

@@ -447,6 +447,37 @@ Ranked by everyday-interactivity impact per unit of risk:
 
 ---
 
+## 6.6 Findings from real CAT-tool exports
+
+A corpus of genuine Trados, memoQ and Phrase files was run through the parser,
+the atom layer and verification. **652 segments across five files reassemble
+byte-exactly**, and the tagged subset is committed as
+`tests/fixtures/real_cat_tool_segments.json` (extracted text only, not the source
+documents) with `tests/test_tag_real_corpus.py` exercising it.
+
+Three things the synthetic tests had missed:
+
+| Finding | Evidence | Resolution |
+|---|---|---|
+| **memoQ emits closing tags *with* attributes** | `<cmt id="0" transform="open">vague</cmt id="0" transform="close">` in a real MQXLIFF | The parser rejected attributed closers as prose, so the opener was left unpaired and unprotected. That rule is gone; attribute well-formedness alone excludes prose like `</b junk>`. Also makes the `id` tie-breaker in `assign_numbers` reachable from scanned text, not just structured import. |
+| **`{name}` content closers matched mathematics** | `Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.` in a real IDML export parsed `{x_i}` and `{x_j}` as memoQ content tags | Protecting those would have made the formula uneditable. A `{name}` closer now requires a matching `[name …]` opener in the same segment. |
+| **Software placeholders were not verified** | A Phrase XLF full of `{0}` / `{1}` / `{2}` | `verify_tags()` defaulted to `LEGACY_FAMILIES`, which excludes them, so dropping `{0}` — which ships a broken software string — went unreported. It now defaults to every family. |
+
+The third one leaves an **open design question**: `{0}`-style placeholders are
+currently classified as `FAMILY_COMPACT`, the same family as Supervertaler's own
+internal `{1}` display placeholders. They are semantically different things that
+happen to share a syntax, and the collision is the §3.4 Déjà Vu problem in a
+more common form. Verification treats them correctly now, but they deserve their
+own family before Partial view is used on software-localisation projects with
+protection on. Not yet done.
+
+Also confirmed against real data: `Page <1/> of <3/>` is an actual Trados
+segment, so the Phase 0 self-closing-tag fix was not hypothetical — before it,
+Ctrl+, could not insert either tag and reported that all tags were already
+placed.
+
+---
+
 ## 7. Risk register
 
 | Risk | Severity | Mitigation |
