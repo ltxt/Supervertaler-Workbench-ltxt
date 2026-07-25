@@ -377,3 +377,33 @@ def test_intrinsic_size_grows_with_label_length(doc):
 
     assert big.width() > small.width()
     assert small.height() > 0
+
+
+def test_renderer_survives_its_qapplication_being_destroyed(qapp):
+    """The renderer is a QObject, so Qt destroys it when the QApplication goes —
+    leaving a dead wrapper and making every later registerHandler() raise
+    "wrapped C/C++ object ... has been deleted".
+
+    A process normally has one QApplication for its lifetime, so this surfaced
+    between test modules rather than for users; it showed up as 41 errors the
+    moment two Qt test files ran in one session. renderer() now notices and
+    rebuilds, carrying the configured colour across.
+    """
+    import modules.tag_atoms as module
+
+    module.renderer().set_color("#00aa00")
+    original = module.renderer()
+
+    # Simulate what a destroyed QApplication leaves behind.
+    module._RENDERER = None
+    rebuilt = module.renderer()
+    assert rebuilt is not None
+    assert module.renderer() is rebuilt        # still a singleton
+
+    # And a document can still register a handler afterwards.
+    doc = QTextDocument()
+    register_document(doc)
+    install_atoms(doc, "<b>x</b>")
+    assert document_to_raw(doc) == "<b>x</b>"
+
+    module.renderer().set_color("#7f0001")

@@ -235,3 +235,97 @@ def test_bold_still_survives_alongside_the_colour(coloured_docx, tmp_path):
     bolded = [r.text for p in docx.Document(out).paragraphs
               for r in p.runs if r.bold]
     assert bolded == ["wanddikte"]
+
+
+
+@pytest.fixture(scope="session")
+def qapp():
+    """Session-scoped on purpose.
+
+    A module-scoped QApplication is destroyed when its fixture tears down, which
+    takes every QObject with it — including the shared tag renderer — and the
+    next test module then cannot register a handler. Every Qt test file in this
+    suite therefore keeps the application alive for the whole session.
+    """
+    pytest.importorskip("PyQt6")
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+    from PyQt6.QtWidgets import QApplication
+    yield QApplication.instance() or QApplication([])
+
+
+@pytest.fixture(scope="module")
+def atom_doc(qapp):
+    """One document reused across the Qt tests.
+
+    Creating and dropping a QTextDocument per test while a custom text-object
+    handler is registered on its layout aborts the interpreter, so it is built
+    once here and refilled by each test.
+    """
+    from PyQt6.QtGui import QTextDocument
+
+    from modules import tag_atoms as ta
+
+    document = QTextDocument()
+    ta.register_document(document)
+    return document
+
+# ---------------------------------------------------------------------------
+# The coupling between the two changesets
+# ---------------------------------------------------------------------------
+#
+# DOCX import (this module) emits the colour tag; the canonical parser and the
+# atom layer consume it. They were developed separately and touch no file in
+# common, so this is the seam that could silently drift.
+
+def test_a_coloured_docx_run_becomes_a_protected_tag(coloured_docx, atom_doc):
+    """The whole chain, in one test: a coloured DOCX run is imported as a real
+    attributed tag, parsed by the canonical model, rendered as a protected atom
+    at every detail level, and reported by verification when dropped."""
+    from PyQt6.QtGui import QTextCursor
+
+    from modules import tag_atoms as ta
+    from modules import tag_protection as tp
+    from modules.docx_handler import DOCXHandler
+
+    text = DOCXHandler().import_docx(coloured_docx, extract_formatting=True)[0]
+    assert '<cf color="227ACB">' in text
+
+    # The canonical parser reads it as an ordinary attributed HTML-family tag,
+    # with the colour tag pairing with its own closer.
+    tokens = tp.parse_tags(text, number=True)
+    assert [(t.name, t.kind, t.number) for t in tokens] == [
+        ("cf", tp.KIND_OPEN, 1),
+        ("b", tp.KIND_OPEN, 2),
+        ("b", tp.KIND_CLOSE, 2),
+        ("cf", tp.KIND_CLOSE, 1),
+    ]
+
+    document = atom_doc
+
+    # Every detail level renders it and round-trips it byte-exactly.
+    for level in ta.DETAIL_LEVELS:
+        ta.install_atoms(document, text, detail=level)
+        assert ta.document_to_raw(document) == text, level
+
+    # And it is protected: one Backspace removes the entire <cf …> tag rather
+    # than leaving a fragment of markup behind.
+    ta.install_atoms(document, text, detail=ta.DETAIL_MEDIUM)
+    position = ta.atom_tokens(document)[0]["position"]
+    cursor = QTextCursor(document)
+    cursor.setPosition(position + 1)
+    cursor.deletePreviousChar()
+    damaged = ta.document_to_raw(document)
+    assert "<cf" not in damaged
+    assert damaged.count("</cf>") == 1
+
+    issues = tp.verify_tags(text, damaged)
+    assert tp.ISSUE_MISSING in {i.kind for i in issues}
+
+
+def test_the_colour_tag_is_not_mistaken_for_prose(coloured_docx):
+    """The genuineness rules must not reject the tag DOCX import just emitted."""
+    from modules import tag_protection as tp
+    from modules.docx_handler import DOCXHandler
+
+    text = DOCXHandler().import_docx(coloured_docx, extract_formatting=True)[0]
+    assert [t.raw for t in tp.parse_tags(text)][0] == '<cf color="227ACB">'

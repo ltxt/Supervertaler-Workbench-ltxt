@@ -183,16 +183,52 @@ class TagAtomRenderer(QObject, QTextObjectInterface):
             pass
 
 
-# One renderer for the whole application. Module-level so Python never garbage
-# collects it out from under Qt's layout, which holds only a borrowed pointer.
+# One renderer for the whole application, so a theme change is a single
+# assignment rather than a walk over every cell.
+#
+# It is a QObject, which means Qt — not Python — controls when the underlying C++
+# object dies: destroying the QApplication destroys it, leaving this module
+# holding a dead wrapper and every later registerHandler() raising
+# "wrapped C/C++ object of type TagAtomRenderer has been deleted". A process
+# normally has one QApplication for its lifetime, so this bites tests (where each
+# module may create and drop one) rather than users, but the recovery below costs
+# one attribute access and removes the sharp edge either way.
 _RENDERER: Optional[TagAtomRenderer] = None
 
 
+def _is_alive(obj) -> bool:
+    """False once Qt has destroyed the C++ object behind ``obj``."""
+    if obj is None:
+        return False
+    try:
+        obj.objectName()          # cheapest call that touches the C++ side
+        return True
+    except RuntimeError:
+        return False
+
+
 def renderer() -> TagAtomRenderer:
-    """The shared :class:`TagAtomRenderer`, created on first use."""
+    """The shared :class:`TagAtomRenderer`, created on first use.
+
+    Recreated if Qt has destroyed the previous one. Any document that had
+    registered the old renderer died with it, so nothing is left holding a
+    dangling pointer.
+    """
     global _RENDERER
-    if _RENDERER is None:
-        _RENDERER = TagAtomRenderer()
+    if not _is_alive(_RENDERER):
+        colour = _RENDERER.text_color.name() if _RENDERER is not None else None
+        try:
+            _RENDERER = TagAtomRenderer()
+        except RuntimeError:
+            _RENDERER = None
+            raise
+        # Carry the configured colour across, so a theme choice is not silently
+        # reset by an event the user never sees.
+        if colour:
+            try:
+                _RENDERER.set_color(colour)
+            except Exception:
+                pass
     return _RENDERER
 
 

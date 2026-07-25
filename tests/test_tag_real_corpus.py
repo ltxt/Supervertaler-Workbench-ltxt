@@ -79,8 +79,11 @@ def test_every_real_segment_has_at_least_one_tag(origin, text):
 # The atom layer, on real text
 # ---------------------------------------------------------------------------
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def qapp():
+    """Session-scoped: a module-scoped QApplication is destroyed at teardown,
+    taking every QObject with it — including the shared tag renderer — so the
+    next test module could not register a handler."""
     pytest.importorskip("PyQt6")
     from PyQt6.QtWidgets import QApplication
     yield QApplication.instance() or QApplication([])
