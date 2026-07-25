@@ -405,10 +405,21 @@ Promote the §2.7 primitive to a real check: compare source vs target token mult
 
 Close the command-parity gaps identified in §11.4, in priority order:
 
-1. **Fix Ctrl+, to operate on tag *sequences***, matching memoQ's F9 (§11.1) — a run of adjacent tags is inserted as one action, and with a selection a pair of sequences brackets it. Supervertaler currently inserts one tag at a time.
-2. **Arrange tags** — a deterministic tag-reordering fix (memoQ Alt+F6). Supervertaler only has the AI-based AutoTagger; a deterministic version is cheaper, offline and predictable, and pairs naturally with the reordering QA check.
-3. **Edit inline tag** — edit a selected tag's attributes in place (memoQ Ctrl+F9). Natural once tags are atoms carrying their own data.
+1. ✅ **Ctrl+, now operates on tag *sequences***, matching memoQ's F9 (§11.1): a run of adjacent tags is inserted in one action. On the request's example this halves the keystrokes needed to tag a target (4 presses instead of 8).
+2. **Arrange tags** — a deterministic tag-reordering fix (memoQ Alt+F6). Supervertaler only has the AI-based AutoTagger; a deterministic version is cheaper, offline and predictable, and pairs naturally with the reordering QA check. *Not yet done.*
+3. **Edit inline tag** — edit a selected tag's attributes in place (memoQ Ctrl+F9). Natural once tags are atoms carrying their own data. *Not yet done.*
 4. *Insert all tags* (memoQ Alt+F8) is deliberately **not** planned: memoQ's own documentation says "it is not recommended to use this command."
+
+**Note on sharing the check with AutoTagger.** The plan said to reuse
+`validate_tag_transfer`'s comparison so AI- and human-placed tags are judged
+identically. On implementation that turned out to be wrong in one respect: the
+two need different order semantics. AutoTagger's validator must stay
+**order-tolerant**, because a translation can legitimately move a tag when word
+order changes (`the <b>red</b> car` → `de auto <b>rood</b>`); requiring source
+order would reject valid AI output. `verify_tags()` therefore reports ordering as
+its own issue kind (`ISSUE_REORDERED`), which the QA surface presents as the
+mildest finding, and `validate_tag_transfer` is left comparing multisets only.
+Missing/extra semantics are identical between the two.
 
 ### Phase 4 — Toggles
 

@@ -1257,6 +1257,40 @@ def read_grid_cell_text(editor) -> str:
     return editor.toPlainText()
 
 
+def insert_tag_sequence(cursor, sequence: str, compact_map: dict = None) -> str:
+    """Insert a run of adjacent inline tags at ``cursor``.
+
+    memoQ's *Copy Next Tag Sequence* inserts a whole run of touching tags in one
+    action, so ``sequence`` may hold several tags. Each is inserted as a
+    protected atom when protection is on, and as literal text otherwise.
+
+    In Partial view without protection the cell shows ``{N}`` placeholders, so
+    each tag is translated through ``compact_map`` first — otherwise raw markup
+    would appear in a cell that is displaying placeholders.
+
+    Returns what was actually inserted, for logging.
+    """
+    tags = [t.raw for t in _tag_protection.parse_tags(
+        sequence, families=_tag_protection.LEGACY_FAMILIES)] or [sequence]
+
+    inserted = []
+    for raw in tags:
+        text = raw
+        if compact_map:
+            for placeholder, full_tag in compact_map.items():
+                if full_tag == raw:
+                    text = placeholder
+                    break
+        # Protected atoms keep an inserted tag as indivisible as an imported
+        # one; the fall-through writes literal text, which still round-trips.
+        if not (_protected_tags_active()
+                and _tag_atoms.insert_tag_atom(
+                    cursor, text, detail=_tag_detail_level())):
+            cursor.insertText(text)
+        inserted.append(text)
+    return ''.join(inserted)
+
+
 def sync_tag_atom_color(color: str) -> None:
     """Point the atom renderer at the configured tag highlight colour."""
     try:
@@ -2921,29 +2955,17 @@ class GridTextEditor(QTextEdit):
         else:
             # No selection - insert next unused tag or pipe at cursor
 
-            # Try memoQ tags and HTML tags (find_next_unused_tag handles both)
+            # Try memoQ tags and HTML tags. Inserts the next *sequence* of
+            # adjacent tags, matching memoQ's Copy Next Tag Sequence (F9):
+            # "<cf …><b>" goes in with one press rather than needing two.
             if has_any_tags:
                 # In compact mode, expand target placeholders before comparison
                 compact_map = getattr(self, '_compact_tag_map', None)
                 compare_target = expand_compact_tags(current_target, compact_map) if compact_map else current_target
-                next_tag = find_next_unused_tag(source_text, compare_target)
+                next_tag = _tag_protection.next_tag_sequence(source_text, compare_target)
                 if next_tag:
-                    # In compact mode, insert the compact placeholder instead of full tag
-                    insert_text = next_tag
-                    if compact_map:
-                        for placeholder, full_tag in compact_map.items():
-                            if full_tag == next_tag:
-                                insert_text = placeholder
-                                break
-                    # Insert as a protected atom when tag protection is
-                    # on, so an inserted tag is as indivisible as an
-                    # imported one. Falls back to literal text (which
-                    # still round-trips correctly) if it will not parse.
-                    if not (_protected_tags_active()
-                            and _tag_atoms.insert_tag_atom(
-                                cursor, insert_text,
-                                detail=_tag_detail_level())):
-                        cursor.insertText(insert_text)
+                    insert_text = insert_tag_sequence(
+                        cursor, next_tag, compact_map)
                     if hasattr(main_window, 'log'):
                         main_window.log(f"🏷️ Inserted tag: {insert_text}")
                     return
@@ -6356,29 +6378,17 @@ class EditableGridTextEditor(QTextEdit):
         else:
             # No selection - insert next unused tag or pipe at cursor
 
-            # Try memoQ tags and HTML tags (find_next_unused_tag handles both)
+            # Try memoQ tags and HTML tags. Inserts the next *sequence* of
+            # adjacent tags, matching memoQ's Copy Next Tag Sequence (F9):
+            # "<cf …><b>" goes in with one press rather than needing two.
             if has_any_tags:
                 # In compact mode, expand target placeholders before comparison
                 compact_map = getattr(self, '_compact_tag_map', None)
                 compare_target = expand_compact_tags(current_target, compact_map) if compact_map else current_target
-                next_tag = find_next_unused_tag(source_text, compare_target)
+                next_tag = _tag_protection.next_tag_sequence(source_text, compare_target)
                 if next_tag:
-                    # In compact mode, insert the compact placeholder instead of full tag
-                    insert_text = next_tag
-                    if compact_map:
-                        for placeholder, full_tag in compact_map.items():
-                            if full_tag == next_tag:
-                                insert_text = placeholder
-                                break
-                    # Insert as a protected atom when tag protection is
-                    # on, so an inserted tag is as indivisible as an
-                    # imported one. Falls back to literal text (which
-                    # still round-trips correctly) if it will not parse.
-                    if not (_protected_tags_active()
-                            and _tag_atoms.insert_tag_atom(
-                                cursor, insert_text,
-                                detail=_tag_detail_level())):
-                        cursor.insertText(insert_text)
+                    insert_text = insert_tag_sequence(
+                        cursor, next_tag, compact_map)
                     if hasattr(main_window, 'log'):
                         main_window.log(f"🏷️ Inserted tag: {insert_text}")
                     return
@@ -12006,6 +12016,14 @@ class SupervertalerQt(QMainWindow):
             "for layout/encoding problems before translating. Reversible via Undo."))
         pseudo_translate_action.triggered.connect(self.pseudo_translate_bulk)
         bulk_menu.addAction(pseudo_translate_action)
+
+        verify_tags_action = QAction(self.tr("🔎 &Verify Tags"), self)
+        verify_tags_action.setToolTip(self.tr(
+            "Check every translated segment's inline tags against its source and "
+            "report tags that are missing, unexpected, unpaired or out of order. "
+            "Untranslated segments are skipped."))
+        verify_tags_action.triggered.connect(self.verify_project_tags)
+        bulk_menu.addAction(verify_tags_action)
 
         clean_tags_action = QAction(self.tr("🧹 Clean &Tags..."), self)
         clean_tags_action.setToolTip(self.tr("Remove formatting tags from selected segments"))
@@ -50324,6 +50342,76 @@ class SupervertalerQt(QMainWindow):
             self.update_window_title()
 
         self.log(f"📋 Copied source to target for {copied_count} segment(s)")
+
+    def verify_project_tags(self):
+        """Check every translated segment's inline tags against its source.
+
+        The tag-verification pass every major CAT tool offers (Trados' tag
+        verification, memoQ's tag QA) and Supervertaler lacked: it reports tags
+        the translator dropped, invented, left unpaired, or moved out of order.
+
+        Segments with an empty target are skipped — an untranslated segment is
+        missing all of its tags by definition, and reporting those would bury
+        the real problems.
+        """
+        if not self.current_project or not self.current_project.segments:
+            QMessageBox.warning(self, self.tr("No Project"),
+                                self.tr("Please load a project with segments first."))
+            return
+
+        segments = self.current_project.segments
+        findings = []      # (segment, issues)
+        checked = 0
+        for segment in segments:
+            if not (segment.target or '').strip():
+                continue
+            checked += 1
+            issues = _tag_protection.verify_tags(segment.source, segment.target)
+            if issues:
+                findings.append((segment, issues))
+
+        if not findings:
+            self.log(f"✅ Tag verification: {checked} translated segment(s) checked, no problems found")
+            QMessageBox.information(
+                self, self.tr("Tag Verification"),
+                self.tr("No tag problems found.\n\n"
+                        "{checked} translated segment(s) checked; "
+                        "{skipped} untranslated segment(s) skipped.").format(
+                    checked=checked, skipped=len(segments) - checked))
+            return
+
+        # Per-segment detail goes to the session log, which the user can scroll
+        # and copy; the dialog carries the summary.
+        counts = {}
+        self.log(f"⚠ Tag verification: {len(findings)} of {checked} translated segment(s) have tag problems")
+        for segment, issues in findings:
+            for issue in issues:
+                counts[issue.kind] = counts.get(issue.kind, 0) + 1
+            self.log(f"   • Segment {segment.id}: "
+                     f"{_tag_protection.describe_issues(issues)}")
+
+        order = (_tag_protection.ISSUE_MISSING, _tag_protection.ISSUE_EXTRA,
+                 _tag_protection.ISSUE_UNPAIRED, _tag_protection.ISSUE_REORDERED)
+        labels = {
+            _tag_protection.ISSUE_MISSING: self.tr("Missing tags"),
+            _tag_protection.ISSUE_EXTRA: self.tr("Unexpected tags"),
+            _tag_protection.ISSUE_UNPAIRED: self.tr("Unpaired tags"),
+            _tag_protection.ISSUE_REORDERED: self.tr("Tags in a different order"),
+        }
+        summary_lines = [f"{labels[k]}: {counts[k]}" for k in order if k in counts]
+
+        first_ids = ", ".join(str(seg.id) for seg, _ in findings[:10])
+        if len(findings) > 10:
+            first_ids += ", …"
+
+        QMessageBox.warning(
+            self, self.tr("Tag Verification"),
+            self.tr("{bad} of {checked} translated segment(s) have tag problems.\n\n"
+                    "{summary}\n\n"
+                    "Affected segments: {ids}\n\n"
+                    "Per-segment detail has been written to the session log.").format(
+                bad=len(findings), checked=checked,
+                summary="\n".join(summary_lines), ids=first_ids))
 
     def show_clean_tags_dialog(self):
         """Show dialog to clean formatting tags from project segments"""

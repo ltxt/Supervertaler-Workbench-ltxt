@@ -38,6 +38,7 @@ and the ``origin`` field records which of the two a token came from.
 from __future__ import annotations
 
 import re
+from collections import Counter
 from dataclasses import dataclass, field, replace
 from typing import Iterable, Sequence
 
@@ -50,6 +51,9 @@ __all__ = [
     "WORD_JOINER", "LEGACY_TAG_PATTERN",
     "TagToken", "parse_tags", "assign_numbers", "tag_sequences",
     "extract_raw_tags", "strip_tags",
+    "ISSUE_MISSING", "ISSUE_EXTRA", "ISSUE_REORDERED", "ISSUE_UNPAIRED",
+    "ISSUE_KINDS", "TagIssue", "verify_tags", "describe_issues", "tags_match",
+    "next_tag_sequence",
 ]
 
 
@@ -425,3 +429,171 @@ def strip_tags(text: str) -> str:
     historic ``Supervertaler.strip_all_tags``.
     """
     return _LEGACY_RE.sub("", text or "")
+
+
+# --------------------------------------------------------------------------
+# Verification
+# --------------------------------------------------------------------------
+
+#: A tag in the source that the target does not have (enough of).
+ISSUE_MISSING = "missing"
+#: A tag in the target that the source does not have.
+ISSUE_EXTRA = "extra"
+#: Same tags on both sides, but in a different order.
+ISSUE_REORDERED = "reordered"
+#: A closing tag with no opener, or an opener never closed — and the source is
+#: not unpaired in the same way, so it is not simply a pair split across
+#: segments.
+ISSUE_UNPAIRED = "unpaired"
+
+ISSUE_KINDS = (ISSUE_MISSING, ISSUE_EXTRA, ISSUE_REORDERED, ISSUE_UNPAIRED)
+
+
+@dataclass(frozen=True)
+class TagIssue:
+    """One problem found when comparing a target's tags against its source."""
+
+    kind: str              # one of ISSUE_KINDS
+    tag: str = ""          # the raw markup at fault, "" for order problems
+    count: int = 1         # how many occurrences are missing/extra
+    detail: str = ""       # human-readable explanation
+
+    def describe(self) -> str:
+        if self.detail:
+            return self.detail
+        if self.kind == ISSUE_MISSING:
+            return f"missing {self.tag}" + (f" ×{self.count}" if self.count > 1 else "")
+        if self.kind == ISSUE_EXTRA:
+            return f"unexpected {self.tag}" + (f" ×{self.count}" if self.count > 1 else "")
+        if self.kind == ISSUE_REORDERED:
+            return "tags are in a different order than the source"
+        return f"{self.kind} {self.tag}".strip()
+
+
+def _unpaired_tags(tokens: Sequence[TagToken]) -> list[str]:
+    """Raw markup of tags in ``tokens`` that have no partner, in order."""
+    stack: list[TagToken] = []
+    unpaired: list[str] = []
+    for tok in tokens:
+        if tok.kind == KIND_OPEN:
+            stack.append(tok)
+        elif tok.kind == KIND_CLOSE:
+            for i in range(len(stack) - 1, -1, -1):
+                if stack[i].pair_key == tok.pair_key:
+                    del stack[i]
+                    break
+            else:
+                unpaired.append(tok.raw)
+    unpaired.extend(tok.raw for tok in stack)
+    return unpaired
+
+
+def verify_tags(
+    source_text: str,
+    target_text: str,
+    families: Sequence[str] | None = LEGACY_FAMILIES,
+    strict: bool = True,
+) -> list[TagIssue]:
+    """Compare a target's inline tags against its source.
+
+    This is the check every major CAT tool offers and Supervertaler did not: it
+    reports tags the translator dropped, invented, left unpaired, or moved out of
+    order.
+
+    An **empty target is never reported**. An untranslated segment is missing all
+    of its tags by definition, and flagging that would bury the real problems.
+
+    Args:
+        source_text: The source segment.
+        target_text: The translation.
+        families: Tag families to consider. Defaults to
+            :data:`LEGACY_FAMILIES`, matching what the tag-insertion shortcut
+            and AutoTagger operate on.
+        strict: Passed through to :func:`parse_tags`.
+
+    Returns:
+        Issues, most structural first (missing, extra, unpaired, reordered).
+        Empty when the tags are correct.
+    """
+    if not (target_text or "").strip():
+        return []
+
+    source_tokens = parse_tags(source_text, families=families, strict=strict)
+    target_tokens = parse_tags(target_text, families=families, strict=strict)
+
+    source_raw = [t.raw for t in source_tokens]
+    target_raw = [t.raw for t in target_tokens]
+
+    if not source_raw and not target_raw:
+        return []
+
+    issues: list[TagIssue] = []
+
+    source_counts = Counter(source_raw)
+    target_counts = Counter(target_raw)
+
+    for tag, n in (source_counts - target_counts).items():
+        issues.append(TagIssue(ISSUE_MISSING, tag, n))
+    for tag, n in (target_counts - source_counts).items():
+        issues.append(TagIssue(ISSUE_EXTRA, tag, n))
+
+    # Only call the target unpaired if the source is not unpaired the same way:
+    # a formatting pair split across two segments is normal in a CAT tool, and
+    # both sides then legitimately carry a lone tag.
+    source_unpaired = Counter(_unpaired_tags(source_tokens))
+    for tag, n in (Counter(_unpaired_tags(target_tokens)) - source_unpaired).items():
+        issues.append(TagIssue(
+            ISSUE_UNPAIRED, tag, n,
+            detail=f"{tag} has no matching partner in the target"))
+
+    # Order only matters once the tag sets agree; otherwise the missing/extra
+    # reports already describe the problem and an order complaint is noise.
+    if source_counts == target_counts and source_raw != target_raw:
+        issues.append(TagIssue(
+            ISSUE_REORDERED,
+            detail="tags are in a different order than the source"))
+
+    return issues
+
+
+def describe_issues(issues: Sequence[TagIssue]) -> str:
+    """One-line summary of ``issues``, or "" when there are none."""
+    return "; ".join(issue.describe() for issue in issues)
+
+
+def tags_match(source_text: str, target_text: str,
+               families: Sequence[str] | None = LEGACY_FAMILIES) -> bool:
+    """True when the target carries exactly the source's tags, in order."""
+    return not verify_tags(source_text, target_text, families=families)
+
+
+# --------------------------------------------------------------------------
+# Insertion helpers
+# --------------------------------------------------------------------------
+
+def next_tag_sequence(
+    source_text: str,
+    target_text: str,
+    families: Sequence[str] | None = LEGACY_FAMILIES,
+) -> str:
+    """The next run of adjacent source tags not yet present in the target.
+
+    memoQ's *Copy Next Tag Sequence* (F9) works on sequences rather than single
+    tags: "A tag sequence consists of tags immediately following each other,
+    regardless of the type. Always inserts the first tag sequence that has not
+    been inserted yet." So ``<cf …><b>`` is inserted in one action, not two.
+
+    Returns the concatenated markup of that run, or "" when the target already
+    holds every source tag.
+    """
+    source_tokens = parse_tags(source_text, families=families)
+    if not source_tokens:
+        return ""
+
+    remaining = Counter(t.raw for t in parse_tags(target_text, families=families))
+    for run in tag_sequences(source_tokens):
+        needed = Counter(tok.raw for tok in run)
+        if any(remaining[tag] < n for tag, n in needed.items()):
+            return "".join(tok.raw for tok in run)
+        remaining -= needed
+    return ""
