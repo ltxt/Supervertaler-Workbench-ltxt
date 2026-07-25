@@ -175,3 +175,15 @@ def test_intermediate_levels_are_reachable_only_from_settings():
     assert "DETAIL_LONG" in mapping_block
     assert "DETAIL_MEDIUM" not in mapping_block
     assert "DETAIL_FILTERED" not in mapping_block
+
+
+def test_grid_reload_does_not_override_the_detail_level():
+    """Found by screenshotting the real grid: load_segments_to_grid() ends by
+    calling _refresh_grid_display_mode(), which re-derived the detail level from
+    the display mode — so a Medium or Filtered choice from Settings was silently
+    replaced by Short/Long on every grid load. The refresh must use the current
+    level instead."""
+    block = SOURCE[SOURCE.index("if _protected_tags_active() and mode in ('partial', 'full'):"):]
+    block = block[:1200]
+    assert "detail = _tag_detail_level()" in block
+    assert "detail = self.TAG_VIEW_MODE_DETAIL.get(mode" not in block

@@ -60957,7 +60957,12 @@ class SupervertalerQt(QMainWindow):
         # every cell, and — because no text is rewritten — it cannot lose an
         # edit or renumber a tag. WYSIWYG still needs the full rebuild below.
         if _protected_tags_active() and mode in ('partial', 'full'):
-            detail = self.TAG_VIEW_MODE_DETAIL.get(mode, _tag_atoms.DETAIL_SHORT)
+            # Use the *current* detail level rather than re-deriving it from the
+            # mode. Clicking a toolbar position already set the level (Partial ->
+            # Short, Full -> Long) via _apply_tag_view_mode_state, so the level
+            # is authoritative here — and re-deriving it would discard a
+            # Medium/Filtered choice from Settings on every grid load.
+            detail = _tag_detail_level()
             previous = self._suppress_target_change_handlers
             self._suppress_target_change_handlers = True
             try:
