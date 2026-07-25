@@ -141,6 +141,11 @@ windows = []
 core = []
 all = []
 
+# Not a feature bucket like the above: this is the development dependency for
+# running `pytest tests/`. PyQt6 is already a core dependency, and the suite
+# needs nothing else, so `pip install -e ".[test]"` is enough to run every test.
+test = ["pytest>=7.0"]
+
 [project.urls]
 Homepage = "https://supervertaler.com"
 Repository = "https://github.com/Supervertaler/Supervertaler-Workbench.git"
@@ -159,6 +164,14 @@ supervertaler = "Supervertaler:main"
 # stdout/stderr (all the [LOG] lines) are usable. Invoke via
 # `supervertaler-debug` when you need to see crashes or diagnostic output.
 supervertaler-debug = "Supervertaler:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Both styles are present in the suite: some modules use pytest fixtures and
+# parametrisation, others are plain assert-based functions. Default discovery
+# handles both, so only the path needs pinning — that way `pytest` with no
+# arguments does the right thing from the repository root.
+addopts = "-q"
 
 [tool.setuptools]
 py-modules = ["Supervertaler"]
