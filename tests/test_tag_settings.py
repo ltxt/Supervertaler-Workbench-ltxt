@@ -2,12 +2,11 @@
 
 Phase 4 of docs/development/TAG_PROTECTION_AND_DISPLAY_MODES_PLAN.md.
 
-Two settings are added: `tag_protection_enabled` (whether each inline tag
-behaves as one unbreakable unit) and `tag_detail_level` (how much of each tag is
-shown, memoQ's four levels). The toolbar reaches only Short and Long; the two
-intermediate levels are Settings-only, which creates the one interaction worth
-testing carefully — restoring settings must not overwrite a Medium/Filtered
-choice with Short/Long.
+Two settings: `tag_protection_enabled` (whether each inline tag behaves as one
+unbreakable unit) and `tag_detail_level` (how much of a tag the "Partial tags"
+view shows). Full tags always means every attribute, so the configured level
+applies only to Partial — which is what keeps a toolbar click from overwriting
+the user's Settings choice.
 """
 
 import os
@@ -28,15 +27,18 @@ SOURCE = open(os.path.join(REPO, "Supervertaler.py"), encoding="utf-8").read()
 # Defaults
 # ---------------------------------------------------------------------------
 
-def test_protection_defaults_to_off():
-    """Until the pills have been reviewed in the running application, the
-    feature must not turn itself on for existing users."""
-    assert re.search(r"^\s+tag_protection_enabled = False\s*$", SOURCE, re.MULTILINE)
-    assert "general_settings.get('tag_protection_enabled', False)" in SOURCE
+def test_protection_defaults_to_on():
+    """Protection is the default. Turning the setting off restores plain-text
+    tag editing for anyone who prefers it."""
+    assert re.search(r"^\s+tag_protection_enabled = True\s*$", SOURCE, re.MULTILINE)
+    assert "general_settings.get('tag_protection_enabled', True)" in SOURCE
 
 
-def test_detail_defaults_to_short():
-    assert re.search(r"^\s+tag_detail_level = _tag_atoms\.DETAIL_SHORT\s*$",
+def test_partial_detail_defaults_to_medium():
+    """memoQ defaults to its Filtered level. Supervertaler has no per-format
+    attribute source, so Medium (tag name, no attributes) is the default — a
+    bare number says nothing about what the tag does."""
+    assert re.search(r"^\s+tag_detail_level = _tag_atoms\.DETAIL_MEDIUM\s*$",
                      SOURCE, re.MULTILINE)
 
 
@@ -56,9 +58,16 @@ def test_detail_combo_is_created_and_saved():
     assert "EditableGridTextEditor.tag_detail_level = detail" in SOURCE
 
 
-def test_detail_combo_offers_all_four_memoq_levels():
-    for level in ta.DETAIL_LEVELS:
-        assert f"_tag_atoms.DETAIL_{level.upper()}" in SOURCE, level
+def test_detail_combo_offers_only_the_levels_partial_view_can_render():
+    """Long is reached with the Full tags button, and Filtered needs a
+    per-format definition of which attributes matter that Supervertaler does
+    not have — a hardcoded allowlist was rejected as a stand-in."""
+    combo = SOURCE[SOURCE.index("tag_detail_combo = QComboBox()"):]
+    combo = combo[:combo.index("tag_detail_combo.setToolTip")]
+    assert "_tag_atoms.DETAIL_SHORT" in combo
+    assert "_tag_atoms.DETAIL_MEDIUM" in combo
+    assert "_tag_atoms.DETAIL_FILTERED" not in combo
+    assert "_tag_atoms.DETAIL_LONG" not in combo
 
 
 def test_saved_detail_value_is_validated_before_use():
@@ -75,7 +84,7 @@ def test_widgets_are_threaded_through_both_save_signatures():
 
 
 def test_both_settings_are_restored_at_startup():
-    assert "general_settings.get('tag_protection_enabled', False)" in SOURCE
+    assert "general_settings.get('tag_protection_enabled', True)" in SOURCE
     assert "general_settings.get('tag_detail_level')" in SOURCE
 
 
@@ -108,19 +117,23 @@ def test_refresh_only_runs_when_a_value_actually_changed():
 # Toolbar (2 positions) vs Settings (4 levels)
 # ---------------------------------------------------------------------------
 
-def test_restore_does_not_overwrite_an_intermediate_detail_level():
-    """The toolbar's Partial/Full map onto Short/Long. If settings restore also
-    forced that mapping, choosing Medium or Filtered in Settings would be
-    silently reset to Short on every launch."""
-    assert "self._apply_tag_view_mode_state(saved_tag_mode, set_detail=False)" in SOURCE
+def test_a_toolbar_click_cannot_overwrite_the_configured_level():
+    """Earlier revisions mapped Partial onto Short, so a toolbar click — or a
+    grid reload — discarded a Medium choice. The level the user configured is
+    now separate from the level currently being rendered: only the derived
+    value moves."""
+    assert "tag_effective_detail = \\" in SOURCE
+    assert "self._effective_tag_detail(mode)" in SOURCE
+    # The old flag-based workaround is gone.
+    assert "set_detail" not in SOURCE
 
 
-def test_clicking_a_toolbar_position_does_set_the_detail_level():
-    """The other half: an explicit toolbar click is a deliberate choice and
-    should move the detail level to Short or Long."""
-    assert "def _apply_tag_view_mode_state(self, mode: str," in SOURCE
-    assert "set_detail: bool = True" in SOURCE
-    assert "if set_detail and mode in self.TAG_VIEW_MODE_DETAIL:" in SOURCE
+def test_full_view_always_renders_every_attribute():
+    block = SOURCE[SOURCE.index("def _effective_tag_detail"):]
+    block = block[:400]
+    assert "if mode == 'full':" in block
+    assert "DETAIL_LONG" in block
+    assert "tag_detail_level" in block   # anything else uses the configured level
 
 
 # ---------------------------------------------------------------------------
@@ -155,7 +168,9 @@ def test_no_panel_editor_bypasses_the_seam():
 @pytest.mark.parametrize("detail,expected", [
     (ta.DETAIL_SHORT, "1"),
     (ta.DETAIL_MEDIUM, "cf"),
-    (ta.DETAIL_FILTERED, 'cf color="#227acb"'),
+    # FILTERED is defined for parity with memoQ but has no per-format attribute
+    # source yet, so it renders as MEDIUM rather than guessing.
+    (ta.DETAIL_FILTERED, "cf"),
     (ta.DETAIL_LONG, '<cf color="#227acb" font="tahoma">'),
 ])
 def test_each_settings_level_renders_differently(detail, expected):
@@ -166,14 +181,13 @@ def test_each_settings_level_renders_differently(detail, expected):
     assert ta.atom_label(token, detail) == expected
 
 
-def test_intermediate_levels_are_reachable_only_from_settings():
-    """The toolbar maps to Short/Long; Medium and Filtered are Settings-only.
-    If that ever changes, this test should be updated deliberately."""
+def test_only_full_has_a_fixed_level():
+    """Partial has no entry on purpose: it renders at the configured level."""
     mapping_block = SOURCE[SOURCE.index("TAG_VIEW_MODE_DETAIL = {"):]
     mapping_block = mapping_block[:mapping_block.index("}")]
-    assert "DETAIL_SHORT" in mapping_block
+    assert "'full'" in mapping_block
     assert "DETAIL_LONG" in mapping_block
-    assert "DETAIL_MEDIUM" not in mapping_block
+    assert "'partial'" not in mapping_block
     assert "DETAIL_FILTERED" not in mapping_block
 
 
@@ -187,3 +201,49 @@ def test_grid_reload_does_not_override_the_detail_level():
     block = block[:1200]
     assert "detail = _tag_detail_level()" in block
     assert "detail = self.TAG_VIEW_MODE_DETAIL.get(mode" not in block
+
+
+# ---------------------------------------------------------------------------
+# The two renderings must not both run
+# ---------------------------------------------------------------------------
+
+def test_placeholder_substitution_is_skipped_when_protected():
+    """Found by reading atom labels out of the running grid.
+
+    Partial view has two renderings: compact_tags() placeholders when protection
+    is off, and atom labels when it is on. Both were running, so atoms were built
+    out of {1} placeholders instead of the real tags. Consequences: the Medium
+    level could only ever show numbers, the hover tooltip said "{1}" instead of
+    the real markup, and the tag identity carried by each atom was the
+    placeholder. Every compact_tags() call on a display path must be gated.
+    """
+    for marker in ("if not _protected_tags_active() and self._canonical_tag_view_mode(",
+                   "if mode == 'partial' and not _protected_tags_active():"):
+        assert marker in SOURCE, marker
+    # No display-path call to compact_tags() may sit outside such a gate.
+    # Matches real call sites only — prose mentions in docstrings are not calls.
+    call = re.compile(r"^\s*(?:[\w.]+\s*=\s*)?compact_tags\(")
+    lines = SOURCE.splitlines()
+    checked = 0
+    for line_no, line in enumerate(lines, 1):
+        if not call.match(line):
+            continue
+        checked += 1
+        window = "\n".join(lines[max(0, line_no - 14):line_no])
+        # Either an explicit protection gate, or a guard on the placeholder map,
+        # which is only ever populated on the unprotected path.
+        gated = ("_protected_tags_active()" in window
+                 or "_compact_tag_map is not None" in window
+                 or "if compact_map:" in window)
+        assert gated, (
+            f"compact_tags() at line {line_no} is not gated on protection")
+    assert checked >= 5, f"expected several call sites, found {checked}"
+
+
+def test_word_joiner_is_not_inserted_into_protected_tags():
+    """protect_tags_from_linebreak() exists so word-wrap cannot split "</i>"
+    after the slash. A protected tag is a single object and cannot split, and the
+    joiner would otherwise be baked into the atom's stored markup and tooltip."""
+    idx = SOURCE.index("text = protect_tags_from_linebreak(text)")
+    preceding = SOURCE[:idx].splitlines()[-4:]
+    assert any("_protected_tags_active()" in line for line in preceding)

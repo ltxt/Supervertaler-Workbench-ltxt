@@ -78,10 +78,12 @@ DETAIL_LONG = "long"          # the complete markup → "Full Tag Text"
 
 DETAIL_LEVELS = (DETAIL_SHORT, DETAIL_MEDIUM, DETAIL_FILTERED, DETAIL_LONG)
 
-#: Attributes worth showing at DETAIL_FILTERED. memoQ derives this from the
-#: document-type/filter configuration; Supervertaler has no such concept yet, so
-#: this is a pragmatic first cut (see the plan's open question 2).
-_FILTERED_ATTRS = ("id", "href", "src", "color", "name", "style")
+#: DETAIL_FILTERED is defined for parity with memoQ but is NOT selectable yet.
+#: memoQ derives "which attributes matter" from the document-type / filter
+#: configuration. Supervertaler has no equivalent, and a hardcoded allowlist was
+#: rejected as a stand-in, so this level renders as MEDIUM until a real
+#: per-format attribute source exists. Keeping the constant means the setting
+#: value stays valid if an older settings file carries it.
 
 
 def atom_label(token: TagToken, detail: str) -> str:
@@ -91,7 +93,8 @@ def atom_label(token: TagToken, detail: str) -> str:
     if detail == DETAIL_MEDIUM:
         return token.medium_label()
     if detail == DETAIL_FILTERED:
-        return _filtered_label(token)
+        # No per-format attribute source yet — see the note above.
+        return token.medium_label()
     # DETAIL_SHORT — memoQ: "a tag, its number, and if it is an opening, a
     # closing, or an empty tag". The role is carried by a slash rather than an
     # icon, so the distinction survives in plain text and in tests.
@@ -100,22 +103,6 @@ def atom_label(token: TagToken, detail: str) -> str:
     if token.kind == KIND_EMPTY:
         return f"{token.number}/"
     return f"{token.number}"
-
-
-def _filtered_label(token: TagToken) -> str:
-    kept = []
-    for attr in _FILTERED_ATTRS:
-        for quote in ('"', "'"):
-            needle = f"{attr}={quote}"
-            idx = token.attrs.find(needle)
-            if idx == -1:
-                continue
-            end = token.attrs.find(quote, idx + len(needle))
-            if end != -1:
-                kept.append(f'{attr}="{token.attrs[idx + len(needle):end]}"')
-            break
-    base = token.medium_label()
-    return f"{base} {' '.join(kept)}" if kept else base
 
 
 class TagAtomRenderer(QObject, QTextObjectInterface):

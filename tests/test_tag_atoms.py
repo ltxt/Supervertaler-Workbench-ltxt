@@ -205,10 +205,13 @@ def test_long_labels_are_the_complete_markup():
         '<cf color="#227acb">', "</cf>"]
 
 
-def test_filtered_labels_keep_selected_attributes_only():
-    labels = _labels('<cf color="#227acb" font="tahoma">x</cf>', DETAIL_FILTERED)
-    assert labels[0] == 'cf color="#227acb"'      # font is not in the allowlist
-    assert labels[1] == "/cf"
+def test_filtered_falls_back_to_medium_for_now():
+    """FILTERED is kept for parity with memoQ but is not selectable: memoQ picks
+    the attributes from its document-type/filter configuration, Supervertaler has
+    no equivalent, and a hardcoded allowlist was rejected as a stand-in. Until a
+    real per-format source exists it renders as MEDIUM."""
+    assert (_labels('<cf color="#227acb" font="tahoma">x</cf>', DETAIL_FILTERED)
+            == _labels('<cf color="#227acb" font="tahoma">x</cf>', DETAIL_MEDIUM))
 
 
 def test_pair_shares_its_number_in_short_view():

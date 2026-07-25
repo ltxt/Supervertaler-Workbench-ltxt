@@ -1224,9 +1224,14 @@ def _protected_tags_active() -> bool:
 
 
 def _tag_detail_level() -> str:
-    """Current tag detail level (Partial ⇄ Full and the two in between)."""
-    return getattr(EditableGridTextEditor, 'tag_detail_level',
-                   _tag_atoms.DETAIL_SHORT)
+    """The detail level atoms should render with right now.
+
+    Full Tag Text always means LONG; Partial Tag Text means whatever level the
+    user configured (Short or Medium). Kept as a derived value so switching the
+    toolbar never overwrites the configured Partial level.
+    """
+    return getattr(EditableGridTextEditor, 'tag_effective_detail',
+                   _tag_atoms.DETAIL_MEDIUM)
 
 
 def apply_grid_cell_text(editor, text: str) -> None:
@@ -5012,11 +5017,21 @@ class EditableGridTextEditor(QTextEdit):
     # Class variable for tag highlight color (shared across all instances)
     tag_highlight_color = '#7f0001'  # Default memoQ dark red
 
-    # Protected (atomic) tags. Off by default; Phase 4 adds the Settings
-    # toggle. Both editors read these off this class so there is a single
-    # switch — ReadOnlyGridTextEditor deliberately does not shadow them.
-    tag_protection_enabled = False
-    tag_detail_level = _tag_atoms.DETAIL_SHORT
+    # Protected (atomic) tags. Both editors read these off this class so there
+    # is a single switch — ReadOnlyGridTextEditor deliberately does not shadow
+    # them.
+    #
+    #   tag_protection_enabled  — master switch (Settings > View)
+    #   tag_detail_level        — how much of a tag Partial view shows. memoQ
+    #                             defaults to its "Filtered" level; Supervertaler
+    #                             has no per-format attribute source, so MEDIUM
+    #                             (type + name) is the default instead.
+    #   tag_effective_detail    — what atoms actually render right now: LONG in
+    #                             Full Tag Text, otherwise tag_detail_level.
+    #                             Derived; never set from Settings directly.
+    tag_protection_enabled = True
+    tag_detail_level = _tag_atoms.DETAIL_MEDIUM
+    tag_effective_detail = _tag_atoms.DETAIL_MEDIUM
 
     # Class variables for focus border customization
     focus_border_color = '#f1b79a'  # Default peach/salmon
@@ -26930,7 +26945,7 @@ class SupervertalerQt(QMainWindow):
         tag_protection_check = CheckmarkCheckBox(
             self.tr("Protect inline tags (treat each tag as a single, unbreakable unit)"))
         tag_protection_check.setChecked(
-            font_settings.get('tag_protection_enabled', False))
+            font_settings.get('tag_protection_enabled', True))
         tag_protection_check.setToolTip(
             "When enabled, each inline tag is drawn as one indivisible block, the way\n"
             "Trados Studio and memoQ show them:\n"
@@ -26947,26 +26962,28 @@ class SupervertalerQt(QMainWindow):
 
         # Tag detail level (how much of each tag is shown)
         tag_detail_layout = QHBoxLayout()
-        tag_detail_layout.addWidget(QLabel(self.tr("Tag detail:")))
+        tag_detail_layout.addWidget(QLabel(self.tr("Partial tag detail:")))
         tag_detail_combo = QComboBox()
         # (label, stored value) — mirrors memoQ's four inline-tag detail levels.
+        # Only the two levels Partial view can render. Long is reached with the
+        # Full tags button, and memoQ's Filtered level needs a per-format
+        # definition of which attributes matter that Supervertaler does not have.
         for _label, _value in (
-            (self.tr("Short — number only (Partial Tag Text)"), _tag_atoms.DETAIL_SHORT),
-            (self.tr("Medium — tag name, no attributes"), _tag_atoms.DETAIL_MEDIUM),
-            (self.tr("Filtered — tag name plus key attributes"), _tag_atoms.DETAIL_FILTERED),
-            (self.tr("Long — every attribute (Full Tag Text)"), _tag_atoms.DETAIL_LONG),
+            (self.tr("Short — number only, e.g. 1 … /1"), _tag_atoms.DETAIL_SHORT),
+            (self.tr("Medium — tag name, no attributes, e.g. cf … /cf"),
+             _tag_atoms.DETAIL_MEDIUM),
         ):
             tag_detail_combo.addItem(_label, _value)
-        _saved_detail = font_settings.get('tag_detail_level', _tag_atoms.DETAIL_SHORT)
+        _saved_detail = font_settings.get('tag_detail_level', _tag_atoms.DETAIL_MEDIUM)
         _detail_idx = tag_detail_combo.findData(_saved_detail)
         tag_detail_combo.setCurrentIndex(_detail_idx if _detail_idx >= 0 else 0)
         tag_detail_combo.setToolTip(
-            "How much of each protected tag is shown in the grid.\n"
-            "Short keeps long segments readable — hover a tag to see its full details.\n"
-            "Long shows everything, which helps when fixing tag-pair problems but can\n"
-            "look crowded.\n"
-            "The Partial/Full buttons under the grid switch between Short and Long;\n"
-            "the two middle levels are only available here.\n"
+            "How much of each tag the \"Partial tags\" view shows.\n"
+            "Short shows just the tag's number (1 … /1) — the most compact.\n"
+            "Medium shows the tag name without attributes (cf … /cf) — the default,\n"
+            "since a bare number says nothing about what the tag does.\n"
+            "Either way, hover a tag to see its full details.\n"
+            "The \"Full tags\" button always shows every attribute.\n"
             "Only applies when tag protection is on."
         )
         tag_detail_layout.addWidget(tag_detail_combo)
@@ -29889,6 +29906,10 @@ class SupervertalerQt(QMainWindow):
             if detail in _tag_atoms.DETAIL_LEVELS:
                 general_settings['tag_detail_level'] = detail
                 EditableGridTextEditor.tag_detail_level = detail
+                EditableGridTextEditor.tag_effective_detail = \
+                    self._effective_tag_detail(
+                        self._canonical_tag_view_mode(
+                            getattr(self, 'tag_view_mode', 'full')))
 
         # Add status column position setting if provided
         if status_before_target_check is not None:
@@ -44051,10 +44072,13 @@ class SupervertalerQt(QMainWindow):
         if self.hide_outer_wrapping_tags:
             stripped, stripped_source_tag = strip_outer_wrapping_tags(segment.source)
             source_for_display = stripped
-        # Apply compact tag shortening if in compact mode
-        # Build tag_map from source so target uses same numbering
+        # Placeholder substitution is the UNPROTECTED rendering of Partial view:
+        # with protection on, the atom layer produces the short view from the real
+        # tags. Running both would build atoms out of {1} placeholders, losing the
+        # real tag identity, making the Medium level show numbers instead of tag
+        # names, and putting "{1}" in the hover tooltip.
         _compact_tag_map = None
-        if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
+        if not _protected_tags_active() and self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
             _compact_tag_map = {}
             source_for_display = compact_tags(source_for_display, _compact_tag_map)
         # Apply invisible character replacements for display only
@@ -48578,16 +48602,18 @@ class SupervertalerQt(QMainWindow):
             # display mode below, which overrides the detail level when the mode
             # is Partial or Full (the toolbar's two positions).
             EditableGridTextEditor.tag_protection_enabled = bool(
-                general_settings.get('tag_protection_enabled', False))
+                general_settings.get('tag_protection_enabled', True))
             saved_detail = general_settings.get('tag_detail_level')
             if saved_detail in _tag_atoms.DETAIL_LEVELS:
                 EditableGridTextEditor.tag_detail_level = saved_detail
+            # Keep the derived value in step; _apply_tag_view_mode_state below
+            # refines it once the display mode is known.
+            EditableGridTextEditor.tag_effective_detail = \
+                EditableGridTextEditor.tag_detail_level
 
             saved_tag_mode = general_settings.get('tag_display_mode')
             if saved_tag_mode:
-                # set_detail=False: the saved tag_detail_level above wins, so a
-                # Medium/Filtered choice is not reset to Short/Long each launch.
-                self._apply_tag_view_mode_state(saved_tag_mode, set_detail=False)
+                self._apply_tag_view_mode_state(saved_tag_mode)
                 
             # Load and apply Match Panel font settings
             match_panel_size = general_settings.get('match_panel_font_size', 10)
@@ -55750,7 +55776,7 @@ class SupervertalerQt(QMainWindow):
                     if self.hide_outer_wrapping_tags:
                         stripped, _ = strip_outer_wrapping_tags(source_for_display)
                         source_for_display = stripped
-                    if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
+                    if not _protected_tags_active() and self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
                         source_for_display = compact_tags(source_for_display)
                     new_source_text = self.apply_invisible_replacements(source_for_display)
                     source_widget.blockSignals(True)
@@ -55767,7 +55793,7 @@ class SupervertalerQt(QMainWindow):
                         stripped, _ = strip_outer_wrapping_tags(target_for_display)
                         target_for_display = stripped
                     # Apply compact tag shortening (display only – reversed before saving)
-                    if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
+                    if not _protected_tags_active() and self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
                         # Re-use the tag_map built from source so numbering stays consistent
                         tag_map = {}
                         src_display = segment.source
@@ -55825,7 +55851,11 @@ class SupervertalerQt(QMainWindow):
         # invisible-marker settings are active. The WORD JOINER it inserts is
         # stripped again by reverse_invisible_replacements, so saved text is
         # unaffected. Applies to both source and target display cells.
-        text = protect_tags_from_linebreak(text)
+        # Only needed while tags are literal characters: word-wrap can split
+        # "</i>" after the slash. A protected tag is one object and cannot split,
+        # and a joiner would be baked into the atom's markup and its tooltip.
+        if not _protected_tags_active():
+            text = protect_tags_from_linebreak(text)
 
         if not hasattr(self, 'invisible_display_settings'):
             return text
@@ -60754,13 +60784,21 @@ class SupervertalerQt(QMainWindow):
     # caller keep working.
     TAG_VIEW_MODE_ALIASES = {'compact': 'partial', 'tags': 'full'}
 
-    #: Which atom detail level each display mode renders with when tag
-    #: protection is on. Phase 4 exposes the two intermediate levels
-    #: (medium/filtered) in Settings; the toolbar drives only these two.
+    #: Full Tag Text always renders every attribute. Partial Tag Text renders
+    #: at whatever level the user configured in Settings (Short or Medium), so
+    #: the toolbar cannot silently override that choice — which is what made
+    #: memoQ's Medium level unreachable in an earlier revision.
     TAG_VIEW_MODE_DETAIL = {
-        'partial': _tag_atoms.DETAIL_SHORT,
         'full': _tag_atoms.DETAIL_LONG,
     }
+
+    @staticmethod
+    def _effective_tag_detail(mode: str) -> str:
+        """The level atoms render with for ``mode``."""
+        if mode == 'full':
+            return _tag_atoms.DETAIL_LONG
+        return getattr(EditableGridTextEditor, 'tag_detail_level',
+                       _tag_atoms.DETAIL_MEDIUM)
 
     @classmethod
     def _canonical_tag_view_mode(cls, mode: str) -> str:
@@ -60805,31 +60843,25 @@ class SupervertalerQt(QMainWindow):
         if hasattr(self, 'table') and self.current_project:
             self._refresh_grid_display_mode()
 
-    def _apply_tag_view_mode_state(self, mode: str,
-                                   set_detail: bool = True) -> str:
+    def _apply_tag_view_mode_state(self, mode: str) -> str:
         """Set the in-memory tag display state and sync the toolbar buttons.
 
         Shared by the user-facing setter and by settings restore at startup, so
         the two can never drift. Deliberately does NOT touch the grid: callers
         decide whether a re-render is needed. Returns the canonical mode.
 
-        Args:
-            set_detail: Whether to force the atom detail level from the mode.
-                True when the user picks a toolbar position — Partial means
-                Short, Full means Long. False when restoring saved settings,
-                where the stored detail level is authoritative: it may be one of
-                the two intermediate levels (Medium/Filtered) that only Settings
-                can reach, and forcing Short/Long here would silently discard
-                that choice on every launch.
+        Only the *derived* detail level moves here. The configured Partial level
+        is a Settings choice and is never overwritten by a toolbar click.
         """
         mode = self._canonical_tag_view_mode(mode)
         self.tag_view_mode = mode
         self.show_tags = mode in ('partial', 'full')
 
         # Drive the atom detail level so protected cells re-label themselves.
-        if set_detail and mode in self.TAG_VIEW_MODE_DETAIL:
-            EditableGridTextEditor.tag_detail_level = \
-                self.TAG_VIEW_MODE_DETAIL[mode]
+        # Only the derived value moves: the configured Partial level is the
+        # user's Settings choice and must survive a toolbar click.
+        EditableGridTextEditor.tag_effective_detail = \
+            self._effective_tag_detail(mode)
 
         # Sync the segmented control if it has been built yet. Signals are
         # blocked so setChecked() cannot re-enter _set_tag_view_mode.
@@ -61008,8 +61040,10 @@ class SupervertalerQt(QMainWindow):
 
             # Partial view without protection: build the placeholder map from
             # the source and apply it to both columns. The map rides on the
-            # target widget so edits can be reversed on save.
-            if mode == 'partial':
+            # target widget so edits can be reversed on save. Skipped entirely
+            # when protection is on — the atom layer renders the short view from
+            # the real tags, and the relabel fast path above returns first.
+            if mode == 'partial' and not _protected_tags_active():
                 tag_map = {}
                 source_for_display = compact_tags(source_for_display, tag_map)
                 target_for_display = compact_tags(target_for_display, tag_map)

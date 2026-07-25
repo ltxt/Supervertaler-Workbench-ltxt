@@ -1,6 +1,6 @@
 # Tag Protection & Tag Display Modes — Plan and Review
 
-**Status:** Plan under review — not yet implemented
+**Status:** Phases 0–4 implemented; protection is on by default. Phase 5 (performance) not started.
 **Scope:** Protected inline tags in the translation grid, a Partial/Full tag display switch, tag QA verification, and a bounded performance trade-off pass.
 
 ---
@@ -25,7 +25,9 @@ Reference behaviour: Trados Studio, memoQ, Matecat, Smartcat.
 > - **memoQ 12.4 — Workspace › Ribbons › Edit** (`/current/en/Workspace/ribbons-edit.html`) → §11.1, §11.2
 > - **memoQ 12.4 — memoQweb › webtrans › Toolbar** (`/current/en/memoQWeb-help/mqw-toolbar.html`) → §11.3
 >
-> Still unverified: the memoQ **tag strictness** page (403, no printout supplied) and the Matecat tag page (403). The strictness levels remain an open question in §10 and are not designed against. Trados Studio statements are general knowledge and labelled as such.
+> - **memoQ 12.4 — Concepts › Tag strictness and match rates** (`/current/en/Concepts/concepts-tag-strictness-and-match-rates.html`) → §11.5
+>
+> Still unverified: the Matecat tag page (403). Trados Studio statements are general knowledge and labelled as such.
 
 ---
 
@@ -430,9 +432,9 @@ Missing/extra semantics are identical between the two.
 - ✅ **Blocker cleared:** the under-grid editor panel is now routed through the seam. `on_tab_target_change` wrote `toPlainText()` straight to `segment.target`, so it would have stored `U+FFFC` the moment that panel showed atoms. Six sites converted across four call sites; a test fails if any regresses.
 - Add a "tag strictness"-style leniency control **only after** §10's open question is resolved; do not invent levels.
 
-**Default is OFF, deliberately.** The plan called for defaulting protection on. It ships off instead, because the one thing that cannot be verified in a headless environment is how the pills *look and feel* in the running grid — row heights, baseline alignment against real fonts, legibility of `SHORT` labels at the user's grid font size, caret behaviour with themes applied. Flipping the default is a one-line change (`tag_protection_enabled = False` on `EditableGridTextEditor`, plus the settings default) once that review has happened. Everything else in the feature is complete and tested, so the flip is the only remaining step.
+**Default is ON.** It briefly shipped off pending a visual review, which has now happened — the application can be constructed headlessly and its grid screenshotted (§6.7), and the pills were confirmed against real segments. Turning the setting off restores plain-text tag editing.
 
-**Interaction worth knowing about:** the toolbar has two positions (Partial/Full) but Settings offers four detail levels. An explicit toolbar click sets the level to Short or Long; settings *restore* passes `set_detail=False` so a Medium or Filtered choice is not silently reset to Short on every launch.
+**Interaction worth knowing about:** the toolbar has two positions but the detail level is a separate setting. Full Tag Text is fixed at `LONG`; Partial Tag Text renders at whatever level the user configured (`SHORT` or `MEDIUM`, default `MEDIUM`). Only a *derived* value moves when the toolbar is clicked, so the configured level can never be overwritten — an earlier revision mapped Partial onto `SHORT` and silently discarded a `MEDIUM` choice on every grid load.
 
 ### Phase 5 — Performance (bounded, no rewrite)
 
@@ -529,13 +531,18 @@ Phase 5  bounded performance pass                → requirement 6
 - ~~Auto-insert source tags into an empty target?~~ → memoQ's answer is an explicit toggle, **default off** ("Tag Insertion", F6), plus on-demand commands. Follow that: no silent auto-copy.
 - ~~Two display levels or more?~~ → four in memoQ desktop, one toggle in memoQweb; plan implements four, surfaces two (§5.1).
 
+**Decided:**
+
+- ~~memoQ tag strictness levels~~ → documented in §11.5. Crucially they turn out to govern **TM match rates**, not editing protection, so the "leniency control" this plan wanted in Phase 4 was mis-scoped; it belongs to TM scoring. See §11.5.
+- ~~`FILTERED` detail level~~ → **a hardcoded attribute allowlist is not acceptable.** The level is kept for parity and for settings-file compatibility but is not selectable, and renders as `MEDIUM` until a real per-format attribute source exists.
+- ~~`MEDIUM` vs `FILTERED` as default~~ → **`MEDIUM` confirmed.** A bare number says nothing about what a tag does.
+- ~~Protection default~~ → **on**.
+- ~~"Insert new inline tag" / "Quick insert tag"~~ → **in scope.** Needs a vocabulary of permitted tags; the pragmatic source is the set of tags present in the current document/project, which is real data rather than a hardcoded list.
+
 **Still open:**
 
-1. **memoQ tag strictness levels.** The strictness page is still 403 and no printout was supplied, so level names/semantics remain unverified. Needed before designing the leniency control in Phase 4 — should not be guessed. *A PDF printout of `/current/en/Concepts/concepts-tag-strictness-and-match-rates.html` would resolve it, exactly as the two pages in §11 were resolved.*
-2. **`FILTERED` detail level.** Requires a per-format notion of "which attributes matter" that Supervertaler lacks (§5.1). Ship `MEDIUM` as default and revisit — or is a hardcoded attribute allowlist per format acceptable as a first cut?
-3. **Requirement 4 wording.** Read here as: translators type prose freely and insert tags as atomic units, never hand-typing raw markup. Confirm if something more specific was meant.
-4. **"Insert new inline tag" / "Quick insert tag"** (memoQ Ctrl+F10, §11.1) require a document-type definition of *which tags are permitted* — Supervertaler has no such concept. Worth adding, or out of scope?
-5. **`MEDIUM` vs memoQ's `FILTERED` as default.** Deliberate deviation (§5.1) — confirm acceptable.
+1. **Requirement 4 wording.** Read here as: translators type prose freely and insert tags as atomic units, never hand-typing raw markup. Confirm if something more specific was meant.
+2. **Software placeholders need their own family** (§6.6) — `{0}` currently shares `FAMILY_COMPACT` with the internal display placeholders.
 
 ---
 
@@ -571,6 +578,45 @@ Design consequences in §5.4.
 
 The webtrans toolbar has a single tag-detail button: **"Shows or hides the tags' full content (name, attributes and their values)."** This is precisely the Partial/Full switch in the request. Its tag commands are a subset of desktop: *Insert all format tags* (Alt+F8), *Copies next tag sequence* (F9), and *Edit inline tag*.
 
+### 11.5 Tag strictness and match rates — memoQ desktop
+
+**This is a translation-memory setting, not an editing one.** It controls when a
+TM or LiveDocs hit still counts as a 100% match despite differing tags — set per
+TM in *Edit TM Settings*. It does **not** relax what the editor protects or what
+tag verification reports. The plan previously assumed the opposite and placed a
+"leniency control" in Phase 4; that was mis-scoped, and any such control belongs
+to TM match scoring instead.
+
+The three documented levels:
+
+| Level | A TM hit still scores 100% when… |
+|---|---|
+| **strict** | Nothing is adjusted. Only identical tag properties score 100%. Properties are: *tag position, tag type (opening/closing/empty/memoQ), tag name, and attribute names **and values***. |
+| **medium** | Tags are the **same type** in the **same position**; attributes may differ freely. Different **order** is not an exact match. |
+| **permissive** | There is a tag or tag sequence **everywhere** the source has one. Types and attributes are irrelevant. |
+
+At every level, **extra tags in the TM entry are tolerated**: the TM must have a
+tag for each tag in the source segment, but not the other way round — surplus TM
+tags are silently ignored.
+
+memoQ also documents **target tag adjustment on insertion**: when a hit is
+inserted, it pairs lookup-source tags to TM-source tags to TM-target tags and
+substitutes, so the inserted target carries the *lookup's* tags. Extra tags that
+exist only in the TM target are copied through unchanged. Worked example from the
+documentation:
+
+```
+lookup:      <A>text<B/></A>
+TM source:   <C>text</C>
+TM target:   <C>texto</C><D></D>
+pairing:     <A> → <C>,  <B/> → nothing,  </A> → </C>
+inserted:    <A>texto</A><D></D>
+```
+
+Both are real features Supervertaler could adopt, and both are **out of scope for
+this plan** — they belong with TM matching. `verify_tags()` already models the
+distinction that matters for QA by reporting ordering as its own issue kind.
+
 ### 11.4 Gap analysis — Supervertaler today vs memoQ
 
 | memoQ capability | Supervertaler today | Gap |
@@ -585,3 +631,34 @@ The webtrans toolbar has a single tag-detail button: **"Shows or hides the tags'
 | Insert new / Quick insert tag | — | Needs document-type tag vocabulary (§10.4) |
 | Tag verification / QA | Primitive exists, not surfaced (§2.7) | Add (Phase 3) |
 | Tags protected as atomic units | ❌ plain editable text | Core of this plan |
+
+
+---
+
+## 6.7 Running the application headlessly
+
+The grid can be rendered without a display, which is how several of the defects
+above were found — they were invisible to unit tests but obvious in a screenshot.
+
+```bash
+pip install PyQt6 pytest pyperclip pillow
+sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libfontconfig1 libdbus-1-3
+export QT_QPA_PLATFORM=offscreen
+```
+
+Two **modal first-run dialogs** block construction and must be suppressed in the
+settings file first, or the process hangs forever waiting for input:
+
+```json
+{ "usage_statistics_asked": true,
+  "usage_statistics_enabled": false,
+  "general": { "first_run_completed": true } }
+```
+
+Then `SupervertalerQt()` constructs, `current_project` can be assigned a list of
+`Segment`s, `load_segments_to_grid()` populates the grid, and `table.grab()`
+yields a PNG. The process segfaults at interpreter teardown (after the work is
+done), so capture output before exit.
+
+Worth automating as a CI smoke test: the detail-level and placeholder-collision
+defects would both have been caught by asserting the rendered atom labels.

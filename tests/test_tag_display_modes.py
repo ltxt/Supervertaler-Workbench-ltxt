@@ -255,11 +255,15 @@ def test_mode_names_are_canonicalised(plumbing, given, expected):
     assert canon(type("C", (), plumbing), given) == expected
 
 
-def test_partial_selects_short_and_full_selects_long(plumbing):
-    from modules.tag_atoms import DETAIL_LONG, DETAIL_SHORT
+def test_full_always_means_long_and_partial_is_configurable(plumbing):
+    """Full Tag Text is fixed at LONG. Partial deliberately has NO fixed level:
+    it renders at whatever the user configured (Short or Medium), so a toolbar
+    click cannot overwrite that choice — which is what made memoQ's Medium level
+    unreachable in an earlier revision."""
+    from modules.tag_atoms import DETAIL_LONG
     detail = plumbing["TAG_VIEW_MODE_DETAIL"]
-    assert detail["partial"] == DETAIL_SHORT
     assert detail["full"] == DETAIL_LONG
+    assert "partial" not in detail
 
 
 def test_legacy_aliases_cover_both_old_names(plumbing):

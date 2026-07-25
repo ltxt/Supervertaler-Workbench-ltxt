@@ -68,7 +68,9 @@ def seam(qapp):
 
     class _FlagHolder:
         tag_protection_enabled = False
-        tag_detail_level = _tag_atoms.DETAIL_SHORT
+        tag_detail_level = _tag_atoms.DETAIL_MEDIUM
+        # What atoms actually render with; derived from the display mode.
+        tag_effective_detail = _tag_atoms.DETAIL_MEDIUM
 
     ns = {
         "_tag_atoms": _tag_atoms,
@@ -96,18 +98,21 @@ def protection(seam):
     holder = seam["_FlagHolder"]
 
     class _Switch:
-        def on(self, detail=_tag_atoms.DETAIL_SHORT):
+        def on(self, detail=_tag_atoms.DETAIL_MEDIUM):
             holder.tag_protection_enabled = True
             holder.tag_detail_level = detail
+            holder.tag_effective_detail = detail
 
         def off(self):
             holder.tag_protection_enabled = False
 
     holder.tag_protection_enabled = False
-    holder.tag_detail_level = _tag_atoms.DETAIL_SHORT
+    holder.tag_detail_level = _tag_atoms.DETAIL_MEDIUM
+    holder.tag_effective_detail = _tag_atoms.DETAIL_MEDIUM
     yield _Switch()
     holder.tag_protection_enabled = False
-    holder.tag_detail_level = _tag_atoms.DETAIL_SHORT
+    holder.tag_detail_level = _tag_atoms.DETAIL_MEDIUM
+    holder.tag_effective_detail = _tag_atoms.DETAIL_MEDIUM
 
 
 @pytest.fixture
@@ -239,9 +244,11 @@ def test_detail_level_reaches_the_atoms(seam, protection, edit):
     assert label == '<cf color="#227acb">'
 
 
-def test_detail_level_defaults_to_short(seam, protection, edit):
+def test_detail_level_defaults_to_medium(seam, protection, edit):
+    """A bare number says nothing about what a tag does, so the default Partial
+    level shows the tag name instead."""
     protection.on()
-    assert seam["_tag_detail_level"]() == _tag_atoms.DETAIL_SHORT
+    assert seam["_tag_detail_level"]() == _tag_atoms.DETAIL_MEDIUM
 
 
 def test_sync_tag_atom_color_updates_the_renderer(seam):
@@ -309,9 +316,11 @@ def test_editors_apply_text_through_the_seam():
     assert source.count("apply_grid_cell_text(self, text)") >= 3
 
 
-def test_protection_flag_defaults_to_off():
+def test_protection_flag_defaults_to_on():
+    """Protection is the default now that the pills have been reviewed in the
+    running application. Turning it off restores plain-text tag editing."""
     source = open(os.path.join(REPO, "Supervertaler.py"), encoding="utf-8").read()
-    assert re.search(r"^\s+tag_protection_enabled = False\s*$", source,
+    assert re.search(r"^\s+tag_protection_enabled = True\s*$", source,
                      re.MULTILINE)
 
 
