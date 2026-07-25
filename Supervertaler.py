@@ -96,6 +96,9 @@ from datetime import datetime
 from modules.shortcut_display import format_shortcut_for_display
 from modules.platform_helpers import IS_WINDOWS, IS_MACOS, IS_LINUX, open_file, open_folder, get_hidden_subprocess_flags
 from modules.ui_scale import scaled_pt
+# Canonical inline-tag model — one definition of "what is a tag", shared by the
+# tag helpers below (see docs/development/TAG_PROTECTION_AND_DISPLAY_MODES_PLAN.md).
+from modules import tag_protection as _tag_protection
 
 
 def _import_language_pairs():
@@ -989,25 +992,20 @@ def tagged_text_to_runs(text: str) -> list:
 def extract_memoq_tags(text: str) -> list:
     """
     Extract all memoQ-style tags from text in order of appearance.
-    
+
     memoQ uses several tag types:
     - Paired opening tags: [1}, [2}, [3} etc.
     - Paired closing tags: {1], {2], {3] etc.
     - Standalone tags: [1], [2], [3] etc. (e.g., for tabs, special characters)
-    
+
     Args:
         text: Source text containing tags
-        
+
     Returns:
         List of tag strings in order of appearance: ['[1}', '{1]', '[2]', ...]
     """
-    import re
-    # Match:
-    # - Opening paired tags: [N}
-    # - Closing paired tags: {N]
-    # - Standalone tags: [N]
-    pattern = r'(\[\d+\}|\{\d+\]|\[\d+\])'
-    return re.findall(pattern, text)
+    return _tag_protection.extract_raw_tags(
+        text, families=(_tag_protection.FAMILY_MEMOQ_BRACKET,))
 
 
 def extract_html_tags(text: str) -> list:
@@ -1018,7 +1016,13 @@ def extract_html_tags(text: str) -> list:
     - Opening tags: <b>, <i>, <u>, <li>, <p>, <span>, etc.
     - Closing tags: </b>, </i>, </u>, </li>, </p>, </span>, etc.
     - Self-closing tags: <br/>, <hr/>, etc.
-    - Trados/SDLXLIFF numeric tags: <92>, </92>, etc.
+    - Trados/SDLXLIFF numeric tags: <92>, </92>, <92/> etc.
+    - Hyphenated names: <li-o>, <li-b>
+
+    Hyphenated and self-closing forms were both missing from the previous
+    pattern here. That made the has_html_tags check in
+    _insert_next_tag_or_wrap_selection() False for a segment whose only tags
+    were <li-o>/<li-b>, so Ctrl+, silently did nothing on list items.
 
     Args:
         text: Source text containing HTML tags
@@ -1026,11 +1030,11 @@ def extract_html_tags(text: str) -> list:
     Returns:
         List of tag strings in order of appearance: ['<li>', '</li>', '<b>', '</b>', ...]
     """
-    import re
-    # Match HTML/XML tags: <tagname>, </tagname>, <tagname/>, <tagname attr="value">
-    # Also match Trados/SDLXLIFF numeric tags: <N>, </N>
-    pattern = r'(</?[a-zA-Z][a-zA-Z0-9]*(?:\s+[^>]*)?>|</?\d+>)'
-    return re.findall(pattern, text)
+    return _tag_protection.extract_raw_tags(
+        text,
+        families=(_tag_protection.FAMILY_HTML,
+                  _tag_protection.FAMILY_TRADOS_NUMERIC),
+    )
 
 
 def compact_tags(text: str, tag_map: dict = None) -> str:
@@ -1174,13 +1178,25 @@ def expand_compact_tags(text: str, tag_map: dict) -> str:
 # Combined pattern for memoQ tags, HTML tags, and Trados/SDLXLIFF numeric tags
 # memoQ: [N}, {N], [N]
 # HTML: <tag>, </tag>, <tag/>, <tag attr="value"> - includes hyphenated tags like li-o, li-b
-# Trados/SDLXLIFF: <N>, </N> (numeric tags from SDLXLIFF paired elements)
-_ALL_TAGS_PATTERN = r'(\[\d+\}|\{\d+\]|\[\d+\]|</?[a-zA-Z][a-zA-Z0-9-]*(?:\s+[^>]*)?>|</?\d+>)'
+# Trados/SDLXLIFF: <N>, </N>, <N/> (numeric tags from SDLXLIFF paired/standalone elements)
+#
+# Single source of truth: modules/tag_protection.LEGACY_TAG_PATTERN. There used
+# to be two near-identical patterns here — _ALL_TAGS_PATTERN, which silently
+# matched NO self-closing tag, and _AUTOTAG_TAG_PATTERN, which did. That gap
+# meant find_next_unused_tag() (behind the Ctrl+, insert shortcut) could not see
+# a standalone tag at all, so on SDLXLIFF projects — where sdlppx_handler emits
+# <N/> for every <x id="N"/> — inserting one was impossible and the shortcut
+# reported "all tags already in target" when they were not. Both names now point
+# at the same pattern, which includes self-closing forms.
+_ALL_TAGS_PATTERN = _tag_protection.LEGACY_TAG_PATTERN
+_AUTOTAG_TAG_PATTERN = _tag_protection.LEGACY_TAG_PATTERN
 
 
 def extract_all_tags(text: str) -> list:
     """
     Extract all tags (memoQ, HTML, and Trados numeric) from text in order of appearance.
+
+    Includes self-closing/standalone forms (<2/>, <x1/>, <br/>).
 
     Args:
         text: Source text containing tags
@@ -1190,13 +1206,6 @@ def extract_all_tags(text: str) -> list:
     """
     import re
     return re.findall(_ALL_TAGS_PATTERN, text or '')
-
-
-# AutoTagger uses its own, more complete pattern than extract_all_tags: it also
-# matches self-closing forms (numbered <2/> and HTML <x1/>) which the SDLXLIFF/
-# Trados standalone tags use. Kept separate so extract_all_tags' behaviour (used
-# by other features) is unchanged.
-_AUTOTAG_TAG_PATTERN = r'(\[\d+\}|\{\d+\]|\[\d+\]|</?\d+/?>|</?[a-zA-Z][a-zA-Z0-9-]*(?:\s+[^>]*)?/?>)'
 
 
 def autotag_extract_tags(text: str) -> list:
@@ -1210,8 +1219,7 @@ def strip_all_tags(text: str) -> str:
 
     Used by AutoTagger to get the tag-free target and to verify the AI only
     moved tags (never changed wording)."""
-    import re
-    return re.sub(_AUTOTAG_TAG_PATTERN, '', text or '')
+    return _tag_protection.strip_tags(text)
 
 
 def _normalize_ws_for_compare(text: str) -> str:
