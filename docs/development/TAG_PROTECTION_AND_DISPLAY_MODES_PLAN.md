@@ -20,7 +20,12 @@ From the feature request:
 
 Reference behaviour: Trados Studio, memoQ, Matecat, Smartcat.
 
-> Note on external sources: the memoQ and Matecat documentation URLs supplied in the request return **HTTP 403** to this environment, so they could not be quoted directly. Statements below about competitor behaviour are from general knowledge of those tools and are labelled as such. The memoQ *tag strictness* level names in particular are **unverified** and are listed as an open question in §10 rather than designed against.
+> **Note on external sources.** `docs.memoq.com` returns **HTTP 403** to this environment, so pages could not be fetched directly. Two of them were supplied as PDF printouts and *are* therefore verified, and are quoted as authoritative below:
+>
+> - **memoQ 12.4 — Workspace › Ribbons › Edit** (`/current/en/Workspace/ribbons-edit.html`) → §11.1, §11.2
+> - **memoQ 12.4 — memoQweb › webtrans › Toolbar** (`/current/en/memoQWeb-help/mqw-toolbar.html`) → §11.3
+>
+> Still unverified: the memoQ **tag strictness** page (403, no printout supplied) and the Matecat tag page (403). The strictness levels remain an open question in §10 and are not designed against. Trados Studio statements are general knowledge and labelled as such.
 
 ---
 
@@ -239,39 +244,72 @@ class TagToken:
 
 ## 5. The tag display modes switch (new requirement)
 
-### Mapping onto what exists
+**Revised against the verified memoQ documentation in §11.** The request's two-state Partial/Full framing matches **memoQweb**, which has exactly one such toggle (§11.3). memoQ **desktop** exposes **four** levels of tag detail (§11.1). Both are genuine memoQ behaviour, so the plan implements the four-level model internally and surfaces the requested two-state switch as the primary control.
+
+### 5.1 The detail levels
+
+memoQ desktop's four levels, and the Supervertaler equivalent:
+
+| memoQ level | Shows | Supervertaler `TagDetail` | Exposed as |
+|---|---|---|---|
+| **Show Short Inline Tags** | tag + number + open/close/empty indicator only | `SHORT` | **Partial Tag Text** (toolbar) |
+| **Show Medium Inline Tags** | type + name, **no** attributes | `MEDIUM` | Settings |
+| **Show Filtered Inline Tags** | type + name + *some* attributes, chosen by the document-type/filter config — **memoQ's own default** | `FILTERED` | Settings (see caveat) |
+| **Show Long Inline Tags** | type + name + **every** attribute; memoQ warns this "might make the document unreadable […] Use it only if you are working to resolve a problem" | `LONG` | **Full Tag Text** (toolbar) |
+
+Mapping to the request: **Partial Tag Text = `SHORT`**, **Full Tag Text = `LONG`**. Both toolbar states, plus the two intermediate levels available in Settings for power users — one render property on the atom, so the extra levels cost almost nothing.
+
+**Caveat on `FILTERED`.** memoQ can do this because it has document-type definitions and per-filter attribute configuration ("If you are working on an XML file, they are a part of the filter configuration"). Supervertaler has no equivalent concept, so `FILTERED` cannot be implemented faithfully yet. **Recommendation: default to `MEDIUM`** (type + name — readable, and unlike `SHORT` it does not discard the tag name), and treat `FILTERED` as a later refinement once per-format attribute allowlists exist. Note this deviates from memoQ, which defaults to `FILTERED`.
+
+### 5.2 Mapping onto the existing control
 
 | Requested | Existing mode | Work needed |
 |---|---|---|
-| **Full Tag Text** (full view) | `'tags'` | Rename label only — behaviour already correct |
-| **Partial Tag Text** (short view) | `'compact'` | Fix 3.1/3.2/3.4, add hover tooltip, apply to *all* tags uniformly |
-| *(orthogonal)* tags hidden entirely | `'wysiwyg'` | Unchanged |
+| **Full Tag Text** | `'tags'` | Relabel; behaviour already correct (`LONG`) |
+| **Partial Tag Text** | `'compact'` | Fix 3.1/3.2/3.4, add hover tooltip, apply uniformly to *all* tags (`SHORT`) |
+| *(orthogonal)* tags hidden | `'wysiwyg'` | Unchanged |
 
-The switch is therefore a **rationalisation of the existing three-state control, not a fourth mechanism**. The segmented control keeps three buttons and Ctrl+Shift+H keeps cycling them:
+Still a **rationalisation of the existing three-state control, not a fourth mechanism**. The segmented control keeps three buttons and Ctrl+Shift+H keeps cycling them; the detail level is a separate Settings dropdown that refines what the "tags shown" states display:
 
 ```
   ✨ WYSIWYG   │   📦 Partial Tag Text   │   🏷️ Full Tag Text
-   (no tags)       (short + tooltip)         (complete markup)
+   (no tags)         (SHORT + tooltip)        (LONG, every attribute)
 ```
 
-### Behaviour
+### 5.3 Behaviour
 
-**Full Tag Text** — every tag rendered with its complete markup inline, attributes included, in the tag colour. Atom display text = `token.raw`. Crowded by design; this is the mode for diagnosing structural errors and mismatched pairs.
+**Partial Tag Text (`SHORT`)** — each tag is a compact pill showing its **number** plus an **open / close / empty indicator**, exactly as memoQ describes: "All you can see is a tag, its number, and if it is an opening, a closing, or an empty tag." Hover reveals the full markup via the existing `QTextCharFormat.setToolTip()` mechanism (§2.8).
 
-**Partial Tag Text** — every tag rendered as a compact pill showing `token.short` (paired tags show their pair number, so an open/close pair is visually matched; standalone tags get a distinct glyph). Hover shows `token.tooltip` with the full markup, via the existing `QTextCharFormat.setToolTip()` mechanism (§2.8).
+**Full Tag Text (`LONG`)** — complete markup inline, every attribute, in the tag colour. Atom display text = `token.raw`. Crowded by design; the mode for diagnosing structural errors and mismatched pairs.
 
-Both modes render the **same atoms** with a different `display` property — one flag on the tag object, no buffer rewriting, no reversal map. `expand_compact_tags()` and the `_compact_tag_map` plumbing (`:2877`, `:6291`, `:43967`, `:44045`, `:48486`) get deleted once atoms land, which removes the §3.1/§3.2/§3.4 defect class outright.
+Both render the **same atoms** with a different `display` property — no buffer rewriting, no reversal map. `compact_tags()` / `expand_compact_tags()` / `_compact_tag_map` (`:2877`, `:6291`, `:43967`, `:44045`, `:48486`) are deleted once atoms land, which removes the §3.1/§3.2/§3.4 defect class outright.
 
-Applied to the request's own example, in Partial view:
+The request's own example in Partial view (`②` is content, not a tag):
 
 ```
 Specify ⟨1⟩⟨2⟩Wall thickness ⟨/2⟩⟨/1⟩⟨3⟩range ⟨/3⟩⟨4⟩②⟨/4⟩
         └─ hover ⟨1⟩ → <cf color="#227acb" font="tahoma">
 ```
 
-### Persistence
+### 5.4 Tag numbering and identity — memoQ's documented rules
 
-Fix §3.5 at the same time: persist as `general.tag_display_mode` ∈ `{wysiwyg, partial, full}`, tolerating the legacy `'compact'`/`'tags'` values on read.
+§11.2 specifies these precisely, and they **validate the `ordinal` design in §4** while adding one requirement the plan had missed:
+
+- **Pairing** is by tag **name plus `id` attribute** where present (memoQ's example: `rpr` tags in DOCX).
+- Numbering is **by occurrence, left to right**. Opening and closing tags of a pair **share** a number. **Empty (standalone) tags each get a unique number.**
+- In the **target**, the same pairing/numbering applies, *and* target tags are matched against source tags; a target tag with no source counterpart **gets a new number**.
+- 🆕 **Numbering is stable during editing**: "When you delete a tag, numbering does not change. memoQ only updates tag numbers when you reopen the document."
+
+The last point is a **new requirement** — the plan as first written would have renumbered live on every edit, making numbers jump under the user's cursor mid-translation. Adopt memoQ's rule: assign `ordinal` at document load, keep it stable for the session, recompute only on reopen (or an explicit refresh).
+
+This also confirms the §3.1 verdict: numbering must be **occurrence-based**, not name-based as `compact_tags()` does today.
+
+### 5.5 Persistence
+
+Fix §3.5 at the same time:
+
+- `general.tag_display_mode` ∈ `{wysiwyg, partial, full}` — tolerate legacy `'compact'`/`'tags'` on read.
+- `general.tag_detail_level` ∈ `{short, medium, filtered, long}`, default `medium` (§5.1).
 
 ---
 
@@ -313,11 +351,20 @@ Consequence: `if x < y and y > z` is never protected; `<cf color="#227acb" font=
 
 ### Phase 2 — Display modes switch
 
-Per §5: relabel the segmented control, implement `partial`/`full` as an atom render property, wire tooltips, delete the `compact_tags`/`expand_compact_tags`/`_compact_tag_map` plumbing, persist the choice.
+Per §5: relabel the segmented control, implement the four `TagDetail` levels as an atom render property (toolbar exposes `SHORT`/`LONG`, Settings exposes all four), wire tooltips, delete the `compact_tags`/`expand_compact_tags`/`_compact_tag_map` plumbing, persist both settings.
 
-### Phase 3 — Tag verification (QA)
+Implement memoQ's numbering rules from §5.4: pair by name + `id`, number by occurrence left-to-right, pairs share a number, standalone tags get unique numbers, target tags matched back to source — and **numbers stay stable for the session**, recomputed only on document reopen.
 
-Promote the §2.7 primitive to a real check: compare source vs target token multisets and report **missing / extra / reordered / unpaired** tags. Surface on confirm and as a batch QA pass over the project, in the existing QA/reporting surface. Reuse `_validate_autotag_result`'s comparison so AI-placed and human-placed tags are judged identically.
+### Phase 3 — Tag verification (QA) and tag commands
+
+Promote the §2.7 primitive to a real check: compare source vs target token multisets and report **missing / extra / reordered / unpaired** tags. Surface on confirm and as a batch QA pass, in the existing QA/reporting surface. Reuse `_validate_autotag_result`'s comparison so AI-placed and human-placed tags are judged identically.
+
+Close the command-parity gaps identified in §11.4, in priority order:
+
+1. **Fix Ctrl+, to operate on tag *sequences***, matching memoQ's F9 (§11.1) — a run of adjacent tags is inserted as one action, and with a selection a pair of sequences brackets it. Supervertaler currently inserts one tag at a time.
+2. **Arrange tags** — a deterministic tag-reordering fix (memoQ Alt+F6). Supervertaler only has the AI-based AutoTagger; a deterministic version is cheaper, offline and predictable, and pairs naturally with the reordering QA check.
+3. **Edit inline tag** — edit a selected tag's attributes in place (memoQ Ctrl+F9). Natural once tags are atoms carrying their own data.
+4. *Insert all tags* (memoQ Alt+F8) is deliberately **not** planned: memoQ's own documentation says "it is not recommended to use this command."
 
 ### Phase 4 — Toggles
 
@@ -373,17 +420,76 @@ Manual smoke per `CLAUDE.md`: DOCX import → translate → export; SDLPPX round
 Phase 0  canonical parser + TagToken            → fixes 3.3            (ships alone)
 Phase 6.1 structured vs heuristic origin        → requirement 2
 Phase 1  atomic protected rendering             → requirement 1, 4
-Phase 2  Partial / Full display switch          → requirement 5; retires 3.1, 3.2, 3.4, 3.5
-Phase 3  tag verification QA                    → closes the competitor gap (3.6)
-Phase 4  toggles                                → requirement 3
-Phase 5  bounded performance pass               → requirement 6
+Phase 2  Partial / Full switch + 4 detail levels → requirement 5; retires 3.1, 3.2, 3.4, 3.5
+         + memoQ numbering rules (§5.4)
+Phase 3  tag verification QA + tag commands      → closes the competitor gap (3.6, §11.4)
+Phase 4  toggles (incl. F6-style insertion mode) → requirement 3
+Phase 5  bounded performance pass                → requirement 6
 ```
 
 ---
 
 ## 10. Open questions
 
-1. **memoQ tag strictness levels.** The supplied docs URL is 403 to this environment, so the actual level names/semantics are unverified. Needed before designing the leniency control in Phase 4 — should not be guessed.
-2. **Requirement 4 wording.** Read here as: translators type prose freely and insert tags as atomic units (Ctrl+, / auto-copy on empty target), never hand-typing raw markup. Confirm if something more specific was meant.
-3. **Auto-copy source tags into an empty target?** Trados/memoQ offer this. Cheap once atoms exist, but it is a behaviour change — opt-in setting or default?
-4. **Partial-view label scheme.** Pair number (`⟨1⟩…⟨/1⟩`) vs. name+number (`⟨cf1⟩`). Pair numbers match Trados; names carry more meaning. Recommend pair numbers with the name in the tooltip.
+**Resolved by the §11 sources** (previously open):
+
+- ~~Partial-view label scheme~~ → number + open/close/empty indicator; pairs share a number, standalone tags unique (§5.4).
+- ~~Auto-insert source tags into an empty target?~~ → memoQ's answer is an explicit toggle, **default off** ("Tag Insertion", F6), plus on-demand commands. Follow that: no silent auto-copy.
+- ~~Two display levels or more?~~ → four in memoQ desktop, one toggle in memoQweb; plan implements four, surfaces two (§5.1).
+
+**Still open:**
+
+1. **memoQ tag strictness levels.** The strictness page is still 403 and no printout was supplied, so level names/semantics remain unverified. Needed before designing the leniency control in Phase 4 — should not be guessed. *A PDF printout of `/current/en/Concepts/concepts-tag-strictness-and-match-rates.html` would resolve it, exactly as the two pages in §11 were resolved.*
+2. **`FILTERED` detail level.** Requires a per-format notion of "which attributes matter" that Supervertaler lacks (§5.1). Ship `MEDIUM` as default and revisit — or is a hardcoded attribute allowlist per format acceptable as a first cut?
+3. **Requirement 4 wording.** Read here as: translators type prose freely and insert tags as atomic units, never hand-typing raw markup. Confirm if something more specific was meant.
+4. **"Insert new inline tag" / "Quick insert tag"** (memoQ Ctrl+F10, §11.1) require a document-type definition of *which tags are permitted* — Supervertaler has no such concept. Worth adding, or out of scope?
+5. **`MEDIUM` vs memoQ's `FILTERED` as default.** Deliberate deviation (§5.1) — confirm acceptable.
+
+---
+
+## 11. Verified memoQ behaviour (from the supplied documentation)
+
+Quoted from the two memoQ 12.4 pages supplied as PDF printouts (see the note in §1). These supersede the general-knowledge statements in earlier drafts of this plan.
+
+### 11.1 Tag commands — memoQ desktop, Edit ribbon
+
+| Command | Shortcut | Behaviour (as documented) |
+|---|---|---|
+| **Tag Insertion** | F6 | "Turns automatic tag insertion on or off (normally, it is turned **off**). When it is turned on, you can click to insert the tags in the target cell." |
+| **Copy Next Tag Sequence** | F9 | Copies the next **sequence** of inline/memoQ tags. "A tag sequence consists of tags immediately following each other, regardless of the type. Always inserts the first tag sequence that has not been inserted yet." With a selection: "memoQ will insert two tag sequences, one before and one after the selected text." |
+| **Inline Tags** | — | Menu changing the level of tag detail — the four levels in §5.1. |
+| **Insert all tags** | Alt+F8 | Copies every source tag to one position in the target. "Use this only if there are a lot of tags, and their position does not matter […] **it is not recommended to use this command.**" |
+| **Arrange tags** | Alt+F6 | "If the order of tags is wrong, this command will fix it." |
+| **Remove all tags** | Ctrl+F8 | Removes all tags from the current target cell. |
+| **Insert new inline tag** | — | Inserts a tag **not present in the source**; "must be allowed by the document type"; opens the Inline tag window. |
+| **Edit inline tag** | Ctrl+F9 | Edits the selected tag via the Inline tag window. |
+| **Quick insert tag** | Ctrl+F10 | Insert any tag allowed by the source document type, from a list. "Paired tags are inserted in pairs, not one by one. When inserting short inline tags, numbers are not visible on the list." |
+
+### 11.2 Tag numbering and pairing — memoQ desktop
+
+> **Source segments:** "memoQ finds tag pairs based on tags' names and id attributes (when present — for example, rpr tags in DOCX files). Tags are numbered as they occur in the text, from left to right. Opening and closing tags have the same number. Empty tags have a unique number."
+>
+> **Target segments:** "memoQ uses the same way of pairing and numbering as in the source text. memoQ also matches tags with those in the source segment. If there is no matching tag in the source segment, the target-side tag gets a new number."
+>
+> **Stability:** "When you delete a tag, numbering does not change. memoQ only updates tag numbers when you reopen the document."
+
+Design consequences in §5.4.
+
+### 11.3 memoQweb toolbar — the two-state toggle
+
+The webtrans toolbar has a single tag-detail button: **"Shows or hides the tags' full content (name, attributes and their values)."** This is precisely the Partial/Full switch in the request. Its tag commands are a subset of desktop: *Insert all format tags* (Alt+F8), *Copies next tag sequence* (F9), and *Edit inline tag*.
+
+### 11.4 Gap analysis — Supervertaler today vs memoQ
+
+| memoQ capability | Supervertaler today | Gap |
+|---|---|---|
+| Copy Next Tag Sequence (F9), sequence-aware, pairs on selection | Ctrl+, `_insert_next_tag_or_wrap_selection` (`:2792`) — **single tag**, pairs on selection | Sequence handling; standalone tags broken (§3.3) |
+| Four inline-tag detail levels | Two-ish (`tags` / buggy `compact`) | Fix + extend → §5 |
+| Tag numbering by occurrence, stable for session | Numbering **by tag name**, recomputed per render | §3.1 defect → fix |
+| Remove all tags (Ctrl+F8) | `clean_tags_action` (`:11924`) | ✅ present |
+| Arrange tags (Alt+F6), deterministic | AI-based AutoTagger only | Add deterministic version |
+| Edit inline tag (Ctrl+F9) | — | Add (Phase 3) |
+| Tag Insertion toggle (F6), default off | — | Add with protection toggle (Phase 4) |
+| Insert new / Quick insert tag | — | Needs document-type tag vocabulary (§10.4) |
+| Tag verification / QA | Primitive exists, not surfaced (§2.7) | Add (Phase 3) |
+| Tags protected as atomic units | ❌ plain editable text | Core of this plan |
