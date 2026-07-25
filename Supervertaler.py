@@ -1038,92 +1038,66 @@ def extract_html_tags(text: str) -> list:
     )
 
 
+# Tag families that Partial/Compact view shortens. FAMILY_COMPACT is absent on
+# purpose: its placeholders are what this view *produces*, so including it would
+# let a second pass compact them again.
+_COMPACT_TAG_FAMILIES = (
+    _tag_protection.FAMILY_HTML,
+    _tag_protection.FAMILY_TRADOS_NUMERIC,
+    _tag_protection.FAMILY_MEMOQ_BRACKET,
+    _tag_protection.FAMILY_MEMOQ_CONTENT,
+    _tag_protection.FAMILY_DEJAVU,
+)
+
+
 def compact_tags(text: str, tag_map: dict = None) -> str:
     """
-    Replace verbose XML/HTML tags with short numbered placeholders for display.
+    Replace inline tags with short numbered placeholders for display.
 
-    Simple formatting tags (<b>, <i>, <u>, <sub>, <sup> and their closing tags)
-    are left untouched. Only verbose tags (those with attributes or long names
-    like <bmk id="0" name="_Toc219208699" transform="open">) are shortened.
+    This is the unprotected rendering of "Partial Tag Text": when tag
+    protection is on, the same short view is produced by the atom layer
+    instead (modules/tag_atoms.py) and no placeholder ever enters the text
+    buffer. See docs/development/TAG_PROTECTION_AND_DISPLAY_MODES_PLAN.md.
 
-    Opening tags get {1}, closing tags get {/1}, self-closing tags get {1/}.
-    Each unique tag name gets a stable number (first seen = 1, etc.).
+    Numbering follows memoQ: tags are numbered by occurrence from left to
+    right, an opening tag and its closing tag share a number, and standalone
+    ("empty") tags each get their own. Opening tags render as {N}, closing as
+    {/N}, standalone as {N/}.
+
+    Every tag is shortened, including simple formatting tags. Previously only
+    "verbose" tags were, which produced a mixed display where an attributed
+    opening tag became {1} while its own </cf> closer stayed literal.
 
     Args:
-        text: Text containing verbose tags.
-        tag_map: Optional dict to populate with placeholder→full-tag mappings
-                 (for reversing later). If None, no map is built.
+        text: Text containing inline tags.
+        tag_map: Optional dict populated with placeholder -> full-tag mappings
+                 so expand_compact_tags() can reverse this exactly. Each
+                 placeholder is unique, so no mapping is ever overwritten.
 
     Returns:
-        Text with verbose tags replaced by compact numbered placeholders.
+        Text with tags replaced by compact numbered placeholders.
     """
-    import re
+    tokens = _tag_protection.parse_tags(
+        text, families=_COMPACT_TAG_FAMILIES, number=True)
+    if not tokens:
+        return text
 
-    # Tags to leave untouched (simple formatting – already short)
-    _PASSTHROUGH = {'b', 'i', 'u', 'sub', 'sup', 'em', 'strong', 's'}
-
-    tag_pattern = re.compile(
-        r'<(/?)([a-zA-Z][a-zA-Z0-9-]*)(\s[^>]*)?(/?)\s*>'  # named tags with optional attrs
-        r'|'
-        r'</(\d+)>'          # Trados numeric closing: </92>
-        r'|'
-        r'<(\d+)>'           # Trados numeric opening: <92>
-    )
-
-    tag_name_to_num = {}
-    counter = [0]
-
-    def _get_num(name: str) -> int:
-        if name not in tag_name_to_num:
-            counter[0] += 1
-            tag_name_to_num[name] = counter[0]
-        return tag_name_to_num[name]
-
-    def _replace(m):
-        full_tag = m.group(0)
-
-        # Trados numeric closing </N>
-        if m.group(5) is not None:
-            n = _get_num(f"trados_{m.group(5)}")
-            placeholder = f"{{/{n}}}"
-            if tag_map is not None:
-                tag_map[placeholder] = full_tag
-            return placeholder
-        # Trados numeric opening <N>
-        if m.group(6) is not None:
-            n = _get_num(f"trados_{m.group(6)}")
-            placeholder = f"{{{n}}}"
-            if tag_map is not None:
-                tag_map[placeholder] = full_tag
-            return placeholder
-
-        # Named tag
-        slash = m.group(1)      # '/' for closing, '' for opening
-        name = m.group(2)       # tag name
-        attrs = m.group(3)      # attributes (may be None)
-        self_close = m.group(4) # '/' for self-closing
-
-        # Pass through simple formatting tags without attributes
-        if name.lower() in _PASSTHROUGH and not attrs:
-            return full_tag
-
-        # Only shorten if the tag is verbose (has attributes or name > 3 chars)
-        if not attrs and len(name) <= 3:
-            return full_tag
-
-        n = _get_num(name.lower())
-        if slash:
-            placeholder = f"{{/{n}}}"
-        elif self_close:
-            placeholder = f"{{{n}/}}"
+    parts = []
+    pos = 0
+    for tok in tokens:
+        parts.append(text[pos:tok.start])
+        if tok.kind == _tag_protection.KIND_CLOSE:
+            placeholder = f"{{/{tok.number}}}"
+        elif tok.kind == _tag_protection.KIND_EMPTY:
+            placeholder = f"{{{tok.number}/}}"
         else:
-            placeholder = f"{{{n}}}"
-
+            placeholder = f"{{{tok.number}}}"
         if tag_map is not None:
-            tag_map[placeholder] = full_tag
-        return placeholder
-
-    return tag_pattern.sub(_replace, text)
+            tag_map[placeholder] = tok.raw
+        parts.append(placeholder)
+        pos = tok.end
+    parts.append(text[pos:])
+    return ''.join(parts)
 
 
 # Word Joiner (U+2060): a zero-width character that forbids a line break on
@@ -30719,29 +30693,36 @@ class SupervertalerQt(QMainWindow):
         view_mode_group.addButton(wysiwyg_btn, 0)
         view_mode_layout.addWidget(wysiwyg_btn)
 
-        # Compact button (middle) – shortens verbose tags to {1}, {/1}
-        compact_btn = QPushButton(self.tr("Compact"))
+        # Partial Tag Text (middle) – memoQ's "Show Short Inline Tags": each tag
+        # shows only its number and whether it opens, closes or stands alone.
+        compact_btn = QPushButton(self.tr("Partial tags"))
         compact_btn.setCheckable(True)
         compact_btn.setChecked(False)
-        compact_btn.setToolTip(
-            self.tr("Compact Tag View\nShortens verbose tags like <bmk id=\"0\" ...> to {1}")
-        )
+        compact_btn.setToolTip(self.tr(
+            "Partial Tag Text ({shortcut})\n"
+            "Short view: each tag shows just its number, e.g. {{1}} … {{/1}}.\n"
+            "Hover a tag to see its full details. Keeps long segments readable."
+        ).format(shortcut=format_shortcut_for_display('Ctrl+Shift+H')))
         compact_btn.setStyleSheet(_seg_btn_base.format(radius=""))
-        compact_btn.clicked.connect(lambda: self._set_tag_view_mode('compact'))
+        compact_btn.clicked.connect(lambda: self._set_tag_view_mode('partial'))
         view_mode_group.addButton(compact_btn, 2)
         view_mode_layout.addWidget(compact_btn)
 
-        # Tags button (right)
-        tags_btn = QPushButton(self.tr("Tags"))
+        # Full Tag Text (right) – memoQ's "Show Long Inline Tags": every
+        # attribute of every tag, for diagnosing structural problems.
+        tags_btn = QPushButton(self.tr("Full tags"))
         tags_btn.setCheckable(True)
-        tags_btn.setChecked(True)  # Default: Tags mode
-        tags_btn.setToolTip(
-            f"Tag View ({format_shortcut_for_display('Ctrl+Shift+H')})\nShows raw tags like <b>bold</b>"
-        )
+        tags_btn.setChecked(True)  # Default: full tag text
+        tags_btn.setToolTip(self.tr(
+            "Full Tag Text ({shortcut})\n"
+            "Full view: shows every tag complete with its attributes, e.g.\n"
+            '<cf color="#227acb">. Best for fixing tag-pair problems; can look\n'
+            "crowded on long segments."
+        ).format(shortcut=format_shortcut_for_display('Ctrl+Shift+H')))
         tags_btn.setStyleSheet(_seg_btn_base.format(
             radius="border-top-right-radius: 3px; border-bottom-right-radius: 3px;"
         ))
-        tags_btn.clicked.connect(lambda: self._set_tag_view_mode('tags'))
+        tags_btn.clicked.connect(lambda: self._set_tag_view_mode('full'))
         view_mode_group.addButton(tags_btn, 1)
         view_mode_layout.addWidget(tags_btn)
 
@@ -30753,11 +30734,10 @@ class SupervertalerQt(QMainWindow):
         self.tags_btn = tags_btn
         self.view_mode_group = view_mode_group
 
-        # Initialize tag view state: 'tags' (default), 'compact', or 'wysiwyg'
-        if not hasattr(self, 'tag_view_mode'):
-            self.tag_view_mode = 'tags'
-        if not hasattr(self, 'show_tags'):
-            self.show_tags = True  # Default: show tags
+        # Initialise / re-apply the tag display state: 'full' (default),
+        # 'partial' or 'wysiwyg'. Settings restore may already have set the mode
+        # before this toolbar existed, so sync the buttons to it either way.
+        self._apply_tag_view_mode_state(getattr(self, 'tag_view_mode', 'full'))
         
         # Status selector
         from modules.statuses import get_status, STATUSES
@@ -43970,7 +43950,7 @@ class SupervertalerQt(QMainWindow):
         # Apply compact tag shortening if in compact mode
         # Build tag_map from source so target uses same numbering
         _compact_tag_map = None
-        if getattr(self, 'tag_view_mode', 'tags') == 'compact':
+        if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
             _compact_tag_map = {}
             source_for_display = compact_tags(source_for_display, _compact_tag_map)
         # Apply invisible character replacements for display only
@@ -48485,6 +48465,14 @@ class SupervertalerQt(QMainWindow):
                 focus_border_thickness = general_settings.get('focus_border_thickness', 2)
                 EditableGridTextEditor.focus_border_color = focus_border_color
                 EditableGridTextEditor.focus_border_thickness = focus_border_thickness
+
+            # Restore the tag display mode (Partial / Full / WYSIWYG). It used to
+            # reset to raw tags on every launch because it was only held in
+            # memory. Runs outside the results-panel branch above so it applies
+            # even before any panel exists.
+            saved_tag_mode = general_settings.get('tag_display_mode')
+            if saved_tag_mode:
+                self._apply_tag_view_mode_state(saved_tag_mode)
                 
             # Load and apply Match Panel font settings
             match_panel_size = general_settings.get('match_panel_font_size', 10)
@@ -55577,7 +55565,7 @@ class SupervertalerQt(QMainWindow):
                     if self.hide_outer_wrapping_tags:
                         stripped, _ = strip_outer_wrapping_tags(source_for_display)
                         source_for_display = stripped
-                    if getattr(self, 'tag_view_mode', 'tags') == 'compact':
+                    if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
                         source_for_display = compact_tags(source_for_display)
                     new_source_text = self.apply_invisible_replacements(source_for_display)
                     source_widget.blockSignals(True)
@@ -55594,7 +55582,7 @@ class SupervertalerQt(QMainWindow):
                         stripped, _ = strip_outer_wrapping_tags(target_for_display)
                         target_for_display = stripped
                     # Apply compact tag shortening (display only – reversed before saving)
-                    if getattr(self, 'tag_view_mode', 'tags') == 'compact':
+                    if self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full')) == 'partial':
                         # Re-use the tag_map built from source so numbering stays consistent
                         tag_map = {}
                         src_display = segment.source
@@ -60575,38 +60563,108 @@ class SupervertalerQt(QMainWindow):
             return
         self.log(f"✓ Saved comments for segment {self.tab_current_segment_id}")
 
+    # Tag display modes. 'partial' and 'full' are the current names (memoQ's
+    # "Partial Tag Text" / "Full Tag Text"); 'compact' and 'tags' are the older
+    # internal names, still accepted so persisted settings and any remaining
+    # caller keep working.
+    TAG_VIEW_MODE_ALIASES = {'compact': 'partial', 'tags': 'full'}
+
+    #: Which atom detail level each display mode renders with when tag
+    #: protection is on. Phase 4 exposes the two intermediate levels
+    #: (medium/filtered) in Settings; the toolbar drives only these two.
+    TAG_VIEW_MODE_DETAIL = {
+        'partial': _tag_atoms.DETAIL_SHORT,
+        'full': _tag_atoms.DETAIL_LONG,
+    }
+
+    @classmethod
+    def _canonical_tag_view_mode(cls, mode: str) -> str:
+        """Map any accepted spelling of a display mode onto its current name."""
+        mode = (mode or '').strip().lower()
+        mode = cls.TAG_VIEW_MODE_ALIASES.get(mode, mode)
+        return mode if mode in ('partial', 'full', 'wysiwyg') else 'full'
+
     def _toggle_tag_view_via_shortcut(self):
-        """Toggle tag view using keyboard shortcut (Ctrl+Shift+H) – cycles: tags → compact → wysiwyg"""
-        mode = getattr(self, 'tag_view_mode', 'tags')
-        cycle = {'tags': 'compact', 'compact': 'wysiwyg', 'wysiwyg': 'tags'}
-        self._set_tag_view_mode(cycle.get(mode, 'tags'))
+        """Cycle the tag display mode with Ctrl+Shift+H:
+        Full Tag Text → Partial Tag Text → WYSIWYG → Full Tag Text."""
+        mode = self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full'))
+        cycle = {'full': 'partial', 'partial': 'wysiwyg', 'wysiwyg': 'full'}
+        self._set_tag_view_mode(cycle.get(mode, 'full'))
 
     def _enable_tag_view_after_import(self):
-        """Auto-enable Tag View after importing a document with formatting tags"""
+        """Auto-enable a tag-showing view after importing a tagged document."""
         if hasattr(self, 'tags_btn'):
-            self._set_tag_view_mode('tags')
+            self._set_tag_view_mode('full')
             self.log("🏷️ Tag View auto-enabled (formatting tags detected in import)")
 
-    def _set_tag_view_mode(self, mode: str):
-        """Set the tag view mode: 'tags', 'compact', or 'wysiwyg'"""
-        self.tag_view_mode = mode
-        self.show_tags = (mode == 'tags' or mode == 'compact')
+    def _set_tag_view_mode(self, mode: str, persist: bool = True):
+        """Set the tag display mode: 'partial', 'full' or 'wysiwyg'.
 
-        # Update segmented control buttons
-        if hasattr(self, 'wysiwyg_btn'):
-            self.wysiwyg_btn.setChecked(mode == 'wysiwyg')
-        if hasattr(self, 'compact_btn'):
-            self.compact_btn.setChecked(mode == 'compact')
-        if hasattr(self, 'tags_btn'):
-            self.tags_btn.setChecked(mode == 'tags')
+        With tag protection on, 'partial' and 'full' differ only in the label
+        drawn inside each tag atom — no text is rewritten, so switching cannot
+        lose anything and the tag numbering assigned at load is preserved.
+        With protection off, 'partial' renders via compact_tags() placeholders.
+        """
+        mode = self._apply_tag_view_mode_state(mode)
 
-        labels = {'tags': '🏷️ Tag View – showing raw tags',
-                  'compact': '📦 Compact View – verbose tags shortened',
-                  'wysiwyg': '✨ WYSIWYG View – showing formatted text'}
+        labels = {
+            'partial': '📦 Partial Tag Text – short tags, hover for details',
+            'full': '🏷️ Full Tag Text – tags shown with all attributes',
+            'wysiwyg': '✨ WYSIWYG View – showing formatted text',
+        }
         self.log(labels.get(mode, mode))
+
+        if persist:
+            self._save_tag_display_mode(mode)
 
         if hasattr(self, 'table') and self.current_project:
             self._refresh_grid_display_mode()
+
+    def _apply_tag_view_mode_state(self, mode: str) -> str:
+        """Set the in-memory tag display state and sync the toolbar buttons.
+
+        Shared by the user-facing setter and by settings restore at startup, so
+        the two can never drift. Deliberately does NOT touch the grid: callers
+        decide whether a re-render is needed. Returns the canonical mode.
+        """
+        mode = self._canonical_tag_view_mode(mode)
+        self.tag_view_mode = mode
+        self.show_tags = mode in ('partial', 'full')
+
+        # Drive the atom detail level so protected cells re-label themselves.
+        EditableGridTextEditor.tag_detail_level = self.TAG_VIEW_MODE_DETAIL.get(
+            mode, _tag_atoms.DETAIL_SHORT)
+
+        # Sync the segmented control if it has been built yet. Signals are
+        # blocked so setChecked() cannot re-enter _set_tag_view_mode.
+        for attr, owns_mode in (('wysiwyg_btn', 'wysiwyg'),
+                                ('compact_btn', 'partial'),
+                                ('tags_btn', 'full')):
+            button = getattr(self, attr, None)
+            if button is None or not self._widget_is_alive(button):
+                continue
+            button.blockSignals(True)
+            try:
+                button.setChecked(mode == owns_mode)
+            finally:
+                button.blockSignals(False)
+        return mode
+
+    def _save_tag_display_mode(self, mode: str) -> None:
+        """Remember the tag display mode across sessions.
+
+        The mode used to reset to raw tags on every launch because it was only
+        ever held in memory.
+        """
+        try:
+            general_settings = self.load_general_settings()
+            if general_settings.get('tag_display_mode') == mode:
+                return
+            general_settings['tag_display_mode'] = mode
+            self.save_general_settings(general_settings)
+        except Exception as exc:
+            self.log(f"⚠ Could not save tag display mode: {exc}")
+
 
     @staticmethod
     def _wysiwyg_runs_to_tagged_text(runs):
@@ -60696,7 +60754,30 @@ class SupervertalerQt(QMainWindow):
         if not hasattr(self, 'table') or not self.current_project:
             return
 
-        mode = getattr(self, 'tag_view_mode', 'tags')
+        mode = self._canonical_tag_view_mode(getattr(self, 'tag_view_mode', 'full'))
+
+        # With protection on, Partial <-> Full is only a change of label inside
+        # each tag atom. Re-labelling in place is far cheaper than rebuilding
+        # every cell, and — because no text is rewritten — it cannot lose an
+        # edit or renumber a tag. WYSIWYG still needs the full rebuild below.
+        if _protected_tags_active() and mode in ('partial', 'full'):
+            detail = self.TAG_VIEW_MODE_DETAIL.get(mode, _tag_atoms.DETAIL_SHORT)
+            previous = self._suppress_target_change_handlers
+            self._suppress_target_change_handlers = True
+            try:
+                for row in range(self.table.rowCount()):
+                    for column in (2, 3):
+                        widget = self.table.cellWidget(row, column)
+                        if widget is None:
+                            continue
+                        try:
+                            _tag_atoms.relabel_atoms(widget.document(), detail)
+                        except Exception:
+                            pass
+            finally:
+                self._suppress_target_change_handlers = previous
+            self.auto_resize_rows()
+            return
 
         # Suppress target change handlers during refresh to prevent data corruption
         # (switching display modes changes widget content which could trigger textChanged)
@@ -60724,9 +60805,10 @@ class SupervertalerQt(QMainWindow):
                 stripped_target, _ = strip_outer_wrapping_tags(segment.target)
                 target_for_display = stripped_target
 
-            # Compact mode: build tag map from source, apply to both columns.
-            # The map is stored on the target widget so edits can be reversed.
-            if mode == 'compact':
+            # Partial view without protection: build the placeholder map from
+            # the source and apply it to both columns. The map rides on the
+            # target widget so edits can be reversed on save.
+            if mode == 'partial':
                 tag_map = {}
                 source_for_display = compact_tags(source_for_display, tag_map)
                 target_for_display = compact_tags(target_for_display, tag_map)
@@ -60737,8 +60819,8 @@ class SupervertalerQt(QMainWindow):
             source_for_display = self.apply_invisible_replacements(source_for_display)
             target_for_display = self.apply_invisible_replacements(target_for_display)
 
-            # For compact mode, use show_tags=True so TagHighlighter can color the placeholders
-            show_tags_for_cell = (mode in ('tags', 'compact'))
+            # Partial view shows placeholders, which TagHighlighter colours too.
+            show_tags_for_cell = (mode in ('full', 'partial'))
 
             # Update source cell (column 2)
             source_widget = self.table.cellWidget(row, 2)

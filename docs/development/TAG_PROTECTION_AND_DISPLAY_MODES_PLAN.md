@@ -146,7 +146,18 @@ Grid is `QTableWidget` (154 references) — `QAbstractTableModel`/`QTableView` a
 
 All four were reproduced against code copied verbatim out of `Supervertaler.py`.
 
-### 3.1 🔴 Compact mode silently corrupts formatting (data loss)
+### 3.1 🔴 Compact mode silently corrupts formatting (data loss) — **FIXED**
+
+> **Sequencing correction.** This plan originally said the defect would be fixed
+> "by construction" in Phase 2, when placeholder substitution disappears. That was
+> wrong: tag protection is **off by default** until Phase 4, Partial/Compact view is
+> reachable from the toolbar today, and `compact_tags()` remains the unprotected
+> rendering of Partial view even after Phase 4. Waiting would have left live data
+> loss in a shipping build, so `compact_tags()` was rebuilt on the canonical model
+> instead (occurrence-based numbering, collision-free map). Both renderings of
+> Partial view now produce identical numbering, asserted by test, so turning
+> protection on never renumbers anything.
+
 
 `compact_tags()` numbers placeholders by **tag name**, not by occurrence (`:1068-1075`, `:1109`):
 
@@ -282,7 +293,16 @@ Still a **rationalisation of the existing three-state control, not a fourth mech
 
 **Full Tag Text (`LONG`)** — complete markup inline, every attribute, in the tag colour. Atom display text = `token.raw`. Crowded by design; the mode for diagnosing structural errors and mismatched pairs.
 
-Both render the **same atoms** with a different `display` property — no buffer rewriting, no reversal map. `compact_tags()` / `expand_compact_tags()` / `_compact_tag_map` (`:2877`, `:6291`, `:43967`, `:44045`, `:48486`) are deleted once atoms land, which removes the §3.1/§3.2/§3.4 defect class outright.
+Both render the **same atoms** with a different `display` property — no buffer rewriting, no reversal map.
+
+**Two renderings coexist, deliberately.** Because protection is off by default, Partial view has to work either way:
+
+| | Partial Tag Text | Full Tag Text |
+|---|---|---|
+| protection **on** | atoms labelled `SHORT` (+ hover tooltip) | atoms labelled `LONG` |
+| protection **off** | `compact_tags()` placeholders `{1}…{/1}` | raw markup, coloured by `TagHighlighter` |
+
+Both paths number tags identically (memoQ's rules, §5.4), so switching protection on never renumbers a segment — locked in by `test_compact_placeholders_agree_with_atom_short_labels`. The `compact_tags()` / `expand_compact_tags()` / `_compact_tag_map` plumbing can only be **deleted** once protection is the default and the unprotected path is gone; that is Phase 4 work, not Phase 2.
 
 The request's own example in Partial view (`②` is content, not a tag):
 
@@ -373,7 +393,9 @@ flag is switched on by default.
 
 ### Phase 2 — Display modes switch
 
-Per §5: relabel the segmented control, implement the four `TagDetail` levels as an atom render property (toolbar exposes `SHORT`/`LONG`, Settings exposes all four), wire tooltips, delete the `compact_tags`/`expand_compact_tags`/`_compact_tag_map` plumbing, persist both settings.
+Per §5: relabel the segmented control to **Partial tags / Full tags**, implement the four `TagDetail` levels as an atom render property (toolbar drives `SHORT`/`LONG`; Settings exposes all four in Phase 4), wire tooltips, persist the mode, and fix `compact_tags()` so the unprotected rendering matches. Deleting the placeholder plumbing moves to Phase 4 (see §5.2).
+
+Switching Partial ⇄ Full with protection on calls `relabel_atoms()` rather than rebuilding cells: only the pill label changes, so no text is rewritten, an in-progress edit cannot be lost, and load-time numbering survives.
 
 Implement memoQ's numbering rules from §5.4: pair by name + `id`, number by occurrence left-to-right, pairs share a number, standalone tags get unique numbers, target tags matched back to source — and **numbers stay stable for the session**, recomputed only on document reopen.
 
