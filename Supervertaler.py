@@ -26925,6 +26925,54 @@ class SupervertalerQt(QMainWindow):
         hide_wrapping_tags_layout.addStretch()
         grid_display_layout.addLayout(hide_wrapping_tags_layout)
 
+        # Tag protection checkbox
+        tag_protection_layout = QHBoxLayout()
+        tag_protection_check = CheckmarkCheckBox(
+            self.tr("Protect inline tags (treat each tag as a single, unbreakable unit)"))
+        tag_protection_check.setChecked(
+            font_settings.get('tag_protection_enabled', False))
+        tag_protection_check.setToolTip(
+            "When enabled, each inline tag is drawn as one indivisible block, the way\n"
+            "Trados Studio and memoQ show them:\n"
+            "  • one Backspace or Delete removes the whole tag\n"
+            "  • the cursor steps over a tag instead of entering it\n"
+            "  • typing can no longer break \"<b>\" into \"<>\"\n"
+            "The tags stored in your segments are unchanged either way — this only\n"
+            "changes how they behave while you edit.\n"
+            "Turn it off to go back to editing tags as ordinary text."
+        )
+        tag_protection_layout.addWidget(tag_protection_check)
+        tag_protection_layout.addStretch()
+        grid_display_layout.addLayout(tag_protection_layout)
+
+        # Tag detail level (how much of each tag is shown)
+        tag_detail_layout = QHBoxLayout()
+        tag_detail_layout.addWidget(QLabel(self.tr("Tag detail:")))
+        tag_detail_combo = QComboBox()
+        # (label, stored value) — mirrors memoQ's four inline-tag detail levels.
+        for _label, _value in (
+            (self.tr("Short — number only (Partial Tag Text)"), _tag_atoms.DETAIL_SHORT),
+            (self.tr("Medium — tag name, no attributes"), _tag_atoms.DETAIL_MEDIUM),
+            (self.tr("Filtered — tag name plus key attributes"), _tag_atoms.DETAIL_FILTERED),
+            (self.tr("Long — every attribute (Full Tag Text)"), _tag_atoms.DETAIL_LONG),
+        ):
+            tag_detail_combo.addItem(_label, _value)
+        _saved_detail = font_settings.get('tag_detail_level', _tag_atoms.DETAIL_SHORT)
+        _detail_idx = tag_detail_combo.findData(_saved_detail)
+        tag_detail_combo.setCurrentIndex(_detail_idx if _detail_idx >= 0 else 0)
+        tag_detail_combo.setToolTip(
+            "How much of each protected tag is shown in the grid.\n"
+            "Short keeps long segments readable — hover a tag to see its full details.\n"
+            "Long shows everything, which helps when fixing tag-pair problems but can\n"
+            "look crowded.\n"
+            "The Partial/Full buttons under the grid switch between Short and Long;\n"
+            "the two middle levels are only available here.\n"
+            "Only applies when tag protection is on."
+        )
+        tag_detail_layout.addWidget(tag_detail_combo)
+        tag_detail_layout.addStretch()
+        grid_display_layout.addLayout(tag_detail_layout)
+
         # Status column position checkbox
         status_col_layout = QHBoxLayout()
         status_before_target_check = CheckmarkCheckBox(self.tr("Show Status column between Source and Target (uncheck to move it to the far right)"))
@@ -27665,7 +27713,8 @@ class SupervertalerQt(QMainWindow):
                 termlens_font_family_combo, termlens_font_spin, termlens_bold_check,
                 border_color_btn, border_thickness_spin, badge_text_color_btn, None,
                 hide_wrapping_tags_check, status_before_target_check,
-                mp_font_family_combo=mp_font_family_combo, mp_font_spin=mp_font_spin, mp_bold_check=mp_bold_check
+                mp_font_family_combo=mp_font_family_combo, mp_font_spin=mp_font_spin, mp_bold_check=mp_bold_check,
+                tag_protection_check=tag_protection_check, tag_detail_combo=tag_detail_combo
             )
 
         save_btn.clicked.connect(save_view_settings_with_scale)
@@ -29720,7 +29769,8 @@ class SupervertalerQt(QMainWindow):
                                      grid_font_family_combo=None, termlens_font_family_combo=None, termlens_font_spin=None, termlens_bold_check=None,
                                      border_color_btn=None, border_thickness_spin=None, badge_text_color_btn=None, tabs_above_check=None,
                                      hide_wrapping_tags_check=None, status_before_target_check=None,
-                                     mp_font_family_combo=None, mp_font_spin=None, mp_bold_check=None):
+                                     mp_font_family_combo=None, mp_font_spin=None, mp_bold_check=None,
+                                     tag_protection_check=None, tag_detail_combo=None):
         """Save view settings from UI"""
         # CRITICAL: Suppress TM saves during view settings update
         # Grid operations (setStyleSheet, rehighlight, etc.) can trigger textChanged events
@@ -29735,7 +29785,8 @@ class SupervertalerQt(QMainWindow):
                 grid_font_family_combo, termlens_font_family_combo, termlens_font_spin, termlens_bold_check,
                 border_color_btn, border_thickness_spin, badge_text_color_btn, tabs_above_check,
                 hide_wrapping_tags_check, status_before_target_check,
-                mp_font_family_combo=mp_font_family_combo, mp_font_spin=mp_font_spin, mp_bold_check=mp_bold_check
+                mp_font_family_combo=mp_font_family_combo, mp_font_spin=mp_font_spin, mp_bold_check=mp_bold_check,
+                tag_protection_check=tag_protection_check, tag_detail_combo=tag_detail_combo
             )
         finally:
             self._suppress_target_change_handlers = previous_suppression
@@ -29745,7 +29796,8 @@ class SupervertalerQt(QMainWindow):
                                      grid_font_family_combo=None, termlens_font_family_combo=None, termlens_font_spin=None, termlens_bold_check=None,
                                      border_color_btn=None, border_thickness_spin=None, badge_text_color_btn=None, tabs_above_check=None,
                                      hide_wrapping_tags_check=None, status_before_target_check=None,
-                                     mp_font_family_combo=None, mp_font_spin=None, mp_bold_check=None):
+                                     mp_font_family_combo=None, mp_font_spin=None, mp_bold_check=None,
+                                     tag_protection_check=None, tag_detail_combo=None):
         """Implementation of save view settings (called with TM saves suppressed)"""
         # Load existing settings first to preserve all values, then update with new ones
         general_settings = self.load_general_settings()
@@ -29760,6 +29812,9 @@ class SupervertalerQt(QMainWindow):
         _old_even_color = getattr(self, 'even_row_color', '#FFFFFF')
         _old_odd_color = getattr(self, 'odd_row_color', '#F0F0F0')
         _old_hide_tags = getattr(self, 'hide_outer_wrapping_tags', False)
+        _old_tag_protection = getattr(EditableGridTextEditor, 'tag_protection_enabled', False)
+        _old_tag_detail = getattr(EditableGridTextEditor, 'tag_detail_level',
+                                  _tag_atoms.DETAIL_SHORT)
         general_settings.update({
             'auto_propagate_exact_matches': self.auto_propagate_exact_matches,
             'grid_font_size': grid_spin.value(),
@@ -29820,6 +29875,20 @@ class SupervertalerQt(QMainWindow):
             hide_tags_value = hide_wrapping_tags_check.isChecked()
             general_settings['hide_outer_wrapping_tags'] = hide_tags_value
             self.hide_outer_wrapping_tags = hide_tags_value
+
+        # Tag protection: whether each inline tag behaves as one unbreakable unit.
+        if tag_protection_check is not None:
+            protection_on = tag_protection_check.isChecked()
+            general_settings['tag_protection_enabled'] = protection_on
+            EditableGridTextEditor.tag_protection_enabled = protection_on
+
+        # How much of each protected tag is shown. The Partial/Full buttons under
+        # the grid drive Short/Long; this also reaches the two middle levels.
+        if tag_detail_combo is not None:
+            detail = tag_detail_combo.currentData()
+            if detail in _tag_atoms.DETAIL_LEVELS:
+                general_settings['tag_detail_level'] = detail
+                EditableGridTextEditor.tag_detail_level = detail
 
         # Add status column position setting if provided
         if status_before_target_check is not None:
@@ -30028,6 +30097,23 @@ class SupervertalerQt(QMainWindow):
         if hide_wrapping_tags_check is not None and _has_table:
             if hide_wrapping_tags_check.isChecked() != _old_hide_tags:
                 self._refresh_source_column_display()
+
+        # Tag protection / detail changes need the cells re-rendered. Turning
+        # protection on or off changes what the document *contains* (atoms vs
+        # characters), so those need a real rebuild; a detail change alone is
+        # just a re-label, which _refresh_grid_display_mode() handles cheaply.
+        if _has_table:
+            _new_protection = getattr(EditableGridTextEditor,
+                                      'tag_protection_enabled', False)
+            _new_detail = getattr(EditableGridTextEditor, 'tag_detail_level',
+                                  _tag_atoms.DETAIL_SHORT)
+            if _new_protection != _old_tag_protection:
+                self.log("🔒 Tag protection " +
+                         ("enabled" if _new_protection else "disabled"))
+                if self.current_project:
+                    self.load_segments_to_grid()
+            elif _new_detail != _old_tag_detail and self.current_project:
+                self._refresh_grid_display_mode()
 
 
         self.log("✓ View settings saved and applied")
@@ -48488,9 +48574,20 @@ class SupervertalerQt(QMainWindow):
             # reset to raw tags on every launch because it was only held in
             # memory. Runs outside the results-panel branch above so it applies
             # even before any panel exists.
+            # Tag protection, and how much of each tag is shown. Read before the
+            # display mode below, which overrides the detail level when the mode
+            # is Partial or Full (the toolbar's two positions).
+            EditableGridTextEditor.tag_protection_enabled = bool(
+                general_settings.get('tag_protection_enabled', False))
+            saved_detail = general_settings.get('tag_detail_level')
+            if saved_detail in _tag_atoms.DETAIL_LEVELS:
+                EditableGridTextEditor.tag_detail_level = saved_detail
+
             saved_tag_mode = general_settings.get('tag_display_mode')
             if saved_tag_mode:
-                self._apply_tag_view_mode_state(saved_tag_mode)
+                # set_detail=False: the saved tag_detail_level above wins, so a
+                # Medium/Filtered choice is not reset to Short/Long each launch.
+                self._apply_tag_view_mode_state(saved_tag_mode, set_detail=False)
                 
             # Load and apply Match Panel font settings
             match_panel_size = general_settings.get('match_panel_font_size', 10)
@@ -56674,7 +56771,7 @@ class SupervertalerQt(QMainWindow):
             for panel in self.tabbed_panels:
                 try:
                     if hasattr(panel, 'editor_widget') and hasattr(panel.editor_widget, 'target_editor'):
-                        new_text = panel.editor_widget.target_editor.toPlainText()
+                        new_text = read_grid_cell_text(panel.editor_widget.target_editor)
                         break  # Use text from first panel found
                 except:
                     continue
@@ -56710,7 +56807,7 @@ class SupervertalerQt(QMainWindow):
                                 if hasattr(panel, 'editor_widget') and hasattr(panel.editor_widget, 'target_editor'):
                                     # Temporarily disconnect to avoid infinite loop
                                     panel.editor_widget.target_editor.blockSignals(True)
-                                    panel.editor_widget.target_editor.setPlainText(new_text)
+                                    apply_grid_cell_text(panel.editor_widget.target_editor, new_text)
                                     panel.editor_widget.target_editor.blockSignals(False)
                             except:
                                 pass
@@ -57922,8 +58019,8 @@ class SupervertalerQt(QMainWindow):
             for panel in self.tabbed_panels:
                 try:
                     if hasattr(panel, 'editor_widget'):
-                        source_text = panel.editor_widget.source_editor.toPlainText()
-                        panel.editor_widget.target_editor.setPlainText(source_text)
+                        source_text = read_grid_cell_text(panel.editor_widget.source_editor)
+                        apply_grid_cell_text(panel.editor_widget.target_editor, source_text)
                 except:
                     pass
     
@@ -60708,20 +60805,31 @@ class SupervertalerQt(QMainWindow):
         if hasattr(self, 'table') and self.current_project:
             self._refresh_grid_display_mode()
 
-    def _apply_tag_view_mode_state(self, mode: str) -> str:
+    def _apply_tag_view_mode_state(self, mode: str,
+                                   set_detail: bool = True) -> str:
         """Set the in-memory tag display state and sync the toolbar buttons.
 
         Shared by the user-facing setter and by settings restore at startup, so
         the two can never drift. Deliberately does NOT touch the grid: callers
         decide whether a re-render is needed. Returns the canonical mode.
+
+        Args:
+            set_detail: Whether to force the atom detail level from the mode.
+                True when the user picks a toolbar position — Partial means
+                Short, Full means Long. False when restoring saved settings,
+                where the stored detail level is authoritative: it may be one of
+                the two intermediate levels (Medium/Filtered) that only Settings
+                can reach, and forcing Short/Long here would silently discard
+                that choice on every launch.
         """
         mode = self._canonical_tag_view_mode(mode)
         self.tag_view_mode = mode
         self.show_tags = mode in ('partial', 'full')
 
         # Drive the atom detail level so protected cells re-label themselves.
-        EditableGridTextEditor.tag_detail_level = self.TAG_VIEW_MODE_DETAIL.get(
-            mode, _tag_atoms.DETAIL_SHORT)
+        if set_detail and mode in self.TAG_VIEW_MODE_DETAIL:
+            EditableGridTextEditor.tag_detail_level = \
+                self.TAG_VIEW_MODE_DETAIL[mode]
 
         # Sync the segmented control if it has been built yet. Signals are
         # blocked so setChecked() cannot re-enter _set_tag_view_mode.
@@ -60943,8 +61051,8 @@ class SupervertalerQt(QMainWindow):
                     if hasattr(panel, 'editor_widget'):
                         editor = panel.editor_widget
                         editor.seg_info_label.setText(f"Segment {segment_id}")
-                        editor.source_editor.setPlainText(source_text)
-                        editor.target_editor.setPlainText(target_text)
+                        apply_grid_cell_text(editor.source_editor, source_text)
+                        apply_grid_cell_text(editor.target_editor, target_text)
                         idx = editor.status_combo.findData(status)
                         if idx >= 0:
                             editor.status_combo.blockSignals(True)

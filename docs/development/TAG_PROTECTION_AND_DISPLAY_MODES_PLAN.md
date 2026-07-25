@@ -423,10 +423,16 @@ Missing/extra semantics are identical between the two.
 
 ### Phase 4 — Toggles
 
-- `general.tag_protection_enabled` (default **on**) — off restores today's plain-text behaviour verbatim, which is also the escape hatch if a user hits an unforeseen edge case.
-- `general.tag_display_mode` — `wysiwyg | partial | full`.
-- Both follow the existing checkbox pattern in `_save_view_settings_from_ui_impl` (`:29638`), which already snapshots old values and only runs expensive grid loops when a setting actually changed (`:29650-29657`). Live-refresh via a targeted per-row pass modelled on `refresh_grid_tag_colors` (`:47002`) — **populated/visible rows only**, not a full grid rebuild.
+- ✅ `general.tag_protection_enabled` — off restores today's plain-text behaviour verbatim, which is also the escape hatch if a user hits an unforeseen edge case.
+- ✅ `general.tag_display_mode` — `wysiwyg | partial | full` (done in Phase 2).
+- ✅ `general.tag_detail_level` — all four memoQ levels, including the two the toolbar cannot reach.
+- ✅ Both new settings follow the existing checkbox pattern in `_save_view_settings_from_ui_impl`, snapshotting old values so expensive grid work is skipped on an unrelated save. Toggling protection rebuilds the grid (the document's *content* changes: atoms rather than characters); changing only the detail level takes the cheap `relabel_atoms()` path.
+- ✅ **Blocker cleared:** the under-grid editor panel is now routed through the seam. `on_tab_target_change` wrote `toPlainText()` straight to `segment.target`, so it would have stored `U+FFFC` the moment that panel showed atoms. Six sites converted across four call sites; a test fails if any regresses.
 - Add a "tag strictness"-style leniency control **only after** §10's open question is resolved; do not invent levels.
+
+**Default is OFF, deliberately.** The plan called for defaulting protection on. It ships off instead, because the one thing that cannot be verified in a headless environment is how the pills *look and feel* in the running grid — row heights, baseline alignment against real fonts, legibility of `SHORT` labels at the user's grid font size, caret behaviour with themes applied. Flipping the default is a one-line change (`tag_protection_enabled = False` on `EditableGridTextEditor`, plus the settings default) once that review has happened. Everything else in the feature is complete and tested, so the flip is the only remaining step.
+
+**Interaction worth knowing about:** the toolbar has two positions (Partial/Full) but Settings offers four detail levels. An explicit toolbar click sets the level to Short or Long; settings *restore* passes `set_detail=False` so a Medium or Filtered choice is not silently reset to Short on every launch.
 
 ### Phase 5 — Performance (bounded, no rewrite)
 
