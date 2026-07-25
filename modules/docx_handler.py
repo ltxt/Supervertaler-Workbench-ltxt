@@ -569,83 +569,34 @@ class DOCXHandler:
                         table_paras.add(id(para))
         
         print(f"[DOCX Export] Found {len(table_paras)} paragraphs inside tables")
-        
-        # First, process regular paragraphs (excluding those in tables)
-        non_empty_para_index = 0
-        for para_idx, para in enumerate(doc.paragraphs):
-            # Skip paragraphs that are inside tables
-            if id(para) in table_paras:
-                print(f"[DOCX Export] Skipping doc.paragraphs[{para_idx}] - it's inside a table")
+
+        # Walk body paragraphs and table cells in one pass, numbering them the
+        # way import_docx() did — see _iter_indexed_paragraphs() for why any
+        # second, independently-counted pass puts translations in the wrong
+        # paragraphs as soon as the document contains a table.
+        for para_index, para in self._iter_indexed_paragraphs(doc):
+            if para_index not in para_segments:
+                print(f"[DOCX Export] Para {para_index}: No segments for this paragraph")
                 continue
-            
-            # Only process non-empty paragraphs (same logic as import)
-            if not para.text.strip():
-                print(f"[DOCX Export] Skipping doc.paragraphs[{para_idx}] - empty paragraph")
+
+            translations = [s['target'] for s in para_segments[para_index]
+                            if s['target'].strip()]
+            if not translations:
+                print(f"[DOCX Export] Para {para_index}: No translations found")
                 continue
-            
-            # Check if this paragraph has corresponding segments
-            if non_empty_para_index in para_segments:
-                para_info = self._get_para_info(non_empty_para_index)
-                
-                # Double-check it's not a table cell (should already be filtered)
-                if para_info and para_info.is_table_cell:
-                    print(f"[DOCX Export] ERROR: Para {non_empty_para_index} marked as table cell but found in regular paragraphs!")
-                    non_empty_para_index += 1
-                    continue
-                
-                # Combine all segments from this paragraph
-                translations = [s['target'] for s in para_segments[non_empty_para_index] 
-                              if s['target'].strip()]
-                
-                if translations:
-                    # Join segments back into paragraph (single space, no extra newlines)
-                    new_text = ' '.join(translations)
-                    
-                    print(f"[DOCX Export] Para {non_empty_para_index}: Replacing with {len(translations)} segment(s)")
-                    print(f"[DOCX Export]   Original: {para.text[:50]}...")
-                    print(f"[DOCX Export]   New: {new_text[:50]}...")
-                    
-                    # Replace text while preserving formatting AND style
-                    self._replace_paragraph_text(para, new_text, para_info.style if para_info else None)
-                    processed_paras.add(non_empty_para_index)
-                else:
-                    print(f"[DOCX Export] Para {non_empty_para_index}: No translations found")
-            else:
-                print(f"[DOCX Export] Para {non_empty_para_index}: No segments for this paragraph")
-            
-            non_empty_para_index += 1
-        
-        # Then, process table cells
-        print(f"[DOCX Export] Processing {len(doc.tables)} tables...")
-        for table_idx, table in enumerate(doc.tables):
-            for row_idx, row in enumerate(table.rows):
-                for cell_idx, cell in enumerate(row.cells):
-                    # Each cell may contain multiple paragraphs
-                    for para in cell.paragraphs:
-                        if not para.text.strip():
-                            continue
-                        
-                        # Find the paragraph info for this table cell
-                        para_info = self._find_table_cell_info(table_idx, row_idx, cell_idx)
-                        
-                        if para_info and para_info.paragraph_index in para_segments:
-                            # Get translations for this cell
-                            translations = [s['target'] for s in para_segments[para_info.paragraph_index] 
-                                          if s['target'].strip()]
-                            
-                            if translations:
-                                new_text = ' '.join(translations)
-                                print(f"[DOCX Export] Table[{table_idx}][{row_idx}][{cell_idx}] Para {para_info.paragraph_index}: Replacing")
-                                print(f"[DOCX Export]   Original: {para.text[:50]}...")
-                                print(f"[DOCX Export]   New: {new_text[:50]}...")
-                                # Table cells can also have styles - preserve them
-                                self._replace_paragraph_text(para, new_text, para_info.style)
-                                processed_paras.add(para_info.paragraph_index)
-                        else:
-                            if para_info:
-                                print(f"[DOCX Export] Table[{table_idx}][{row_idx}][{cell_idx}] Para {para_info.paragraph_index}: No translations")
-                            else:
-                                print(f"[DOCX Export] Table[{table_idx}][{row_idx}][{cell_idx}]: No para_info found")
+
+            # Join segments back into paragraph (single space, no extra newlines)
+            new_text = ' '.join(translations)
+            para_info = self._get_para_info(para_index)
+
+            print(f"[DOCX Export] Para {para_index}: Replacing with {len(translations)} segment(s)")
+            print(f"[DOCX Export]   Original: {para.text[:50]}...")
+            print(f"[DOCX Export]   New: {new_text[:50]}...")
+
+            # Replace text while preserving formatting AND style
+            self._replace_paragraph_text(para, new_text,
+                                         para_info.style if para_info else None)
+            processed_paras.add(para_index)
 
         # Set document language to target language if provided
         if target_lang:
@@ -658,6 +609,49 @@ class DOCXHandler:
         print(f"[DOCX Handler] Export complete: {output_path}")
         print(f"[DOCX Handler] Translated {len(processed_paras)} items (paragraphs + table cells)")
     
+    def _iter_indexed_paragraphs(self, doc):
+        """Yield ``(paragraph_index, paragraph)`` in exactly the order — and with
+        exactly the inclusion rule — that :meth:`import_docx` numbered by.
+
+        Export used to re-derive the index by walking ``doc.paragraphs`` and
+        counting non-empty, non-table paragraphs with its own counter, then
+        processing table cells in a second pass. Import, however, numbers body
+        paragraphs *and* table-cell paragraphs from a single counter in document
+        order, so the two schemes agreed only up to the first table: after it,
+        every body paragraph was written with another segment's translation
+        (12 of 62 paragraphs in the DOCX stress-test file).
+
+        Sharing the walk also means the two halves cannot drift on the two
+        judgements they each used to make separately: which paragraphs count as
+        non-empty (both now ask ``_get_full_paragraph_text()``, rather than
+        export asking ``para.text``, whose treatment of hyperlink text has
+        varied across python-docx versions) and what document order is (both now
+        read ``document.element.body``).
+        """
+        elem_to_para = {p._element: p for p in doc.paragraphs}
+        counter = 0
+        for elem in doc.element.body:
+            if elem.tag.endswith('}p'):
+                para = elem_to_para.get(elem)
+                if para is None:
+                    continue
+                if not self._get_full_paragraph_text(para).strip():
+                    continue
+                yield counter, para
+                counter += 1
+            elif elem.tag.endswith('}tbl'):
+                for table in doc.tables:
+                    if table._element is not elem:
+                        continue
+                    for row in table.rows:
+                        for cell in row.cells:
+                            for para in cell.paragraphs:
+                                if not self._get_full_paragraph_text(para).strip():
+                                    continue
+                                yield counter, para
+                                counter += 1
+                    break
+
     def _get_para_info(self, paragraph_index: int):
         """Get ParagraphInfo by paragraph index"""
         for info in self.paragraphs_info:
