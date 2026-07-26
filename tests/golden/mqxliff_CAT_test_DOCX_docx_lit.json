@@ -1,0 +1,69 @@
+{
+  "export_read_back": {
+    "checked": 104,
+    "matching": 97,
+    "mismatched_segments": [
+      9,
+      57,
+      58,
+      62,
+      66,
+      68,
+      102
+    ]
+  },
+  "format": "MQXLIFF",
+  "notes": {},
+  "read_back_digest": "5b26d945265411d8",
+  "segments": 104,
+  "segments_translated": 104,
+  "source_file": "memoq/CAT_test_DOCX.docx_lit.mqxliff",
+  "tag_families": {
+    "html": 28
+  },
+  "tag_verification_issues": {},
+  "tags_by_segment": {
+    "102": [
+      "<fld id=\"0\" />",
+      "<instr id=\"1\" />",
+      "<fld id=\"1\" />",
+      "<fld id=\"2\" />",
+      "<fld id=\"0\" />",
+      "<instr id=\"3\" />",
+      "<fld id=\"1\" />",
+      "<fld id=\"2\" />"
+    ],
+    "58": [
+      "<cmt id=\"0\" transform=\"open\">",
+      "</cmt id=\"0\" transform=\"close\">"
+    ],
+    "62": [
+      "<fld id=\"0\" />",
+      "<instr id=\"0\" />",
+      "<fld id=\"1\" />",
+      "<fld id=\"2\" />"
+    ],
+    "64": [
+      "<fld id=\"0\" />",
+      "<instr id=\"1\" />",
+      "<fld id=\"1\" />",
+      "<fld id=\"2\" />"
+    ],
+    "66": [
+      "<fld id=\"0\" />",
+      "<instr id=\"2\" />",
+      "<fld id=\"1\" />",
+      "<fld id=\"2\" />"
+    ],
+    "68": [
+      "<hlnk id=\"rId7\" history=\"1\" fileName=\"document.xml\" href=\"@243f2b07-8a6f-411f-982d-c0729cd726c3\">",
+      "<rpr id=\"2\">",
+      "</rpr id=\"2\" transform=\"close\">",
+      "</hlnk>"
+    ],
+    "9": [
+      "<rpr id=\"0\">",
+      "</rpr id=\"0\" transform=\"close\">"
+    ]
+  }
+}

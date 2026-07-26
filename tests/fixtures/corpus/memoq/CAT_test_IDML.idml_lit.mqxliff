@@ -1,0 +1,1332 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:mq="MQXliff" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+<file original="CAT_test_IDML.idml" mq:id="afa51015-21fe-4be4-b5ab-4edd14aeb82c" mq:projectid="db4635fd-8f85-457d-83e1-09941176dc32" source-language="en" target-language="lt" datatype="x-idml">
+<header>
+<tool tool-id="MQ" tool-name="MemoQ" tool-version="12.4.36" tool-company="Kilgray" />
+<mq:export-path>\\fase2.tll.geacom.pro\WorkspaceTLL\temp\cat_tools_stress_test_files\CAT_test_IDML_lit.idml</mq:export-path>
+<mq:docinformation mq:isabstract="isabstract" mq:hashistory="true" mq:docname="CAT_test_IDML.idml" mq:majorversion="1" mq:minorversion="1" mq:nosplitjoin="false" mq:langindepgroupid="2d77f2ac-4c34-4650-b602-3df84aaeecb3" mq:multidocgroupid="44e0ef29-f2e8-4d76-a040-12c2c527558d" mq:origfile="\\fase2.tll.geacom.pro\WorkspaceTLL\temp\cat_tools_stress_test_files\CAT_test_IDML.idml" mq:numberofwords="350" mq:filterconfigname="default" mq:filterconfigserverurl="" mq:changetrackingenabledstates="Off,Off,Off,Off">
+<mq:versioninfos mq:majorversion="1"><mq:minorversioninfo mq:minorversion="0" mq:comment="" mq:createdthroughview="false" mq:createreason="Import" mq:creationtime="587102371" mq:creatoruser="navi" mq:tag=""><mq:details mq:type="MinorVersionDetailsImport"><![CDATA[<?xml version="1.0"?>
+<MinorVersionDetailsImport xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FilePath>\\fase2.tll.geacom.pro\WorkspaceTLL\temp\cat_tools_stress_test_files\CAT_test_IDML.idml</FilePath>
+</MinorVersionDetailsImport>]]></mq:details></mq:minorversioninfo>
+<mq:minorversioninfo mq:minorversion="1" mq:comment="" mq:createdthroughview="false" mq:createreason="BilingualExport" mq:creationtime="587102420" mq:creatoruser="navi" mq:tag=""><mq:details mq:type="MinorVersionDetailsBilingExport"><![CDATA[<?xml version="1.0"?>
+<MinorVersionDetailsBilingExport xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <BilingualType>Xliff</BilingualType>
+  <TargetPath>\\fase2.tll.geacom.pro\WorkspaceTLL\temp\cat_tools_stress_test_files\MemoQ\CAT_test_IDML.idml_lit.mqxliff</TargetPath>
+  <TwoColumpRtfProperties>None</TwoColumpRtfProperties>
+  <TableDocxProperties>None</TableDocxProperties>
+  <BilingRtfProperties>None</BilingRtfProperties>
+  <XliffProperties>None</XliffProperties>
+</MinorVersionDetailsBilingExport>]]></mq:details></mq:minorversioninfo>
+</mq:versioninfos>
+<mq:tagdefinition alignhighlight="false" caseinsensitive="false" rawhtml="false" showitags="true" basicformat="true" supersubscript="false" xmlcommands="true"><mq:tagdefelement name="uf" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="ufcatid" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="f" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="fs" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="nt" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="tbl" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="v" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="ufcatid" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="name" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="fn" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="tf" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="o" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="rect" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="gl" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="p" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="g" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="eps" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="field" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="hlinkd" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="pd" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="xe" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="xc" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="xo" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="dtd" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="hdt" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="hlink" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="pr" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="tl1" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="tl2" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="tl3" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="tl4" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="nl" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="br" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="ufcatid" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="tab" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Null" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="BreakRunInStyle" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FootnoteMarker" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="IndentToHere" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightAlignedTab" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Tab" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LF" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SoftCR" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CR" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Table" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="TableContinued" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PageNumber" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SectionName" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="NonRomanSpecialGlyph" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Space" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ExclamationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="QuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="NumberSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DollarSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PercentSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Ampersand" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Apostrophe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Asterisk" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PlusSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Comma" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HyphenMinus" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Period" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Solidus" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Zero" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Colon" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Semicolon" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LessThanSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EqualsSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="GreaterThanSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="QuestionMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CommercialAt" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftSquareBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ReverseSolidus" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightSquareBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CircumflexAccent" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Underscore" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="GraveAccent" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLine" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Tilde" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HardSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CentSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PoundSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CurrencySign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="YenSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="BrokenBar" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SectionSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Diaeresis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CopyrightSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftDblAngQuote" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="NotSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DiscretionaryHyphen" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RegisteredSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Macron" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DegreeSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SuperscriptTwo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PilchrowSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="MiddleDot" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SuperscriptOne" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightDblAngQuote" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EssZed" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LetterYWithDiaeresis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Caron" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="GreekOmega" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="GreekPi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FlushSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EnSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EmSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ThirdSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="QuarterSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SixthSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FigureSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PunctuationSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ThinSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HairSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ZeroSpaceBreak" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="UnicodeHyphen" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="NoBreakHyphen" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FigureDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EnDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="EmDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HorizontalBar" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftDoubleQuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightDoubleQuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftSingleQuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightSingleQuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DoubleLow9QuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DoubleHighReversed9QuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SingleLow9QuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SingleHighReversed9QuotationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Dagger" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DoubleDagger" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Bullet" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="TwoDotLeader" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Ellipse" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Ellipsis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Point" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PerMileSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Prime" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DoublePrime" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftSingleAngQuote" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightSingleAngQuote" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="WonSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DegreeCelsius" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DegreeFahrenheit" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="TrademarkSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="OhmSymbol" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightArrow" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="DownArrow" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PartialDiff" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="MathDelta" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Product" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Summation" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Radical" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Integral" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ApproxEqual" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="NotEqual" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LessEqual" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="GreaterEqual" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Infinity" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Diamond" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="WRPointedIndex" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="WDPointedIndex" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="MusicSharpSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CheckmarkSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="IdeographicSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKPostalMarkFace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKCompatibilityEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKHalfFullStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKHalfIdeographicFullStop" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKHalfIdeographicComma" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKHalfFullEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="IdeographicComma" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="IdeographicFullStop" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="IterationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftDoubleAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightDoubleAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftWhiteCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightWhiteCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftBlackLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightBlackLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PostalMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="leftTortoiseShellBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightTortoiseShellBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftWhiteLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightWhiteLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="leftWhiteTortoiseShellBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightWhiteTortoiseShellBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LeftWhiteSquareBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="RightWhiteSquareBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="WaveDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallA" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallI" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallU" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallE" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallO" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallTsu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallYa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallYu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallYo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaSmallWa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHiraganaVoicedSoundMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHiraganaSemiVoicedSoundMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaIterationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HiraganaVoicedIterationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallA" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallI" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallU" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallE" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallO" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaGa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaGi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaGu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaGe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaGo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaZa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaZi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaZu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaZe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaZo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaTa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaDa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaTi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaDi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaTu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaDu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaTe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaDe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaTo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaDo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallTsu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaBa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaPa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaBi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaPi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaBu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaPu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaBe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaPe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaBo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaPo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallYa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallYu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallYo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallWa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaWo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaMiddleDot" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallKa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaSmallKe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaHiraganaProlongedSoundMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaIterationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="KatakanaVoicedIterationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKIdeographExtensionAStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKIdeographExtensionAEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKUnifiedIdeographsStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKUnifiedIdeographsEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HighSurrogateStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HighSurrogateEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LowSurrogateStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="LowSurrogateEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKCompatibilityIdeographsStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKCompatibilityIdeographsEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="CJKEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SymbolPi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ffLigature" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="fiLigature" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="flLigature" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ffiLigature" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="fflLigature" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalTwoDotLeader" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalEmDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalEnDash" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLowLine" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalWavyLowLine" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRIghtParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftTortoiseShell" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightTortoiseShell" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftBlackLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightBlackLenticularBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftDoubleAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightDoubleAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightAngleBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalLeftWhiteCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="VerticalRightWhiteCornerBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ZeroSpaceNoBreak" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthExclamationMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthDollarSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthPercentSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthLeftParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthRightParenthesis" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthComma" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthStop" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthDigitZero" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthDigitNine" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthColon" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthSemiColon" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthQuestionMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthCommercialAt" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthLeftSqaureBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthRightSqaureBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthLeftCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthRightCurlyBracket" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FWAsciiEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HWKatakanaWo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaU" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaKa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaKi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaKu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaKe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaKo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaTa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaTi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaTu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaTe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaTo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaHa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaHi" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaHu" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaHe" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaHo" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaEnd" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaVoicedMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaSemiVoicedMark" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthCentSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="FullWidthYenSign" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="HalfWidthKatakanaWa" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ObjectReplacementCharacter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ReplacementCharacter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="ByteOrderingCharacter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="InvalidCharacter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="PrivateZoneStart" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="Inline" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="SpecialGlyph" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="AnyCharacter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="AnyLetter" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="AnyDigit" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="WhiteSpace" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="AnyKanji" placeholder="false" tagrequired="Normal"></mq:tagdefelement><mq:tagdefelement name="xref" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="linid" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="name" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="ubb" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="cs" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="filename" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="pagnum" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="fullpara" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="paranum" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="paratext" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="bmname" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="BlockType" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedCharacterStyle" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="CustomText" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="AppliedDelimiter" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="IncludeDelimiter" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:ch" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="val" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:nt" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="val" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:cmt" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="val" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="prv" filtered="false" required="false" translatable="false" /><mq:tagdefattribute name="id" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:pi" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="instruction" filtered="false" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:rxt" placeholder="false" tagrequired="Normal"><mq:tagdefattribute name="displaytext" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="val" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="fmt_b" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_i" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_u" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_sup" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_sub" filtered="true" required="false" translatable="false" /></mq:tagdefelement><mq:tagdefelement name="mq:rxt-req" placeholder="true" tagrequired="Required"><mq:tagdefattribute name="displaytext" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="val" filtered="true" required="true" translatable="false" /><mq:tagdefattribute name="fmt_b" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_i" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_u" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_sup" filtered="true" required="false" translatable="false" /><mq:tagdefattribute name="fmt_sub" filtered="true" required="false" translatable="false" /></mq:tagdefelement></mq:tagdefinition>
+<mq:doccomments />
+<mq:lqamodel><![CDATA[<XMLSerializedLQAModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><Version>1</Version><Name /><RevisionID>00000000-0000-0000-0000-000000000000</RevisionID><UseSeverityLevels>false</UseSeverityLevels><UsePenaltyPoints>false</UsePenaltyPoints><RequiresReviewerCommenting>false</RequiresReviewerCommenting><SeverityLevelNames /><ModelEntries /><PassFailCriterion><CountMultipleErrorOccuranceAsOne>false</CountMultipleErrorOccuranceAsOne><CritDefType>PenaltyPoints</CritDefType><PenaltyPointsNominator>0</PenaltyPointsNominator><PenaltyPointPerWordsDenominator>0</PenaltyPointPerWordsDenominator><NormalizedPenaltyScoreLimit>0</NormalizedPenaltyScoreLimit><CritDefinitionRules /></PassFailCriterion><QALQAMapping /><Timestamp>0001-01-01T00:00:00</Timestamp></XMLSerializedLQAModel>]]></mq:lqamodel>
+<mq:externalpreviewinfo>
+<mq:previewidsbylabels>
+<mq:previewidbylabel mq:label="1" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-1" />
+<mq:previewidbylabel mq:label="2" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-2" />
+<mq:previewidbylabel mq:label="3" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-3" />
+<mq:previewidbylabel mq:label="4" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-4" />
+<mq:previewidbylabel mq:label="5" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-5" />
+<mq:previewidbylabel mq:label="6" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-6" />
+<mq:previewidbylabel mq:label="7" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-7" />
+<mq:previewidbylabel mq:label="8" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-8" />
+<mq:previewidbylabel mq:label="9" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-9" />
+<mq:previewidbylabel mq:label="10" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-10" />
+<mq:previewidbylabel mq:label="11" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-11" />
+<mq:previewidbylabel mq:label="12" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-12" />
+<mq:previewidbylabel mq:label="13" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-13" />
+<mq:previewidbylabel mq:label="14" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-14" />
+<mq:previewidbylabel mq:label="15" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-15" />
+<mq:previewidbylabel mq:label="16" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-16" />
+<mq:previewidbylabel mq:label="17" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-17" />
+<mq:previewidbylabel mq:label="18" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-18" />
+<mq:previewidbylabel mq:label="19" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-19" />
+<mq:previewidbylabel mq:label="20" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-20" />
+<mq:previewidbylabel mq:label="21" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-21" />
+<mq:previewidbylabel mq:label="22" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-22" />
+<mq:previewidbylabel mq:label="23" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-23" />
+<mq:previewidbylabel mq:label="24" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-24" />
+<mq:previewidbylabel mq:label="25" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-25" />
+<mq:previewidbylabel mq:label="26" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-26" />
+<mq:previewidbylabel mq:label="27" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-27" />
+<mq:previewidbylabel mq:label="28" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-28" />
+<mq:previewidbylabel mq:label="29" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-29" />
+<mq:previewidbylabel mq:label="30" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-30" />
+<mq:previewidbylabel mq:label="31" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-31" />
+<mq:previewidbylabel mq:label="32" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-32" />
+<mq:previewidbylabel mq:label="33" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-33" />
+<mq:previewidbylabel mq:label="34" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-34" />
+<mq:previewidbylabel mq:label="35" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-35" />
+<mq:previewidbylabel mq:label="36" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-36" />
+<mq:previewidbylabel mq:label="37" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-37" />
+<mq:previewidbylabel mq:label="38" mq:previewid="mQ-default-11c08b02-741c-4888-a9ab-a2df07d9701b-38" />
+</mq:previewidsbylabels>
+</mq:externalpreviewinfo>
+</mq:docinformation>
+</header>
+<body>
+<trans-unit id="1" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="e9c11ddb-0889-4b61-8fa0-90b62f4157dd" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="1" mq:lastlabel="1" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="1"><bpt id="1" ctype="bold">{}</bpt>CAT Tool Stress-Test — IDML<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>CAT Tool Stress-Test — IDML<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#1 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="e9c11ddb-0889-4b61-8fa0-90b62f4157dd" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="1" mq:lastlabel="1" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="1" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>CAT Tool Stress-Test — IDML<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#1 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="2" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="600e41e2-21fb-47c1-9b29-5493c547fb3a" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2">Source:</source>
+<target xml:space="preserve">Source:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="600e41e2-21fb-47c1-9b29-5493c547fb3a" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2" mq:hasfollowingobject="hasfollowingobject">Source:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="3" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="1bd4cc74-8b58-479f-ab55-81e9c482a221" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2">Wikipedia, “Large language model”.</source>
+<target xml:space="preserve">Wikipedia, “Large language model”.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="1bd4cc74-8b58-479f-ab55-81e9c482a221" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2" mq:hasfollowingobject="hasfollowingobject">Wikipedia, “Large language model”.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="4" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="695217a9-4fdd-4026-9353-51ade0f69191" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2"><bpt id="1" ctype="bold">{}</bpt><bpt id="2" rid="1">&lt;uf ufcatid=&quot;1&quot;&gt;</bpt>Bold<ept id="1">{}</ept><ept id="3" rid="1">&lt;/uf&gt;</ept>, <bpt id="4" ctype="italic">{}</bpt><bpt id="5" rid="2">&lt;uf ufcatid=&quot;2&quot;&gt;</bpt>italic<ept id="4">{}</ept><ept id="6" rid="2">&lt;/uf&gt;</ept>, and normal runs in one paragraph.</source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt><bpt id="2" rid="3">&lt;uf ufcatid=&quot;1&quot;&gt;</bpt>Bold<ept id="1">{}</ept><ept id="3" rid="3">&lt;/uf&gt;</ept>, <bpt id="4" ctype="italic">{}</bpt><bpt id="5" rid="4">&lt;uf ufcatid=&quot;2&quot;&gt;</bpt>italic<ept id="4">{}</ept><ept id="6" rid="4">&lt;/uf&gt;</ept>, and normal runs in one paragraph.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="695217a9-4fdd-4026-9353-51ade0f69191" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="2" mq:lastlabel="2" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="2" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt><bpt id="2" rid="1">&lt;uf ufcatid=&quot;1&quot;&gt;</bpt>Bold<ept id="1">{}</ept><ept id="3" rid="1">&lt;/uf&gt;</ept>, <bpt id="4" ctype="italic">{}</bpt><bpt id="5" rid="2">&lt;uf ufcatid=&quot;2&quot;&gt;</bpt>italic<ept id="4">{}</ept><ept id="6" rid="2">&lt;/uf&gt;</ept>, and normal runs in one paragraph.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#2</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="5" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="14c5fe84-6688-4807-b81e-0828fdd8a0df" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3">A large language model (LLM) is a neural network trained on a vast amount of text for natural language processing tasks, especially language generation.</source>
+<target xml:space="preserve">A large language model (LLM) is a neural network trained on a vast amount of text for natural language processing tasks, especially language generation.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="14c5fe84-6688-4807-b81e-0828fdd8a0df" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3" mq:hasfollowingobject="hasfollowingobject">A large language model (LLM) is a neural network trained on a vast amount of text for natural language processing tasks, especially language generation.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="6" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="27443e83-7b23-41f5-9827-0ac7a958773b" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3">LLMs can typically generate, summarize, translate and analyze text in many contexts, and are a foundational technology behind modern chatbots.</source>
+<target xml:space="preserve">LLMs can typically generate, summarize, translate and analyze text in many contexts, and are a foundational technology behind modern chatbots.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="27443e83-7b23-41f5-9827-0ac7a958773b" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3" mq:hasfollowingobject="hasfollowingobject">LLMs can typically generate, summarize, translate and analyze text in many contexts, and are a foundational technology behind modern chatbots.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="7" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="ab057b51-d7d8-4e69-8b24-e2105172cb24" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3">Biased or inaccurate training data can make an LLM's output less reliable.</source>
+<target xml:space="preserve">Biased or inaccurate training data can make an LLM's output less reliable.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="ab057b51-d7d8-4e69-8b24-e2105172cb24" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="3" mq:lastlabel="3" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="3" mq:hasfollowingobject="hasfollowingobject">Biased or inaccurate training data can make an LLM's output less reliable.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#3 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="8" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="dd906c3a-9843-4e4f-baa4-167976a9f87c" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4">Special characters:</source>
+<target xml:space="preserve">Special characters:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="dd906c3a-9843-4e4f-baa4-167976a9f87c" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4" mq:hasfollowingobject="hasfollowingobject">Special characters:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="9" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="38e706a2-5b8a-4123-9a0c-e46faa6dc097" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4">Punctuation &amp; quotes: “curly double”, ‘curly single’, «guillemets», „la quote“, en–dash, em—dash, ellipsis…, non-breaking space, softhyphen, bullet •, dagger †, double‡.</source>
+<target xml:space="preserve">Punctuation &amp; quotes: “curly double”, ‘curly single’, «guillemets», „la quote“, en–dash, em—dash, ellipsis…, non-breaking space, softhyphen, bullet •, dagger †, double‡.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="38e706a2-5b8a-4123-9a0c-e46faa6dc097" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4" mq:hasfollowingobject="hasfollowingobject">Punctuation &amp; quotes: “curly double”, ‘curly single’, «guillemets», „la quote“, en–dash, em—dash, ellipsis…, non-breaking space, softhyphen, bullet •, dagger †, double‡.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="10" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="b1551106-8a25-4870-9240-1ca656f3dde5" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4">Marks: © ® ™ ℗ ¶ § № ※.</source>
+<target xml:space="preserve">Marks: © ® ™ ℗ ¶ § № ※.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="b1551106-8a25-4870-9240-1ca656f3dde5" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4" mq:hasfollowingobject="hasfollowingobject">Marks: © ® ™ ℗ ¶ § № ※.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="11" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="09feec7d-3f77-401e-b4ac-dfed688e137b" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4">Ligatures: ﬁle ﬂow œuvre æther.</source>
+<target xml:space="preserve">Ligatures: ﬁle ﬂow œuvre æther.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="09feec7d-3f77-401e-b4ac-dfed688e137b" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="4" mq:lastlabel="4" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="4" mq:hasfollowingobject="hasfollowingobject">Ligatures: ﬁle ﬂow œuvre æther.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#4 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="12" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="88db0fae-9ce1-470b-aabd-e49fe0631fc0" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5">Measure units:</source>
+<target xml:space="preserve">Measure units:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="88db0fae-9ce1-470b-aabd-e49fe0631fc0" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5" mq:hasfollowingobject="hasfollowingobject">Measure units:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="13" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="41f62860-8657-4f6e-b659-3c3f14130e5f" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5">Measurements:</source>
+<target xml:space="preserve">Measurements:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="41f62860-8657-4f6e-b659-3c3f14130e5f" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5" mq:hasfollowingobject="hasfollowingobject">Measurements:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="14" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="d5ebd0c1-3424-4f51-a68a-c3f3797ca43e" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5">25 °C, −40 °F, 3.5 µm, 10 Ω, 5 kΩ, 100 nm, 2.4 GHz, 512 GiB, ± 0.5 %, 90° angle, 45′ arcmin, 30″ arcsec, ½ cup, ¾ full, ⅓ share, 10 × 15 cm, area 20 m², volume 3 cm³, 5 000 ‰, speed 3×10⁸ m/s.</source>
+<target xml:space="preserve">25 °C, −40 °F, 3.5 µm, 10 Ω, 5 kΩ, 100 nm, 2.4 GHz, 512 GiB, ± 0.5 %, 90° angle, 45′ arcmin, 30″ arcsec, ½ cup, ¾ full, ⅓ share, 10 × 15 cm, area 20 m², volume 3 cm³, 5 000 ‰, speed 3×10⁸ m/s.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings 3.5 µm has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="3.5 µm" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="-1850599900" mq:errorwarning-combinedposstart="15" mq:errorwarning-combinedposlength="6" mq:errorwarning-correction="AQUzLDW1AW0AAAAAAAA=" />
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings 2.4 GHz has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="2.4 GHz" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="-1850599900" mq:errorwarning-combinedposstart="43" mq:errorwarning-combinedposlength="7" mq:errorwarning-correction="AQYyLDRHSHoAAAAAAAAA" />
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings 0.5 % has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="0.5 %" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="-1850599900" mq:errorwarning-combinedposstart="63" mq:errorwarning-combinedposlength="5" mq:errorwarning-correction="AQQwLDUlAAAAAAA=" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="d5ebd0c1-3424-4f51-a68a-c3f3797ca43e" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="5" mq:lastlabel="5" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="5" mq:hasfollowingobject="hasfollowingobject">25 °C, −40 °F, 3.5 µm, 10 Ω, 5 kΩ, 100 nm, 2.4 GHz, 512 GiB, ± 0.5 %, 90° angle, 45′ arcmin, 30″ arcsec, ½ cup, ¾ full, ⅓ share, 10 × 15 cm, area 20 m², volume 3 cm³, 5 000 ‰, speed 3×10⁸ m/s.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#5 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="15" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="a924a85e-9e57-4ab9-9a75-356256a1d497" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="6" mq:lastlabel="6" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="6">Currencies:</source>
+<target xml:space="preserve">Currencies:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#6 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="a924a85e-9e57-4ab9-9a75-356256a1d497" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="6" mq:lastlabel="6" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="6" mq:hasfollowingobject="hasfollowingobject">Currencies:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#6 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="16" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="e20436b6-b97d-4b05-be38-92c53fbf4cf2" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="6" mq:lastlabel="6" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="6">Currencies: $50,000 USD, €8 000 000 EUR, £11 M GBP, ¥100 JPY, ₹1,00,000 INR, ₩1000 KRW, ₽500 RUB, ₦10 VND, 1 234,56 € (de-DE format).</source>
+<target xml:space="preserve">Currencies: $50,000 USD, €8 000 000 EUR, £11 M GBP, ¥100 JPY, ₹1,00,000 INR, ₩1000 KRW, ₽500 RUB, ₦10 VND, 1 234,56 € (de-DE format).</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#6 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03067" mq:errorwarning-categoryid="3" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Number values don't match: $50,000 and $50,000. Verify consistency or check QA settings." mq:errorwarning-problemname="strict formats do not match in source and target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="$50,000	$50,000" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="157197854" mq:errorwarning-combinedposstart="12" mq:errorwarning-combinedposlength="7" mq:errorwarning-correction="AQckNTAsMDAwAAAAAAAAAAA=" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="e20436b6-b97d-4b05-be38-92c53fbf4cf2" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="6" mq:lastlabel="6" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="6" mq:hasfollowingobject="hasfollowingobject">Currencies: $50,000 USD, €8 000 000 EUR, £11 M GBP, ¥100 JPY, ₹1,00,000 INR, ₩1000 KRW, ₽500 RUB, ₦10 VND, 1 234,56 € (de-DE format).</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#6 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="17" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="1720f6ec-a1a0-45fa-99de-2f8576688ad9" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="7" mq:lastlabel="7" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="7">Greek &amp; math:</source>
+<target xml:space="preserve">Greek &amp; math:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#7 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="1720f6ec-a1a0-45fa-99de-2f8576688ad9" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="7" mq:lastlabel="7" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="7" mq:hasfollowingobject="hasfollowingobject">Greek &amp; math:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#7 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="18" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="f57c2c94-c35a-4272-9b83-faf442453102" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="7" mq:lastlabel="7" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="7">Greek &amp; math symbols: α β γ δ ε θ λ μ π σ φ ω Γ Δ Σ Φ Ω ∑ ∏ ∫ ∂ √ ∞ ≈ ≠ ≤ ≥ → ⇒ ∈ ∉ ⊆ × ÷ ± ⊕ ⊗ ·.</source>
+<target xml:space="preserve">Greek &amp; math symbols: α β γ δ ε θ λ μ π σ φ ω Γ Δ Σ Φ Ω ∑ ∏ ∫ ∂ √ ∞ ≈ ≠ ≤ ≥ → ⇒ ∈ ∉ ⊆ × ÷ ± ⊕ ⊗ ·.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#7 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="f57c2c94-c35a-4272-9b83-faf442453102" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="7" mq:lastlabel="7" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="7" mq:hasfollowingobject="hasfollowingobject">Greek &amp; math symbols: α β γ δ ε θ λ μ π σ φ ω Γ Δ Σ Φ Ω ∑ ∏ ∫ ∂ √ ∞ ≈ ≠ ≤ ≥ → ⇒ ∈ ∉ ⊆ × ÷ ± ⊕ ⊗ ·.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#7 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="19" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="7168a6da-f100-4c01-9adf-e6a6da4e562d" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8">Multilingual:</source>
+<target xml:space="preserve">Multilingual:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="7168a6da-f100-4c01-9adf-e6a6da4e562d" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8" mq:hasfollowingobject="hasfollowingobject">Multilingual:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="20" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="79e51ed7-acc1-4cb8-a3c3-420924479572" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8">Names &amp; scripts:</source>
+<target xml:space="preserve">Names &amp; scripts:</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="79e51ed7-acc1-4cb8-a3c3-420924479572" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8" mq:hasfollowingobject="hasfollowingobject">Names &amp; scripts:</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="21" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="40c6a663-dc60-4e8b-9e76-ea475c5af52a" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8">Tomaš Mikolov, Kneser–Ney, École, naïve, résumé, Zürich, München, São Paulo; 中文 (Chinese), 日本語 (Japanese), 한국어 (Korean), العربية (Arabic), Русский (Russian), हिन्दी (Hindi), עברית (Hebrew).</source>
+<target xml:space="preserve">Tomaš Mikolov, Kneser–Ney, École, naïve, résumé, Zürich, München, São Paulo; 中文 (Chinese), 日本語 (Japanese), 한국어 (Korean), العربية (Arabic), Русский (Russian), हिन्दी (Hindi), עברית (Hebrew).</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="40c6a663-dc60-4e8b-9e76-ea475c5af52a" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="8" mq:lastlabel="8" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="8" mq:hasfollowingobject="hasfollowingobject">Tomaš Mikolov, Kneser–Ney, École, naïve, résumé, Zürich, München, São Paulo; 中文 (Chinese), 日本語 (Japanese), 한국어 (Korean), العربية (Arabic), Русский (Russian), हिन्दी (Hindi), עברית (Hebrew).</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#8 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="22" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="399a978b-8fdb-4274-8f71-e63e90623041" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="9" mq:lastlabel="9" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="9">Line one before a forced line break</source>
+<target xml:space="preserve">Line one before a forced line break</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="399a978b-8fdb-4274-8f71-e63e90623041" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="9" mq:lastlabel="9" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="9" mq:hasfollowingobject="hasfollowingobject">Line one before a forced line break</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="23" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="ae332ab0-a946-4d97-a001-9ed3c4382d03" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="10" mq:lastlabel="10" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="10">line two after the break.</source>
+<target xml:space="preserve">line two after the break.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="ae332ab0-a946-4d97-a001-9ed3c4382d03" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="10" mq:lastlabel="10" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="10" mq:hasfollowingobject="hasfollowingobject">line two after the break.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve"> </mq:endingws>
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="24" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="f29c66e1-c5b7-4af8-8871-d99636a871be" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="10" mq:lastlabel="10" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="10">Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.</source>
+<target xml:space="preserve">Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="f29c66e1-c5b7-4af8-8871-d99636a871be" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="10" mq:lastlabel="10" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="10" mq:hasfollowingobject="hasfollowingobject">Equation (text): softmax(x)_i = e^{x_i} / Σ_j e^{x_j}.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#9 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="25" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="700434b1-6adb-42f8-bae8-2446a3b02339" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="11" mq:lastlabel="11" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="11"><bpt id="1" ctype="bold">{}</bpt>Cost table<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Cost table<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#10 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="700434b1-6adb-42f8-bae8-2446a3b02339" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="11" mq:lastlabel="11" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="11" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Cost table<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#10 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="26" mq:minorversionend="1" mq:minorversionstart="0" mq:status="PreTranslated" mq:segmentguid="189c12ec-9648-4a8e-9328-dd478e368c83" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="12" mq:lastlabel="12" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="12"><ph id="1">&lt;tbl linid=&quot;0&quot; /&gt;</ph></source>
+<target xml:space="preserve"><ph id="1">&lt;tbl linid=&quot;0&quot; /&gt;</ph></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#10 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="27" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="f76204f1-3984-4ab9-8080-4e9e085da61e" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="13" mq:lastlabel="13" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="13"><bpt id="1" ctype="bold">{}</bpt>Model<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Model<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#11 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="f76204f1-3984-4ab9-8080-4e9e085da61e" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="13" mq:lastlabel="13" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="13" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Model<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#11 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="28" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="8769d285-06c6-4ea5-8a86-766313761a13" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="14" mq:lastlabel="14" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="14"><bpt id="1" ctype="bold">{}</bpt>Year<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Year<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#12 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="8769d285-06c6-4ea5-8a86-766313761a13" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="14" mq:lastlabel="14" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="14" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Year<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#12 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="29" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="5bcbe384-692d-4667-9f32-14a0d69a3d15" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="15" mq:lastlabel="15" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="15"><bpt id="1" ctype="bold">{}</bpt>Parameters<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Parameters<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#13 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="5bcbe384-692d-4667-9f32-14a0d69a3d15" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="15" mq:lastlabel="15" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="15" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Parameters<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#13 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="30" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="8dfb6bf4-c9e5-435e-a548-61d1bba1b749" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="16" mq:lastlabel="16" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="16"><bpt id="1" ctype="bold">{}</bpt>Training cost (USD)<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Training cost (USD)<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#14 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="8dfb6bf4-c9e5-435e-a548-61d1bba1b749" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="16" mq:lastlabel="16" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="16" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Training cost (USD)<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#14 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="31" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="7a36fcb4-036b-447f-80a1-d5c0d25226de" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="17" mq:lastlabel="17" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="17"><bpt id="1" ctype="bold">{}</bpt>Notes<ept id="1">{}</ept></source>
+<target xml:space="preserve"><bpt id="1" ctype="bold">{}</bpt>Notes<ept id="1">{}</ept></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#15 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="7a36fcb4-036b-447f-80a1-d5c0d25226de" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="17" mq:lastlabel="17" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="17" mq:hasfollowingobject="hasfollowingobject"><bpt id="1" ctype="bold">{}</bpt>Notes<ept id="1">{}</ept></source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#15 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="32" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="b16dc010-3852-4c22-a2ef-f6a2dbc881f7" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="18" mq:lastlabel="18" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="18">GPT-2</source>
+<target xml:space="preserve">GPT-2</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#16 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="b16dc010-3852-4c22-a2ef-f6a2dbc881f7" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="18" mq:lastlabel="18" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="18" mq:hasfollowingobject="hasfollowingobject">GPT-2</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#16 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="33" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="2f3c0652-2316-48a9-928f-5873b0e44b49" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="19" mq:lastlabel="19" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="19">2019</source>
+<target xml:space="preserve">2019</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#17 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="2f3c0652-2316-48a9-928f-5873b0e44b49" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="19" mq:lastlabel="19" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="19" mq:hasfollowingobject="hasfollowingobject">2019</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#17 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="34" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="17a78f55-a26f-41d2-90e1-c70631c6b438" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="20" mq:lastlabel="20" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="20">1.5 billion</source>
+<target xml:space="preserve">1.5 billion</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#18 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings 1.5 has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="1.5" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="-1813015853" mq:errorwarning-combinedposstart="0" mq:errorwarning-combinedposlength="3" mq:errorwarning-correction="AQMxLDUAAAAA" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="17a78f55-a26f-41d2-90e1-c70631c6b438" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="20" mq:lastlabel="20" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="20" mq:hasfollowingobject="hasfollowingobject">1.5 billion</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#18 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="35" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="8e0c0ffd-547f-4b86-863a-39cdc7f72eb8" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="21" mq:lastlabel="21" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="21">$50,000</source>
+<target xml:space="preserve">$50,000</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#19 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03067" mq:errorwarning-categoryid="3" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Number values don't match: $50,000 and $50,000. Verify consistency or check QA settings." mq:errorwarning-problemname="strict formats do not match in source and target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="$50,000	$50,000" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="57610650" mq:errorwarning-combinedposstart="0" mq:errorwarning-combinedposlength="7" mq:errorwarning-correction="AQckNTAsMDAwAAAAAAAAAAA=" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="8e0c0ffd-547f-4b86-863a-39cdc7f72eb8" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="21" mq:lastlabel="21" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="21" mq:hasfollowingobject="hasfollowingobject">$50,000</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#19 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="36" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="e9ba4ba6-6c5f-405b-a599-7e49af1f44d9" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="22" mq:lastlabel="22" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="22">≈ 8 GPU-months</source>
+<target xml:space="preserve">≈ 8 GPU-months</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#20 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="e9ba4ba6-6c5f-405b-a599-7e49af1f44d9" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="22" mq:lastlabel="22" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="22" mq:hasfollowingobject="hasfollowingobject">≈ 8 GPU-months</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#20 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="37" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="b8670edb-5289-4062-a26c-a3a4ea2baa1c" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="23" mq:lastlabel="23" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="23">Megatron-Turing NLG</source>
+<target xml:space="preserve">Megatron-Turing NLG</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#21 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="b8670edb-5289-4062-a26c-a3a4ea2baa1c" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="23" mq:lastlabel="23" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="23" mq:hasfollowingobject="hasfollowingobject">Megatron-Turing NLG</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#21 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="38" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="122d7619-abd3-4e87-b0b2-6b15b0fb5acf" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="24" mq:lastlabel="24" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="24">2021</source>
+<target xml:space="preserve">2021</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#22 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="122d7619-abd3-4e87-b0b2-6b15b0fb5acf" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="24" mq:lastlabel="24" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="24" mq:hasfollowingobject="hasfollowingobject">2021</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#22 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="39" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="d3d3bc95-e39f-4405-afeb-17e36e41bc66" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="25" mq:lastlabel="25" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="25">530 billion</source>
+<target xml:space="preserve">530 billion</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#23 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="d3d3bc95-e39f-4405-afeb-17e36e41bc66" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="25" mq:lastlabel="25" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="25" mq:hasfollowingobject="hasfollowingobject">530 billion</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#23 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="40" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="b599bc2d-c36b-4e15-b016-324cd6b4994d" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="26" mq:lastlabel="26" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="26">$11,000,000</source>
+<target xml:space="preserve">$11,000,000</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#24 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings $11,000,000 has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="$11,000,000" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="150403390" mq:errorwarning-combinedposstart="0" mq:errorwarning-combinedposlength="11" mq:errorwarning-correction="AQskMTEuMDAwLjAwMAAAAAAAAAAAAAAAAA==" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="b599bc2d-c36b-4e15-b016-324cd6b4994d" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="26" mq:lastlabel="26" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="26" mq:hasfollowingobject="hasfollowingobject">$11,000,000</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#24 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="41" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="e3049180-2d6b-4fe6-bf45-ff7eac154cc0" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="27" mq:lastlabel="27" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="27">±10 % est.</source>
+<target xml:space="preserve">±10 % est.</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#25 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="e3049180-2d6b-4fe6-bf45-ff7eac154cc0" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="27" mq:lastlabel="27" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="27" mq:hasfollowingobject="hasfollowingobject">±10 % est.</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#25 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="42" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="9fac29ca-4689-45fe-83bb-0ed3ac0c96e7" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="28" mq:lastlabel="28" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="28">PaLM</source>
+<target xml:space="preserve">PaLM</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#26 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="9fac29ca-4689-45fe-83bb-0ed3ac0c96e7" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="28" mq:lastlabel="28" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="28" mq:hasfollowingobject="hasfollowingobject">PaLM</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#26 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="43" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="9efc96e5-384a-431e-a6bb-7e61629bf70b" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="29" mq:lastlabel="29" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="29">2022</source>
+<target xml:space="preserve">2022</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#27 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="9efc96e5-384a-431e-a6bb-7e61629bf70b" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="29" mq:lastlabel="29" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="29" mq:hasfollowingobject="hasfollowingobject">2022</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#27 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="44" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="7a34309a-b279-4627-b177-cd0da655369e" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="30" mq:lastlabel="30" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="30">540 billion</source>
+<target xml:space="preserve">540 billion</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#28 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="7a34309a-b279-4627-b177-cd0da655369e" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="30" mq:lastlabel="30" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="30" mq:hasfollowingobject="hasfollowingobject">540 billion</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#28 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="45" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="3f77ff97-f695-4045-9ba2-9104a3cf8939" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="31" mq:lastlabel="31" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="31">$8,000,000</source>
+<target xml:space="preserve">$8,000,000</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#29 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03061" mq:errorwarning-categoryid="4" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="Based on the language settings $8,000,000 has an invalid format in the translation. Check QA settings." mq:errorwarning-problemname="non-standard number format in the target" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs="$8,000,000" mq:errorwarning-dataspecific="errorwarning-dataspecific" mq:errorwarning-segmenthash="581632263" mq:errorwarning-combinedposstart="0" mq:errorwarning-combinedposlength="10" mq:errorwarning-correction="AQokOC4wMDAuMDAwAAAAAAAAAAAAAAA=" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="3f77ff97-f695-4045-9ba2-9104a3cf8939" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="31" mq:lastlabel="31" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="31" mq:hasfollowingobject="hasfollowingobject">$8,000,000</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#29 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="46" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="18f545ca-e4e7-47ba-b5c2-44f779bb1c28" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="32" mq:lastlabel="32" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="32">540 B × dense</source>
+<target xml:space="preserve">540 B × dense</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#30 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="18f545ca-e4e7-47ba-b5c2-44f779bb1c28" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="32" mq:lastlabel="32" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="32" mq:hasfollowingobject="hasfollowingobject">540 B × dense</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#30 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="47" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="f6b9b339-3206-455e-939b-a251743bfc6d" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="33" mq:lastlabel="33" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="33">DeepSeek R1</source>
+<target xml:space="preserve">DeepSeek R1</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#31 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="f6b9b339-3206-455e-939b-a251743bfc6d" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="33" mq:lastlabel="33" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="33" mq:hasfollowingobject="hasfollowingobject">DeepSeek R1</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#31 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="48" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="2931b260-123a-4177-8b4a-14b567a7bc93" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="34" mq:lastlabel="34" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="34">2025</source>
+<target xml:space="preserve">2025</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#32 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="2931b260-123a-4177-8b4a-14b567a7bc93" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="34" mq:lastlabel="34" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="34" mq:hasfollowingobject="hasfollowingobject">2025</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#32 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="49" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="58d7e190-9fff-40e7-b97a-beb36bbedc90" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="35" mq:lastlabel="35" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="35">671 billion</source>
+<target xml:space="preserve">671 billion</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#33 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="58d7e190-9fff-40e7-b97a-beb36bbedc90" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="35" mq:lastlabel="35" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="35" mq:hasfollowingobject="hasfollowingobject">671 billion</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#33 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="50" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="e8e58588-cb2c-4eb4-8fab-dbb246c9aa22" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="36" mq:lastlabel="36" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="36">n/a</source>
+<target xml:space="preserve">n/a</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#34 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="e8e58588-cb2c-4eb4-8fab-dbb246c9aa22" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="36" mq:lastlabel="36" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="36" mq:hasfollowingobject="hasfollowingobject">n/a</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#34 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="51" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="9db0ed44-4902-4da2-acca-cbf44222a3d5" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="37" mq:lastlabel="37" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="37">open-weight, ≤ o1 price</source>
+<target xml:space="preserve">open-weight, ≤ o1 price</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#35 / struct-uf#1</context>
+</context-group>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="9db0ed44-4902-4da2-acca-cbf44222a3d5" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="37" mq:lastlabel="37" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="37" mq:hasfollowingobject="hasfollowingobject">open-weight, ≤ o1 price</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#35 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+<trans-unit id="52" mq:minorversionend="1" mq:minorversionstart="1" mq:status="PartiallyEdited" mq:segmentguid="1ca648a9-43c2-4d20-9466-ecae3eed790e" mq:lastchangedtimestamp="2026-07-25T16:28:28Z" mq:lastchanginguser="navi" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="38" mq:lastlabel="38" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="38">Tokenization: token | izer | : | texts | -&gt; | series | of | numerical | “ | t | ok | ens | ”</source>
+<target xml:space="preserve">Tokenization: token | izer | : | texts | -&gt; | series | of | numerical | “ | t | ok | ens | ”</target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#36 / struct-uf#1</context>
+</context-group>
+<mq:warnings40>
+<mq:errorwarning mq:errorwarning-code="03072" mq:errorwarning-categoryid="5" mq:errorwarning-ignorable="errorwarning-ignorable" mq:errorwarning-shorttext="There's an extra space before :. Consider removing it." mq:errorwarning-problemname="extra space before sign" mq:errorwarning-longdesc="" mq:errorwarning-localizationargs=":" mq:errorwarning-segmenthash="-698239909" mq:errorwarning-combinedposstart="28" mq:errorwarning-combinedposlength="1" mq:errorwarning-correction="AQAA" />
+</mq:warnings40>
+<mq:minorversions>
+<mq:historical-unit mq:minorversionend="0" mq:minorversionstart="0" mq:status="NotStarted" mq:segmentguid="1ca648a9-43c2-4d20-9466-ecae3eed790e" mq:lastchangedtimestamp="0001-01-01T00:00:00Z" mq:maxlengthchars="-1" mq:nosplitjoin="false" mq:firstlabel="38" mq:lastlabel="38" mq:autosplitjoinstate="0" mq:lastmodifrole="0" mq:multipleexactmatch="false">
+<source xml:space="preserve" mq:segpart="38" mq:hasfollowingobject="hasfollowingobject">Tokenization: token | izer | : | texts | -&gt; | series | of | numerical | “ | t | ok | ens | ”</source>
+<target xml:space="preserve"></target>
+<context-group>
+<context context-type="x-mmq-structural-context">ImportableParagraphs / ImportableParagraph#36 / struct-uf#1</context>
+</context-group>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</mq:historical-unit>
+</mq:minorversions>
+<mq:startingws xml:space="preserve" />
+<mq:endingws xml:space="preserve" />
+<mq:commitinfos xmlns="MQXliff" /><mq:nosplitjoins />
+<mq:originalsource edited="false" />
+</trans-unit>
+</body>
+</file>
+</xliff>

@@ -1,0 +1,122 @@
+{
+  "export_read_back": {
+    "checked": 62,
+    "matching": 62,
+    "mismatched_segments": []
+  },
+  "format": "DOCX",
+  "notes": {
+    "paragraphs_in_export": 62,
+    "run_colours_after_export": {
+      "0563C1": 1,
+      "C00000": 1
+    },
+    "run_colours_in_source": {
+      "0563C1": 1,
+      "C00000": 1
+    },
+    "run_colours_lost": {}
+  },
+  "read_back_digest": "da506de9783241db",
+  "segments": 62,
+  "segments_translated": 62,
+  "source_file": "docx/CAT_test_DOCX.docx",
+  "tag_families": {
+    "html": 52
+  },
+  "tag_verification_issues": {},
+  "tags_by_segment": {
+    "1": [
+      "<i>",
+      "</i>"
+    ],
+    "10": [
+      "<b>",
+      "</b>"
+    ],
+    "11": [
+      "<b>",
+      "</b>"
+    ],
+    "12": [
+      "<b>",
+      "</b>"
+    ],
+    "13": [
+      "<b>",
+      "</b>"
+    ],
+    "14": [
+      "<b>",
+      "</b>"
+    ],
+    "2": [
+      "<b>",
+      "</b>"
+    ],
+    "3": [
+      "<b>",
+      "</b>",
+      "<i>",
+      "</i>",
+      "<u>",
+      "</u>",
+      "<sub>",
+      "</sub>",
+      "<sup>",
+      "</sup>",
+      "<cf color=\"C00000\">",
+      "</cf>"
+    ],
+    "37": [
+      "<b>",
+      "</b>"
+    ],
+    "4": [
+      "<b>",
+      "</b>"
+    ],
+    "40": [
+      "<b>",
+      "</b>"
+    ],
+    "41": [
+      "<cf color=\"0563C1\">",
+      "<u>",
+      "</u>",
+      "</cf>"
+    ],
+    "42": [
+      "<b>",
+      "</b>"
+    ],
+    "44": [
+      "<b>",
+      "</b>"
+    ],
+    "5": [
+      "<b>",
+      "</b>"
+    ],
+    "59": [
+      "<b>",
+      "</b>"
+    ],
+    "6": [
+      "<b>",
+      "</b>"
+    ],
+    "7": [
+      "<b>",
+      "</b>"
+    ],
+    "8": [
+      "<b>",
+      "</b>"
+    ],
+    "9": [
+      "<b>",
+      "</b>"
+    ]
+  }
+}

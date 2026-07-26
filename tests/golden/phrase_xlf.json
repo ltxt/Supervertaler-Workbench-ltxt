@@ -1,0 +1,135 @@
+{
+  "export_read_back": {
+    "checked": 308,
+    "matching": 308,
+    "mismatched_segments": []
+  },
+  "format": "XLF",
+  "notes": {
+    "export_path": "none — .xlf is not an import/export format"
+  },
+  "read_back_digest": "79d9dc6838c675f6",
+  "segments": 313,
+  "segments_translated": 308,
+  "source_file": "phrase/Initial_Translation_SK_2026-06-08.xlf",
+  "tag_families": {
+    "html": 29,
+    "placeholder": 40
+  },
+  "tag_verification_issues": {},
+  "tags_by_segment": {
+    "101": [
+      "{0}"
+    ],
+    "102": [
+      "{0}"
+    ],
+    "108": [
+      "<strong>",
+      "</strong>"
+    ],
+    "110": [
+      "{0}",
+      "{1}",
+      "{2}"
+    ],
+    "112": [
+      "{0}",
+      "{1}",
+      "{2}"
+    ],
+    "113": [
+      "<strong>",
+      "</strong>"
+    ],
+    "116": [
+      "{0}",
+      "{1}",
+      "{2}"
+    ],
+    "120": [
+      "{0}",
+      "{1}",
+      "{2}"
+    ],
+    "123": [
+      "<strong>",
+      "</strong>"
+    ],
+    "125": [
+      "{0}"
+    ],
+    "129": [
+      "{0}"
+    ],
+    "130": [
+      "{0}",
+      "{1}",
+      "{2}"
+    ],
+    "138": [
+      "{0}",
+      "{1}"
+    ],
+    "156": [
+      "<strong>",
+      "{0}",
+      "</strong>",
+      "<strong>",
+      "{1}",
+      "</strong>"
+    ],
+    "162": [
+      "<b>",
+      "{0}",
+      "</b>",
+      "<b>",
+      "{1}",
+      "</b>"
+    ],
+    "175": [
+      "{0}",
+      "{1}"
+    ],
+    "181": [
+      "{0}",
+      "{1}",
+      "{2}",
+      "{3}"
+    ],
+    "182": [
+      "<strong>",
+      "</strong>",
+      "<br />",
+      "<strong>",
+      "</strong>",
+      "<br />",
+      "<strong>",
+      "</strong>",
+      "<br />"
+    ],
+    "183": [
+      "<strong>",
+      "{0}",
+      "{1}",
+      "</strong>",
+      "<strong>",
+      "{2}",
+      "</strong>",
+      "<strong>",
+      "{3}",
+      "</strong>"
+    ],
+    "184": [
+      "{0}",
+      "{1}"
+    ],
+    "188": [
+      "{0}"
+    ],
+    "206": [
+      "{0}",
+      "{1}"
+    ]
+  }
+}

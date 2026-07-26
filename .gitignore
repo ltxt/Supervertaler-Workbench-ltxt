@@ -270,3 +270,8 @@ release-body-*.md
 *.svexport.json
 *_bilingual.txt
 *_bilingual.txt.svexport.json
+
+# Output of tools/generate_target_files.py — regenerate it, don't commit it.
+# The golden snapshots in tests/golden/ are the committed record; these are the
+# real documents for opening in Word / Trados / memoQ.
+target_files/

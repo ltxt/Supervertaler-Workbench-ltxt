@@ -1,0 +1,19 @@
+{
+  "export_read_back": {
+    "checked": 85,
+    "matching": 85,
+    "mismatched_segments": []
+  },
+  "format": "SDLXLIFF",
+  "notes": {
+    "source_language": "en-US",
+    "target_language": "de-de"
+  },
+  "read_back_digest": "a7b0b4a536132da5",
+  "segments": 85,
+  "segments_translated": 85,
+  "source_file": "trados/CAT_test_XLS.xls_en-US_de-de.sdlxliff",
+  "tag_families": {},
+  "tag_verification_issues": {},
+  "tags_by_segment": {}
+}

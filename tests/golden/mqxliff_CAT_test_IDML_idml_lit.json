@@ -1,0 +1,30 @@
+{
+  "export_read_back": {
+    "checked": 52,
+    "matching": 51,
+    "mismatched_segments": [
+      3
+    ]
+  },
+  "format": "MQXLIFF",
+  "notes": {},
+  "read_back_digest": "10e550ada40147e4",
+  "segments": 52,
+  "segments_translated": 52,
+  "source_file": "memoq/CAT_test_IDML.idml_lit.mqxliff",
+  "tag_families": {
+    "html": 5
+  },
+  "tag_verification_issues": {},
+  "tags_by_segment": {
+    "25": [
+      "<tbl linid=\"0\" />"
+    ],
+    "3": [
+      "<uf ufcatid=\"1\">",
+      "</uf>",
+      "<uf ufcatid=\"2\">",
+      "</uf>"
+    ]
+  }
+}

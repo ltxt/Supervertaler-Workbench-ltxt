@@ -172,6 +172,10 @@ markers = [
     # grid. Slow (tens of seconds) and needs the app's runtime dependencies, so
     # it is easy to exclude: `pytest -m "not gui"`.
     "gui: headless end-to-end test of the application window",
+    # Takes real CAT-tool documents through import → translate → export →
+    # re-import. Needs python-docx, which is not otherwise a test dependency, so
+    # the suite skips itself without it. Exclude with `pytest -m "not e2e"`.
+    "e2e: document round trip over the corpus in tests/fixtures/corpus",
 ]
 # Both styles are present in the suite: some modules use pytest fixtures and
 # parametrisation, others are plain assert-based functions. Default discovery

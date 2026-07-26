@@ -1,5 +1,14 @@
 * text=auto eol=lf
 
+# Round-trip test corpus: byte-for-byte as the CAT tools wrote it.
+#
+# These are real Trados / memoQ / Phrase exports and they use CRLF. The repo's
+# `text=auto eol=lf` above would rewrite them on checkout, so a clone would hold
+# files no CAT tool ever produced — and the golden snapshots in tests/golden/,
+# generated from the originals, would not match. `-text` disables all end-of-line
+# conversion without marking them binary, so they still diff as text.
+tests/fixtures/corpus/** -text
+
 # Preserve binary files
 *.png binary
 *.jpg binary

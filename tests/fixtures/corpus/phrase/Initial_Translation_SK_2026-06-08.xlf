@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="global" datatype="plaintext" source-language="de">
+    <body>
+      <trans-unit id=" mail_notification_new_appointment_description">
+        <source xml:lang="de">Ein neuer Service-Termin wurde zum Wartungsprofil des Fahrzeugs hinzugefügt.</source>
+      </trans-unit>
+      <trans-unit id="common.brand.i18n_C">
+        <source xml:lang="de">ŠKODA</source>
+      </trans-unit>
+      <trans-unit id="common.brand.i18n_N">
+        <source xml:lang="de">Volkswagen Nutzfahrzeuge</source>
+      </trans-unit>
+      <trans-unit id="common.brand.i18n_V">
+        <source xml:lang="de">Volkswagen PKW</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.distanceTraveledDTCClear.i18n_headline">
+        <source xml:lang="de">Service-Kilometerstand</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.distanceTraveledDTCClear.i18n_instructions">
+        <source xml:lang="de">Suchen Sie einen Fachbetrieb auf und lassen Sie den Fehlerspeicher zurücksetzen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAbsSystem.i18n_headline">
+        <source xml:lang="de">ABS</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAbsSystem.i18n_instructions">
+        <source xml:lang="de">Fachbetrieb aufsuchen. Das Fahrzeug kann ohne ABS gebremst werden.  
+Leuchtet die Kontrollleuchte zusammen mit der ESC-Kontrollleuchte ist das ABS gestört. Leuchtet die Kontrollleuchte zusammen mit der Bremssystem-Kontrollleuchte, ist das ABS ausgefallen. In beiden Fällen Fachbetrieb aufsuchen. Das Fahrzeug kann ohne ABS gebremst werden.  
+Leuchtet die Kontrollleuchte zusammen mit der ASR/ESC-Kontrollleuchte bei zugeschaltetem Allradantrieb 4X4 LOW und eingelegter Hinterachsdifferenzialsperre sind ABS und ASR/ESC abgeschaltet. Bei aktivierter Hinterachsdifferenzialsperre diese ausschalten (wenn gewünscht).</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAirbag.i18n_headline">
+        <source xml:lang="de">Airbag- und Gurtstraffersystem</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAirbag.i18n_instructions">
+        <source xml:lang="de">Fachbetrieb aufsuchen und das System umgehend prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAlternatorChargeControl.i18n_headline">
+        <source xml:lang="de">Generator</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAlternatorChargeControl.i18n_instructions">
+        <source xml:lang="de">Leuchtet: Fachbetrieb aufsuchen. Elektrische Anlage prüfen lassen. Nicht erforderliche elektrische Verbraucher ausschalten. Fahrzeugbatterie wird während der Fahrt nicht vom Generator geladen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAssistance.i18n_headline">
+        <source xml:lang="de">Assistenzsystem</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningAssistance.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBattery.i18n_headline">
+        <source xml:lang="de">Batterie</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBattery.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBattery.i18n_instructions_red">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrake.i18n_headline">
+        <source xml:lang="de">Bremsanlage</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrake.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrake.i18n_instructions_red">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeFluid.i18n_headline">
+        <source xml:lang="de">Bremsflüssigkeit</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeFluid.i18n_instructions">
+        <source xml:lang="de">Bitte Füllstand der Bremsflüssigkeit prüfen. Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeFluid.i18n_instructions_red">
+        <source xml:lang="de">Bitte Füllstand der Bremsflüssigkeit prüfen. Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeFluidLevel.i18n_headline">
+        <source xml:lang="de">Bremsanlage</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeFluidLevel.i18n_instructions">
+        <source xml:lang="de">Bei gezogener Handbremse diese lösen. In den anderen Fällen unverzüglich nächsten Fachbetrieb aufsuchen, um den Schaden beheben zu lassen. Auf dem Weg dorthin mit geringer Geschwindigkeit fahren und sich dabei auf viel längere Bremswege und einen erhöhten Pedaldruck einstellen. Fahrzeug kann ohne ABS gebremst werden.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeLinings.i18n_headline">
+        <source xml:lang="de">Bremsbelagverschleiss</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningBrakeLinings.i18n_instructions">
+        <source xml:lang="de">Unverzüglich einen Fachbetrieb aufsuchen. Alle Bremsbeläge prüfen und ggf. ersetzen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningConnectionModule.i18n_headline">
+        <source xml:lang="de">Verbindungsmodul</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningConnectionModule.i18n_instructions">
+        <source xml:lang="de">Störung am Verbindungsmodul. Bitte Werkstatt aufsuchen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningDieselPreHeat.i18n_headline">
+        <source xml:lang="de">Motorsteuerung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningDieselPreHeat.i18n_instructions">
+        <source xml:lang="de">Leuchtet:  
+Vorglühen des Dieselmotors vor dem Anlassen.  
+  
+Blinkt:  
+Motorsteuerung gestört (Dieselmotor). Motor umgehend von einem Fachbetrieb prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningElectricThrottle.i18n_headline">
+        <source xml:lang="de">Motorsteuerung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningElectricThrottle.i18n_instructions">
+        <source xml:lang="de">Motor umgehend von einem Fachbetrieb prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngine.i18n_headline">
+        <source xml:lang="de">Motor</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngine.i18n_instructions">
+        <source xml:lang="de">Motor umgehend von einem Fachbetrieb prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineCoolantLevel.i18n_headline">
+        <source xml:lang="de">Motorkühlmittelsystem</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineCoolantLevel.i18n_instructions">
+        <source xml:lang="de">Ist die Motorkühlmitteltemperatur zu hoch (Temperaturzeiger im Warnbereich), nicht weiterfahren! Fahrzeug anhalten, sobald es möglich und sicher ist. Motor abstellen, Motor abkühlen lassen, bis der Zeiger wieder im Normalbereich ist. Motorkühlmittelstand prüfen.  
+  
+Ist der Temperaturzeiger im Normalbereich und die Kontrollleuchte leuchtet auf, prüfen Sie bitte bei abgekühltem Motor den Motorkühlmittelstand und füllen bei zu niedrigem Stand Motorkühlmittel nach. Wenn der Motorkühlmittelstand in Ordnung sein sollte, liegt eine Störung vor. In diesem Fall nicht weiterfahren. Fachmännische Hilfe in Anspruch nehmen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineCoolantLevel.i18n_instructions_red">
+        <source xml:lang="de">Bitte Füllstand des Kühlmittels prüfen. Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineCoolantTemperature.i18n_headline">
+        <source xml:lang="de">Motorkühlmittelsystem</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineCoolantTemperature.i18n_instructions">
+        <source xml:lang="de">Nicht weiterfahren! Fachmännische Hilfe in Anspruch nehmen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineOilPressure.i18n_headline">
+        <source xml:lang="de">Motoröldruck</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningEngineOilPressure.i18n_instructions">
+        <source xml:lang="de">Motor abstellen. Motorölstand prüfen. Wenn die Warnleuchte blinkt, obwohl der Motorölstand in Ordnung ist, nicht weiterfahren oder den Motor laufen lassen. Motorschäden können die Folge sein. Fachmännische Hilfe in Anspruch nehmen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningExhaustSystem.i18n_headline">
+        <source xml:lang="de">Abgasanlage</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningExhaustSystem.i18n_instructions">
+        <source xml:lang="de">Vom Gas gehen. Vorsichtig zum nächsten Fachbetrieb fahren. Motor prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningFuelFilter.i18n_headline">
+        <source xml:lang="de">Wasser im Kraftstofffilter</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningFuelFilter.i18n_instructions">
+        <source xml:lang="de">Wasser im Kraftstoff bei Fahrzeugen mit Dieselmotor. 
+Amarok: Motor abstellen und Dieselkraftstofffilter entwässern.
+Caddy: Motor abstellen und fachmännische Hilfe in Anspruch nehmen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningKeylessSystem.i18n_headline">
+        <source xml:lang="de">Keyless System</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningKeylessSystem.i18n_instructions">
+        <source xml:lang="de">Fehler: Keyless-System. Bitte Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelAdBlueCritical.i18n_headline">
+        <source xml:lang="de">AdBlue nachfüllen</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelAdBlueCritical.i18n_instructions">
+        <source xml:lang="de">AdBlue®-Vorrat ist niedrig. Innerhalb der angezeigten Kilometer AdBlue® nachfüllen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelAdBlueCritical.i18n_instructions_red">
+        <source xml:lang="de">Bitte AdBlue (DEF) nachfüllen. Kein Motorstart mehr möglich.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelOil.i18n_headline">
+        <source xml:lang="de">Motorölstand</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelOil.i18n_instructions">
+        <source xml:lang="de">Motor abstellen und Motorölstand prüfen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelOil.i18n_instructions_red">
+        <source xml:lang="de">Ölstand: Öl nachfüllen!</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelWipingWater.i18n_headline">
+        <source xml:lang="de">Waschwasser nachfüllen</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningLiquidLevelWipingWater.i18n_instructions">
+        <source xml:lang="de">Scheibenwaschwasserstand zu niedrig. Scheibenwaschwasserbehälter bei der nächsten Gelegenheit auffüllen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningParticulateFilter.i18n_headline">
+        <source xml:lang="de">Dieselpartikelfilter</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningParticulateFilter.i18n_instructions">
+        <source xml:lang="de">Etwa 15 Minuten im 4. Gang (Schaltgetriebe) bzw. in Fahrstufe D (automatisches Getriebe) mit einer Geschwindigkeit von mindestens 70 km/h fahren. Geltende Geschwindigkeitsbegrenzungen beachten. Wenn die Kontrollleuchte danach nicht verlischt, den nächsten Fachbetrieb aufsuchen.  
+  
+Nur bei speziell ausgerüsteten Kurierfahrzeugen:  
+Dieselpartikelfilter wird gerade regeneriert. Wenn möglich, Motor nicht abstellen. Geltende Regeln zum Abstellen des Motors in besonderen Verkehrssituationen beachten (z. B. an Bahnübergängen). Die Kontrollleuchte verlischt bei regeneriertem Dieselpartikelfilter.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelCNG.i18n_headline">
+        <source xml:lang="de">Bitte tanken (CNG)</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelCNG.i18n_instructions">
+        <source xml:lang="de">Kraftstoffbehälter fast leer. Reservemenge wird verbraucht. Bei nächster Gelegenheit Kraftstoff tanken.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelGasoline.i18n_headline">
+        <source xml:lang="de">Bitte tanken</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelGasoline.i18n_instructions">
+        <source xml:lang="de">Kraftstoffbehälter fast leer. Reservemenge wird verbraucht. Bei nächster Gelegenheit Kraftstoff tanken.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelLPG.i18n_headline">
+        <source xml:lang="de">Bitte tanken (LPG)</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningRefuelLPG.i18n_instructions">
+        <source xml:lang="de">Kraftstoffbehälter fast leer. Reservemenge wird verbraucht. Bei nächster Gelegenheit Kraftstoff tanken.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningServiceCNG.i18n_headline">
+        <source xml:lang="de">Gasanlage (CNG)</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningServiceCNG.i18n_instructions">
+        <source xml:lang="de">Gasanlage prüfen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningServiceCNG.i18n_instructions_red">
+        <source xml:lang="de">Gasanlage prüfen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningShockAbsorber.i18n_headline">
+        <source xml:lang="de">Stoßdämpfer</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningShockAbsorber.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningSoftwareUpdate.i18n_headline">
+        <source xml:lang="de">System Aktualisierung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningSoftwareUpdate.i18n_instructions">
+        <source xml:lang="de">System-Aktualisierung nicht beendet. Bitte Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningSoftwareUpdate.i18n_instructions_red">
+        <source xml:lang="de">System-Aktualisierung nicht beendet. Bitte Bordbuch beachten.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningSteering.i18n_headline">
+        <source xml:lang="de">Lenkung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningSteering.i18n_instructions">
+        <source xml:lang="de">Störung der Lenkung. Bitte Werkstatt aufsuchen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTirePressure.i18n_headline">
+        <source xml:lang="de">Reifenfülldruck</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTirePressure.i18n_instructions">
+        <source xml:lang="de">Der Reifenfülldruck eines Rads hat sich gegenüber dem vom Fahrer eingestellten Reifenfülldruck erheblich verringert oder der Reifen ist strukturell beschädigt. Sofort die Geschwindigkeit reduzieren! Fahrzeug anhalten, sobald es möglich und sicher ist. Heftige Lenk- und Bremsmanöver vermeiden! Alle Räder und deren Reifenfülldrücke kontrollieren. Beschädigte Reifen ersetzen lassen.  
+  
+Wenn bei korrektem Reifenfülldruck durch Aus- und wieder Einschalten der Zündung die Kontrollleuchte immer noch leuchtet und ein Abgleich der Reifenkontrollanzeige nicht möglich ist, Fachbetrieb aufsuchen. System prüfen lassen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTrailerHitch.i18n_headline">
+        <source xml:lang="de">Anhängerkupplung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTrailerHitch.i18n_instructions">
+        <source xml:lang="de">Anhängerkupplung prüfen!</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTransmission.i18n_headline">
+        <source xml:lang="de">Doppelkupplungsgetriebe</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningTransmission.i18n_instructions">
+        <source xml:lang="de">Anhalten und Getriebe in Wählhebelstellung P abkühlen lassen. Wenn die Warnung nicht verlischt, nicht weiterfahren, sondern fachmännische Hilfe in Anspruch nehmen. Andernfalls können erhebliche Getriebeschäden die Folge sein.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningVehicleLighting.i18n_headline">
+        <source xml:lang="de">Fahrbeleuchtung</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningVehicleLighting.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningWindshieldWiper.i18n_headline">
+        <source xml:lang="de">Scheibenwischer</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.errorWarningWindshieldWiper.i18n_instructions">
+        <source xml:lang="de">Funktion prüfen und ausgefallene Komponenten austauschen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.nextOilChange.i18n_headline">
+        <source xml:lang="de">Ölwechsel-Service</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.nextOilChange.i18n_instructions">
+        <source xml:lang="de">Überprüfen Sie im Fahrzeug die Service-Intervall-Anzeige und lassen Sie vor Ablauf einen Ölwechsel bei einem Fachbetrieb durchführen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.nextService.i18n_headline">
+        <source xml:lang="de">Service-Intervall-Anzeige</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.nextService.i18n_instructions">
+        <source xml:lang="de">Überprüfen Sie im Fahrzeug die Service-Intervall-Anzeige und lassen Sie vor Ablauf
+einen Service bei einem Fachbetrieb durchführen.</source>
+      </trans-unit>
+      <trans-unit id="dashboard_messages.serviceSchedulingDisabled.i18n_headline">
+        <source xml:lang="de">Service-Terminplanung deaktiviert</source>
+      </trans-unit>
+      <trans-unit id="Days">
+        <source xml:lang="de">{"few":"Tage","many":"Tage","one":"Tag","other":"Tage","zero":"Tage"}</source>
+      </trans-unit>
+      <trans-unit id="Hours">
+        <source xml:lang="de">{"few":"Stunden","many":"Stunden","one":"Stunde","other":"Stunden","zero":"Stunden"}</source>
+      </trans-unit>
+      <trans-unit id="mail_acknowledgment">
+        <source xml:lang="de">Wir danken Ihnen, dass Sie Connect Pro verwenden,</source>
+        <note>Danksagung am Ende einer Nachricht.</note>
+      </trans-unit>
+      <trans-unit id="mail_caption_per_month">
+        <source xml:lang="de">pro Monat</source>
+      </trans-unit>
+      <trans-unit id="mail_caption_single_price">
+        <source xml:lang="de">Einzelpreis</source>
+      </trans-unit>
+      <trans-unit id="mail_caption_vehicle">
+        <source xml:lang="de">Fahrzeug</source>
+      </trans-unit>
+      <trans-unit id="mail_caption_vehicle_group">
+        <source xml:lang="de">Fahrzeuggruppe</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_button" maxwidth="41" size-unit="char">
+        <source xml:lang="de">"Abrechnungsdokumente" öffnen</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_headline">
+        <source xml:lang="de">Sie haben eine neue Gutschrift in Connect Pro.</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_link_faq">
+        <source xml:lang="de">Fragen und Antworten</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_link_support">
+        <source xml:lang="de">Support</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_links_message">
+        <source xml:lang="de">Bei Fragen oder wenn Sie weitergehende Hilfe benötigen, zögern Sie bitte nicht, sich mit unserem {LINK_SUPPORTPAGE} in Verbindung zu setzen oder besuchen Sie die {LINK_FAQPAGE}, um eine schnelle Antwort zu erhalten.</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_message">
+        <source xml:lang="de">Eine neue Gutschrift {0}</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_message2">
+        <source xml:lang="de">für Ihre Rechnung {0}</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_message3">
+        <source xml:lang="de">ist jetzt für Sie auf der Seite "Abrechnungsdokumente" hinterlegt. Sie können sie dort einsehen oder herunterladen:</source>
+      </trans-unit>
+      <trans-unit id="mail_credit_note_notification_subject">
+        <source xml:lang="de">Neue Gutschrift</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_credit_card_cta">
+        <source xml:lang="de">Zahlungsart aktualisieren</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_credit_card_message_next_attempt">
+        <source xml:lang="de">Nächster Einzugsversuch für die ausstehende Zahlung:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_instructions">
+        <source xml:lang="de">Was Sie jetzt tun müssen:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_instructions_credit_card">
+        <source xml:lang="de">Bitte prüfen und aktualisieren Sie innerhalb der nächsten &lt;strong&gt;7 Tage&lt;/strong&gt; die in Connect Pro hinterlegte Zahlungsart, um sicherzustellen, dass die Zahlung erfolgreich abgewickelt wird und Ihre Dienste nicht unterbrochen werden. Nach Ablauf dieser Frist werden wir erneut versuchen, die Zahlung einzuziehen.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_credit_card_message_01">
+        <source xml:lang="de">Ihre Zahlung ist fehlgeschlagen, bitte aktualisieren Sie Ihre Zahlungsart.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_credit_card_message_02">
+        <source xml:lang="de">Wir konnten den Rechnungsbetrag von {0} {1} aus Ihrer letzten Rechnung mit der Rechnungsnummer {2} nicht abbuchen. Mögliche Gründe dafür sind, dass Ihr Zahlungsmittel abgelaufen ist oder es ein Problem mit der Transaktion gab.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_credit_card_subject">
+        <source xml:lang="de">Connect Pro Zahlung fehlgeschlagen: Aktualisieren Sie Ihre Zahlungsart</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_pay_by_invoice_message_01">
+        <source xml:lang="de">der Rechnungsbetrag von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} ist noch nicht auf unserem Konto eingegangen. Möglicherweise ist die Überweisung fehlgeschlagen oder eine falsche oder fehlerhafte Bankverbindung wurde verwendet.</source>
+        <note>CONTEXT: First sentence after salutation (therefore starts small-caps in German)</note>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_pay_by_invoice_message_02">
+        <source xml:lang="de">Bitte überprüfen Sie ggf. die bereits getätigte Überweisung und überweisen Sie den Rechnungsbetrag innerhalb der nächsten &lt;strong&gt;7 Tage&lt;/strong&gt; auf folgendes Konto:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_1_pay_by_invoice_subject">
+        <source xml:lang="de">Zahlungserinnerung zu Ihrer Connect Pro Rechnung</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_credit_card_message_01">
+        <source xml:lang="de">Ihre Zahlung ist erneut fehlgeschlagen, bitte aktualisieren Sie dringend Ihre Zahlungsart.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_credit_card_message_02">
+        <source xml:lang="de">Wir konnten den Rechnungsbetrag von {0} {1} aus Ihrer letzten Rechnung mit der Rechnungsnummer {2} erneut nicht abbuchen. Mögliche Gründe dafür sind, dass Ihr Zahlungsmittel abgelaufen ist oder es ein Problem mit der Transaktion gab.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_credit_card_subject">
+        <source xml:lang="de">Connect Pro Zahlung erneut fehlgeschlagen: Aktualisieren Sie Ihre Zahlungsart</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_credit_card_warning">
+        <source xml:lang="de">Wenn die Zahlungsart bis zum nächsten Einzugsversuch nicht aktualisiert wird und die Zahlung erneut fehlschlägt, werden alle kostenpflichtigen Services deaktiviert. Wir behalten uns vor, weitere rechtliche Schritte einzuleiten, um den ausstehenden Betrag einzumahnen.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_important_notice">
+        <source xml:lang="de">Wichtiger Hinweis:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_pay_by_invoice_message_01">
+        <source xml:lang="de">der Rechnungsbetrag von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} ist noch immer nicht auf unserem Konto eingegangen.</source>
+        <note>CONTEXT: First sentence after salutation (therefore starts small-caps in German)</note>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_pay_by_invoice_message_02">
+        <source xml:lang="de">Bitte überweisen Sie den Rechnungsbetrag umgehend auf folgendes Konto, um Serviceunterbrechungen zu vermeiden:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_pay_by_invoice_subject">
+        <source xml:lang="de">Ihre Connect Pro Rechnung ist noch offen</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_2_pay_by_invoice_warning">
+        <source xml:lang="de">Wenn wir innerhalb der nächsten &lt;strong&gt;7 Tage&lt;/strong&gt; keinen Zahlungseingang verzeichnen, werden alle kostenpflichtigen Services deaktiviert. Wir behalten uns vor, weitere rechtliche Schritte einzuleiten, um den ausstehenden Betrag einzumahnen.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_acknowledgment">
+        <source xml:lang="de">Mit freundlichen Grüßen,</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_credit_card_message">
+        <source xml:lang="de">Wir informieren Sie hiermit darüber, dass es uns nach drei fehlgeschlagenen Versuchen nicht möglich ist, den offenen Betrag Ihrer Rechnung mit der Nummer {0} abzubuchen.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_deactivation_headline">
+        <source xml:lang="de">kostenpflichtige Connect Pro Services wurden deaktiviert.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_deactivation_info">
+        <source xml:lang="de">Daher wurden nun alle kostenpflichtigen Services für Ihre Flotte deaktiviert. Wir behalten uns vor, weitere rechtliche Schritte einzuleiten, um den ausstehenden Betrag einzumahnen.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_instructions_link_support_team">
+        <source xml:lang="de">Support-Team</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_instructions_links_message">
+        <source xml:lang="de">Bitte wenden Sie sich so bald wie möglich an unser {0}, um eine Lösung zu finden.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_pay_by_invoice_message">
+        <source xml:lang="de">Wir informieren Sie hiermit darüber, dass wir nach zwei Zahlungserinnerungen weiterhin keinen Zahlungseingang des offenen Betrags von {0} {1} aus Ihrer Rechnung mit der Rechnungsnummer {2} verzeichnen konnten.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_level_3_subject">
+        <source xml:lang="de">Kostenpflichtige Connect Pro Services aufgrund fehlgeschlagener Zahlungen deaktiviert</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_pay_by_invoice_already_paid_hint">
+        <source xml:lang="de">Falls Sie den Betrag bereits beglichen haben, betrachten Sie dieses Schreiben als gegenstandslos.</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_pay_by_invoice_cta">
+        <source xml:lang="de">„Abrechnungsdokumente“ öffnen</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_pay_by_invoice_cta_hint">
+        <source xml:lang="de">Hier können Sie die Rechnung einsehen und herunterladen:</source>
+      </trans-unit>
+      <trans-unit id="mail_dunning_pay_by_invoice_warning">
+        <source xml:lang="de">Nur so kann sichergestellt werden, dass die Dienste nicht unterbrochen werden.</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_link_fleet">
+        <source xml:lang="de">Flotte</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_link_services">
+        <source xml:lang="de">Services</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_links_message">
+        <source xml:lang="de">Eine vollständige Übersicht über Ihre Flotte finden Sie im Abschnitt {0}.
+Im Abschnitt {1} erhalten Sie die Details zu allen  aktiven Services der Fahrzeuge Ihrer Flotte, einschließlich aller aktuellen Preise und Laufzeiten.</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_message">
+        <source xml:lang="de">wir freuen uns, Ihnen mitteilen zu können, dass Ihre Flotte erfolgreich um neue Fahrzeuge erweitert wurde. Nachstehend finden Sie eine Übersicht über diese Fahrzeuge:</source>
+        <note>CONTEXT: First sentence after salutation (therefore starts small-caps in German)</note>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_newly_added_vehicles_message">
+        <source xml:lang="de">Ihre neu hinzugefügten Fahrzeuge</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_services_activated_message">
+        <source xml:lang="de">Automatisch aktivierte Services</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_subject">
+        <source xml:lang="de">Ihre kürzlich hinzugefügten Fahrzeuge</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_vehicle_message">
+        <source xml:lang="de">Fahrzeug</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report_vehicles_added">
+        <source xml:lang="de">Hinzugefügte Fahrzeuge:</source>
+      </trans-unit>
+      <trans-unit id="mail_enrollment_report.subject">
+        <source xml:lang="de">Ihre kürzlich hinzugefügten Fahrzeuge</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_imprint">
+        <source xml:lang="de">Impressum</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_message_1">
+        <source xml:lang="de">Bitte antworten Sie nicht auf diese E-Mail.</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_message_2">
+        <source xml:lang="de">Falls Sie weitere Fragen oder Anregungen haben, senden Sie uns eine E-Mail an kundenbetreuung@volkswagen.de oder rufen Sie uns an unter der gebührenfreien Servicenummer  (0800) 86 55 79 24 36 oder (0800) VOLKSWAGEN.</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_message_3">
+        <source xml:lang="de">Erläuterungen zum Datenschutz bei der Volkswagen AG finden Sie unter Datenschutzerklärung.</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_notification_manage_preferences_1">
+        <source xml:lang="de">Möchten Sie diese Art von E-Mails nicht mehr erhalten?</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_notification_manage_preferences_2">
+        <source xml:lang="de">Benachrichtigungseinstellungen</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_privacy_policy">
+        <source xml:lang="de">Datenschutzerklärung</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_sender_details">
+        <source xml:lang="de">Absenderangaben</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_support_center">
+        <source xml:lang="de">Support-Center</source>
+      </trans-unit>
+      <trans-unit id="mail_footer_terms_of_use">
+        <source xml:lang="de">Nutzungsbedingungen</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_reminder_message">
+        <source xml:lang="de">Ihr kostenloser Probezeitraum für den Service &lt;strong&gt;„{0}“&lt;/strong&gt; endet am &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_reminder_outro_01">
+        <source xml:lang="de">Je nach Zahlungsart wird der Betrag entweder automatisch am Ende des Abrechnungszyklus eingezogen (Kreditkarte oder SEPA) oder muss nach Rechnungserhalt durch Ihre Organisation überwiesen werden (Rechnungskauf).</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_reminder_outro_02">
+        <source xml:lang="de">Im Bereich {LINK_SERVICESPAGE} können Sie die Services für Ihre Fahrzeuge bearbeiten. Im Bereich {LINK_BILLINGPAGE} können Sie Ihre monatlichen Kosten im Auge behalten.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_reminder_outro_link_billing">
+        <source xml:lang="de">Abrechnungsdokumente</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_reminder_outro_link_services">
+        <source xml:lang="de">Services</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_with_payment_button">
+        <source xml:lang="de">Service anpassen</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_with_payment_message">
+        <source xml:lang="de">Ihr kostenloser Probezeitraum für den Service &lt;b&gt;„{0}“&lt;/b&gt; endet am &lt;b&gt;{1}&lt;/b&gt;. 
+Danach wird der Service kostenpflichtig und die Gebühren monatlich abgerechnet. 
+
+Sie können den Service jederzeit zum Ende des laufenden Monats kündigen. Wenn Sie vor dem Ende des Probezeitraums kündigen, entstehen keine Kosten.
+Sie können den Service flexibel für Ihre Flottenfahrzeuge individuell anpassen.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_with_payment_message_01">
+        <source xml:lang="de">Danach wird der Service kostenpflichtig und die Gebühren monatlich abgerechnet. </source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_with_payment_message_02">
+        <source xml:lang="de">Sie können den Service jederzeit zum Ende des laufenden Monats kündigen. Wenn Sie vor dem Ende des Probezeitraums kündigen, entstehen keine Kosten.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_with_payment_message_03">
+        <source xml:lang="de">Sie können den Service flexibel für Ihre Flottenfahrzeuge individuell anpassen.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_button">
+        <source xml:lang="de">Zahlungsart hinzufügen</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_01">
+        <source xml:lang="de">Bitte beachten Sie:</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_02">
+        <source xml:lang="de">Um den Service über den kostenlosen Probezeitraum hinaus nutzen zu können, benötigen Sie eine gültige Zahlungsart. Aktuell ist in Connect Pro noch keine Zahlungsart hinterlegt.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_03">
+        <source xml:lang="de">Wenn Sie bis zum Ende des kostenlosen Probezeitraums keine Zahlungsart hinzufügen, wird der Service automatisch deaktiviert. Es entstehen dabei keine Kosten.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_04">
+        <source xml:lang="de">Möchten Sie den Service weiterhin nutzen, fügen Sie bitte eine Zahlungsart hinzu. Nach dem kostenlosen Probezeitraum wird der Service kostenpflichtig und monatlich abgerechnet.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_05">
+        <source xml:lang="de">Sie können den Service jederzeit zum Ende des laufenden Monats kündigen. Wenn Sie vor Ablauf des kostenlosen Probezeitraums kündigen, entstehen keine Kosten.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_06">
+        <source xml:lang="de">Was passiert, wenn der Service „Ortung“ deaktiviert wird?</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_07">
+        <source xml:lang="de">Wird der Service „Ortung“ deaktiviert, werden für die betroffenen Fahrzeuge keine GPS-Daten mehr an Connect Pro übertragen oder aufgezeichnet. Die Fahrzeuge können nicht mehr geortet werden und sind im Bereich „Ortung“ nicht mehr sichtbar. Die Routenhistorie mit den bisher aufgezeichneten Daten bleibt erhalten.</source>
+      </trans-unit>
+      <trans-unit id="mail_free_trial_without_payment_message_08">
+        <source xml:lang="de">Wird ein Fahrzeug aus Connect Pro gelöscht oder durch einen Halterwechsel in eine andere Connect Pro Flotte aufgenommen, werden alle gespeicherten Daten aus Connect Pro unwiderruflich gelöscht.</source>
+      </trans-unit>
+      <trans-unit id="mail_greeting_01">
+        <source xml:lang="de">Hallo {0} {1},</source>
+        <note>Greeting withing an email</note>
+      </trans-unit>
+      <trans-unit id="mail_link_faq">
+        <source xml:lang="de">Fragen und Antworten</source>
+      </trans-unit>
+      <trans-unit id="mail_link_support">
+        <source xml:lang="de">Support-Center</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_button" maxwidth="41" size-unit="char">
+        <source xml:lang="de">"Abrechnungsdokumente" öffnen</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_download_message">
+        <source xml:lang="de">Hier können Sie die Rechnung einsehen und herunterladen:</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_headline">
+        <source xml:lang="de">Ihre Connect Pro Monatsabrechnung ist da.</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_message">
+        <source xml:lang="de">Ihre Connect Pro Rechnung für {0} {1} über {2} {3} steht jetzt im Bereich \u201CZahlung und Abrechnung\u201D für Sie bereit.</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_pay_by_invoice_bank_message">
+        <source xml:lang="de">Bank: &lt;strong&gt;Commerzbank AG&lt;/strong&gt;&lt;br /&gt;IBAN: &lt;strong&gt;DE85269410530682000501&lt;/strong&gt;&lt;br /&gt;BIC / SWIFT: &lt;strong&gt;COBADEFFXXX&lt;/strong&gt;&lt;br /&gt;</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_pay_by_invoice_message">
+        <source xml:lang="de">Bitte überweisen Sie den Betrag von &lt;strong&gt;{0} {1}&lt;/strong&gt; bis spätestens &lt;strong&gt;{2}&lt;/strong&gt; unter der Angabe der Rechnungsnummer &lt;strong&gt;{3}&lt;/strong&gt; auf folgendes Konto:</source>
+      </trans-unit>
+      <trans-unit id="mail_monthly_invoice_notification_subject">
+        <source xml:lang="de">Ihre Connect Pro Monatsabrechnung für {0} {1}</source>
+        <note>Betreff der Benachrichtigungs-Email für eine Monatsabrechnung</note>
+      </trans-unit>
+      <trans-unit id="mail_notification_email_closing">
+        <source xml:lang="de">Vielen Dank, dass Sie Connect Pro nutzen!</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_link_text">
+        <source xml:lang="de">Ändern Sie Ihre Benachrichtigungseinstellungen in Connect Pro.</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_maintenance_new_issue_description.one">
+        <source xml:lang="de">Für dieses Fahrzeug wurde ein neuer Wartungsbedarf angelegt.</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_maintenance_new_issue_description.other">
+        <source xml:lang="de">Für dieses Fahrzeug wurden {0} neue Wartungsbedarfe angelegt.</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_maintenance_new_issue_subject">
+        <source xml:lang="de">Neuer Wartungsbedarf</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_new_appointment_description">
+        <source xml:lang="de">Ein neuer Service-Termin wurde zum Wartungsprofil des Fahrzeugs hinzugefügt.</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_new_appointment_subject">
+        <source xml:lang="de">Neuer Service-Termin</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_new_chat_msg_description">
+        <source xml:lang="de">Ihr Service-Partner hat Ihnen eine neue Chat-Nachricht gesendet.</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_new_chat_msg_subject">
+        <source xml:lang="de">Neue Chat-Nachricht</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_table_header_description">
+        <source xml:lang="de">Details</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_table_header_vehicle">
+        <source xml:lang="de">Fahrzeug</source>
+      </trans-unit>
+      <trans-unit id="mail_notification_text_message">
+        <source xml:lang="de">in Connect Pro liegen neue Benachrichtigungen zu einem Ihrer Flottenfahrzeuge vor.</source>
+        <note>CONTEXT: First sentence after salutation (therefore starts small-caps in German)</note>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_automatically_debited_message">
+        <source xml:lang="de">Je nach Zahlungsart wird der Betrag entweder automatisch am Ende des Abrechnungszyklus eingezogen (Kreditkarte oder SEPA) oder muss nach Rechnungserhalt durch Ihre Organisation überwiesen werden (Rechnungskauf).</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_caption_sub_total">
+        <source xml:lang="de">Zwischensumme</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_caption_total">
+        <source xml:lang="de">Gesamtsumme Aktivierung</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_caption_total_with_tax">
+        <source xml:lang="de">Gesamtsumme Aktivierung</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_deactivated_services_message">
+        <source xml:lang="de">Die Vertragslaufzeit der betroffenen Services endet mit dem Ende dieses Monats. Die Gebühren für den laufenden Monat werden in der nächsten Rechnung zum letzten Mal abgerechnet. Die Services werden sofort deaktiviert und es werden keine dafür erforderlichen Fahrzeugdaten mehr geteilt. Bis zum Ende der Vertragslaufzeit können Sie die Services jederzeit wieder aktivieren. Sie können die Laufzeit ab dem 1. des nächsten Monats wieder verlängern.
+Wenn Sie einen Service für ein Fahrzeug während eines kostenlosen Probezeitraums oder Vertragszeitraums deaktivieren, bleiben die monatlichen Gebühren unverändert.</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_inline_notification_free_trial_headline">
+        <source xml:lang="de">Probezeitraum bis</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_inline_notification_free_trial_message">
+        <source xml:lang="de">Der Service wird nach Ablauf des kostenlosen Probezeitraums automatisch verlängert und die Gebühren monatlich abgerechnet. Sie können den Service jederzeit zum Ende des laufenden Monats kündigen. Wenn Sie vor dem Ende des Probezeitraums kündigen, entstehen keine Kosten. Um den Service über den kostenlosen Probezeitraum hinaus nutzen zu können, ist eine gültige Zahlungsart erforderlich. Ist keine Zahlungsart hinterlegt, wird der Service für die betroffenen Fahrzeuge automatisch deaktiviert.</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_link_billing_documents">
+        <source xml:lang="de">Abrechnungsdokumente</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_link_services">
+        <source xml:lang="de">Services</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_links_message">
+        <source xml:lang="de">Im Bereich {0} können Sie die Services für Ihre Fahrzeuge bearbeiten. Im Bereich {1} können Sie Ihre monatlichen Kosten im Auge behalten.</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_message">
+        <source xml:lang="de">danke, dass Sie unsere Services nutzen. Wir bestätigen hiermit gerne Ihre Bestellung. Ihre Änderungen werden nun für Ihre ausgewählten Fahrzeuge übernommen. Dies kann je nach Menge und Erreichbarkeit der betroffenen Fahrzeuge einige Zeit brauchen. Bitte beachten Sie, dass die Fahrzeuge online sein müssen, damit die Services aktiviert oder deaktiviert werden können.</source>
+        <note>CONTEXT: First sentence after salutation (therefore starts small-caps in German)</note>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_product_price_info">
+        <source xml:lang="de">pro Monat pro Fahrzeug</source>
+        <note>temporary price info for Payment GoLive</note>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_reduction_reason_otl">
+        <source xml:lang="de">Anteilige Gutschrift: kostenloser Probezeitraum</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_reduction_reason_pro_rata">
+        <source xml:lang="de">Monatsanteilige Gutschrift bis zur Aktivierung</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_reductions">
+        <source xml:lang="de">Ermäßigungen</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_subject">
+        <source xml:lang="de">Bestätigung Ihrer Service-Anpassungen in Connect Pro</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_adjustment_message">
+        <source xml:lang="de">Ihre monatlichen Kosten werden entsprechend angepasst.</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_caption_activated_services">
+        <source xml:lang="de">Aktivierte Services</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_caption_billing_date">
+        <source xml:lang="de">Nächstes Rechnungsdatum</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_caption_charge_date">
+        <source xml:lang="de">Nächstes Abbuchungsdatum</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_caption_date">
+        <source xml:lang="de">Auftragsdatum:</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_caption_deactivated_services">
+        <source xml:lang="de">Deaktivierte Services</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_summary_headline">
+        <source xml:lang="de">Zusammenfassung Ihres Auftrags:</source>
+      </trans-unit>
+      <trans-unit id="mail_order_confirmation_trial_period_tag">
+        <source xml:lang="de">Probezeitraum bis</source>
+      </trans-unit>
+      <trans-unit id="mail_signature">
+        <source xml:lang="de">Ihr Connect Pro Team</source>
+      </trans-unit>
+      <trans-unit id="mail_support_and_faq_message">
+        <source xml:lang="de">Bei Fragen oder wenn Sie weitergehende Hilfe benötigen, zögern Sie bitte nicht, sich mit unserem {LINK_SUPPORTPAGE} in Verbindung zu setzen oder besuchen Sie die {LINK_FAQPAGE}, um eine schnelle Antwort zu erhalten.</source>
+      </trans-unit>
+      <trans-unit id="mail_welcome_call_to_action">
+        <source xml:lang="de">Bei Connect Pro anmelden</source>
+        <note>2025-11-21: Please re-translate this text, as it has been changed.</note>
+      </trans-unit>
+      <trans-unit id="mail_welcome_subject">
+        <source xml:lang="de">Willkommen bei Connect Pro</source>
+      </trans-unit>
+      <trans-unit id="mail_welcome_text_01">
+        <source xml:lang="de">Ihr Service Partner hat für Sie ein Konto bei Connect Pro erstellt.</source>
+        <note>2025-11-21: Please re-translate this text, as it has been changed.</note>
+      </trans-unit>
+      <trans-unit id="mail_welcome_text_02">
+        <source xml:lang="de">Connect Pro ist Ihre digitale Flottenlösung, mit der Sie Wartungsbedarfe frühzeitig erkennen und Service-Termine effizient planen können, um Ausfallzeiten zu reduzieren und die Betriebsbereitschaft Ihrer Flotte zu erhöhen.</source>
+      </trans-unit>
+      <trans-unit id="mail_welcome_text_03">
+        <source xml:lang="de">So greifen Sie auf Ihr Konto zu:</source>
+        <note>2025-11-21: Please re-translate this text, as it has been changed.</note>
+      </trans-unit>
+      <trans-unit id="mail_welcome_text_04">
+        <source xml:lang="de">Melden Sie sich einfach mit Ihren ONE Business ID Zugangsdaten an und entdecken Sie die Vorteile von Connect Pro.</source>
+      </trans-unit>
+      <trans-unit id="mail_word_vat">
+        <source xml:lang="de">MwSt.</source>
+      </trans-unit>
+      <trans-unit id="mail_word_vehicle">
+        <source xml:lang="de">{"few":"Fahrzeuge","many":"Fahrzeuge","one":"Fahrzeug","other":"Fahrzeuge","zero":null}</source>
+      </trans-unit>
+      <trans-unit id="mail_word_vehicle_s">
+        <source xml:lang="de">Fahrzeug/e</source>
+      </trans-unit>
+      <trans-unit id="maintenance_added_automatically">
+        <source xml:lang="de">&lt;&lt;&lt;&lt; automatisch hinzugefügt &gt;&gt;&gt;&gt;</source>
+      </trans-unit>
+      <trans-unit id="maintenance_headline_damage">
+        <source xml:lang="de">Beschädigung</source>
+      </trans-unit>
+      <trans-unit id="maintenance_headline_maintenance">
+        <source xml:lang="de">Aufgaben</source>
+      </trans-unit>
+      <trans-unit id="maintenance.email.text">
+        <source xml:lang="de">Zusätzlicher Ansprechpartner zur Kontaktaufnahme</source>
+        <note>Text describing the additional email addresses for the partner</note>
+      </trans-unit>
+      <trans-unit id="maintenance.task.pti.description">
+        <source xml:lang="de">Die Hauptuntersuchung ist fällig am</source>
+        <note>Beschreibt die Fälligkeit der Hauptuntersuchung</note>
+      </trans-unit>
+      <trans-unit id="maintenance.task.pti.title">
+        <source xml:lang="de">Hauptuntersuchung</source>
+        <note>Überschrift für den Maintenance Task Hauptuntersuchung</note>
+      </trans-unit>
+      <trans-unit id="manual_task_title_init">
+        <source xml:lang="de">Hauptuntersuchung;Reifenwechsel;Leasingende;Unfallverhütungsvorschriften</source>
+      </trans-unit>
+      <trans-unit id="Months">
+        <source xml:lang="de">{"few":"Monate","many":"Monate","one":"Monat","other":"Monate","zero":"Monate"}</source>
+      </trans-unit>
+      <trans-unit id="OBID_Role_CP_Admin">
+        <source xml:lang="de">Als Connect Pro Admin verwalten Sie Ihre Flotte in Connect Pro und können Fahrzeuge hinzufügen oder löschen. Sie können Fahrzeuggruppen erstellen und eine verantwortliche Person pro Gruppe benennen. Darüber hinaus können Sie weitere Services wie „Ortung“ aktivieren, die dann von allen Usern genutzt werden können. Sie können außerdem Zahlungsarten hinzufügen oder bearbeiten. </source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_CC_WORKSHOP">
+        <source xml:lang="de">Proactive Service</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_FLEET_CHARGING">
+        <source xml:lang="de">Fleet Charging</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_ONE_TIME_LICENCE">
+        <source xml:lang="de">kostenloser Probezeitraum</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_ORU">
+        <source xml:lang="de">Softwareupdate</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PKW_VLT_OTP">
+        <source xml:lang="de">Ortung - Probezeitraum</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PKW_VLT_RL">
+        <source xml:lang="de">Ortung - monatl. Gebühr</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PKW_VWCONNECT_OTP">
+        <source xml:lang="de">VW Connect - kostenloser Probezeitraum</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PKW_VWCONNECT_RL">
+        <source xml:lang="de">VW Connect - monatl. Gebühr</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PREMA">
+        <source xml:lang="de">Predictive Maintenance</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PREMA_TRAINING">
+        <source xml:lang="de">Predictive Maintenance</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_PROACTIVE_SERVICE">
+        <source xml:lang="de">Proactive Service</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_REPEATING_LICENCE">
+        <source xml:lang="de">monatl. Gebühr</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VHS">
+        <source xml:lang="de">Wartung</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VLT">
+        <source xml:lang="de">Ortung</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWCONNECT">
+        <source xml:lang="de">VW Connect</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWCONNECT_BASIC">
+        <source xml:lang="de">VW Connect Basic</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWCONNECT_PLUS">
+        <source xml:lang="de">VW Connect Plus</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWN_VLT_OTP">
+        <source xml:lang="de">Ortung - kostenloser Probezeitraum</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWN_VLT_RL">
+        <source xml:lang="de">Ortung - monatl. Gebühr</source>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWN_VWCONNECT_OTP">
+        <source xml:lang="de">VW Connect - kostenloser Probezeitraum</source>
+        <note>2026-05-19: Please re-translate this key. Change: Free testing phase instead of free trial month</note>
+      </trans-unit>
+      <trans-unit id="shop_payment_product_VWN_VWCONNECT_RL">
+        <source xml:lang="de">VW Connect - monatl. Gebühr</source>
+      </trans-unit>
+      <trans-unit id="shop_word_reduction">
+        <source xml:lang="de">Reduzierung</source>
+      </trans-unit>
+      <trans-unit id="vehicle_data_export.average_consumption">
+        <source xml:lang="de" />
+      </trans-unit>
+      <trans-unit id="vehicle_data_export.license_plate">
+        <source xml:lang="de" />
+      </trans-unit>
+      <trans-unit id="vehicle_data_export.mileage">
+        <source xml:lang="de" />
+      </trans-unit>
+      <trans-unit id="vehicle_data_export.model">
+        <source xml:lang="de" />
+      </trans-unit>
+      <trans-unit id="vehicle_data_export.vin">
+        <source xml:lang="de" />
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.BrandCellName">
+        <source xml:lang="de">Marke</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.ChosenDateCellName">
+        <source xml:lang="de">Ausgewähltes Datum</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DataAndTimeCellName">
+        <source xml:lang="de">Datum, Uhrzeit</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DieselPowerUnit">
+        <source xml:lang="de">Diesel</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DriverCellName">
+        <source xml:lang="de">Fahrerin oder Fahrer</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DrivingDistanceCellName">
+        <source xml:lang="de">Strecke (km)</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DrivingDistanceCellNameWithUnit">
+        <source xml:lang="de">Strecke ({UNIT})</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DrivingDistanceColumnCellName">
+        <source xml:lang="de">Strecke (km)</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DrivingDistanceColumnCellNameWithUnit">
+        <source xml:lang="de">Strecke ({UNIT})</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.DrivingTimeColumnCellName">
+        <source xml:lang="de">Fahrzeit (hh:mm)</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.ElectricPowerUnit">
+        <source xml:lang="de">Elektrisch</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.EndAddressColumnCellName">
+        <source xml:lang="de">Endpunkt</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.EndTimeCellName">
+        <source xml:lang="de">Ende</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.EndTimeColumnCellName">
+        <source xml:lang="de">Ende</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.EngineTypeCellName">
+        <source xml:lang="de">Motorisierung</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.ExtendedSegmentNotice">
+        <source xml:lang="de">Dieses Segment wurde erweitert.</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.FileNameDescription">
+        <source xml:lang="de">Routenhistorie</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.GasolinePowerUnit">
+        <source xml:lang="de">Benzin</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.GasPowerUnit">
+        <source xml:lang="de">Gas</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.GroupCellName">
+        <source xml:lang="de">Fahrzeuggruppe</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.HeadlineCellName">
+        <source xml:lang="de">CONNECT PRO</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.HybridPowerUnit">
+        <source xml:lang="de">Hybrid</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.LicencePlateName">
+        <source xml:lang="de">Kennzeichen</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.ModelCellName">
+        <source xml:lang="de">Modell</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.NoDataPeriodNotice">
+        <source xml:lang="de"> Für den ausgewählten Zeitraum wurden keine Daten aufgezeichnet.
+</source>
+        <note>Notice for empty route table export Excel file. The selected period has not recorded routes.</note>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.NoDataSegmentNotice">
+        <source xml:lang="de">*Für diesen Streckenabschnitt hat das Fahrzeug keine Daten gesendet.
+Mögliche Gründe: Fahrt durch einen Tunnel oder eine Unterführung, Fahrzeugbewegung während des Parkens (z. B. auf der Fähre, beim Abschleppen) oder aktivierte Privatsphäre-Einstellungen im Infotainment-System.</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.NoticeColumnCellName">
+        <source xml:lang="de">Hinweis</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.NumberColumnCellName">
+        <source xml:lang="de">Nummer</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.OdometerColumnCellNameWithUnit">
+        <source xml:lang="de">Kilometerstand ({UNIT})</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.ParkingTimeColumnCellName">
+        <source xml:lang="de">Geparkt/Pausiert</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.PrivacySegmentNotice">
+        <source xml:lang="de">*Für diesen Streckenabschnitt hat das Fahrzeug keine Daten gesendet.
+Mögliche Gründe: Fahrt durch einen Tunnel oder eine Unterführung, Fahrzeugbewegung während des Parkens (z. B. auf der Fähre, beim Abschleppen) oder aktivierte Privatsphäre-Einstellungen im Infotainment-System.</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.StartAddressColumnCellName">
+        <source xml:lang="de">Startpunkt</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.StartTimeCellName">
+        <source xml:lang="de">Start</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.StartTimeColumnCellName">
+        <source xml:lang="de">Start</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TotalDrivingDistanceCellName">
+        <source xml:lang="de">Gesamte Strecke (km)</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TotalDrivingDistanceCellNameWithUnit">
+        <source xml:lang="de">Gesamte Strecke ({UNIT})</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TotalDrivingTimeCellName">
+        <source xml:lang="de">Gesamte Fahrzeit (hh:mm)</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TotalParkingTimeCellName">
+        <source xml:lang="de">Gesamte Parkzeit</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TransportSegmentNotice">
+        <source xml:lang="de">*Für diesen Streckenabschnitt hat das Fahrzeug keine Daten gesendet.
+Mögliche Gründe: Fahrt durch einen Tunnel oder eine Unterführung, Fahrzeugbewegung während des Parkens (z. B. auf der Fähre, beim Abschleppen) oder aktivierte Privatsphäre-Einstellungen im Infotainment-System.</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.TripTypeCellName">
+        <source xml:lang="de">Art der Fahrt</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.UnknownsPowerUnit">
+        <source xml:lang="de">Unbekannt</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.VehicleIdentityNumberCellName">
+        <source xml:lang="de">Fahrzeugidentifikationsnummer</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.VersionCellName">
+        <source xml:lang="de">Version</source>
+      </trans-unit>
+      <trans-unit id="vlt_excelexport.VinCellName">
+        <source xml:lang="de">FIN</source>
+      </trans-unit>
+      <trans-unit id="Years">
+        <source xml:lang="de">{"few":"Jahre","many":"Jahre","one":"Jahr","other":"Jahre","zero":"Jahre"}</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
