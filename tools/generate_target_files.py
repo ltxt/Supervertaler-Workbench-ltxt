@@ -133,14 +133,16 @@ def _report(results, markers: bool) -> str:
         "`<w:hyperlink>`. Paragraphs where the hyperlink is only part of the text "
         "are unaffected. Pinned as a strict `xfail` in "
         "`tests/test_docx_export_alignment.py`.", "",
-        "## One thing that cannot be checked without memoQ", "",
-        "The writer sets `mq:status=\"Confirmed\"` on each translated segment. That "
-        "is the token this handler has always used and the one it reads back, but "
-        "it appears in neither memoQ-authored corpus file — those only use "
-        "`NotStarted`, `PartiallyEdited` and `PreTranslated`. Absence is not proof "
-        "it is invalid, and there is no way to settle it offline. If memoQ still "
-        "reports an import warning after these files open cleanly, this is the "
-        "first thing to suspect.", "",
+        "## Verified in memoQ 12.4.36", "",
+        "Both memoQ files import with **`QA errors: 0`**. The red ✗ on every row is "
+        "memoQ's *not confirmed* row icon (\"Translation is not confirmed. You may "
+        "lock this row by double-clicking this icon.\"), not an error marker.", "",
+        "One gap remains: the writer sets `mq:status=\"Confirmed\"`, and memoQ "
+        "tolerates it but does not honour it — the status bar counted `TR: 0, Ed: "
+        "105`, so every segment was read as *Edited*. The token memoQ uses for a "
+        "confirmed row is not attested in the corpus, so there is nothing to copy. "
+        "To settle it: confirm one segment in memoQ, export the bilingual, and read "
+        "the value out of that trans-unit.", "",
     ]
     return "\n".join(lines)
 

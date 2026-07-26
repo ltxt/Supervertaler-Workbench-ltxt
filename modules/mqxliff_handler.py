@@ -481,11 +481,19 @@ class MQXLIFFHandler:
         flag, and it is a segment's *content* that matters. Units left alone are
         listed in :attr:`status_preserved`.
 
-        ``Confirmed`` itself remains unverified: it appears in neither corpus file
-        (which use only ``NotStarted``, ``PartiallyEdited``, ``PreTranslated``),
-        but it is the token this handler has always written and the one
-        :meth:`extract_bilingual_segments` reads back. The 104 DOCX units carrying
-        it are the evidence that memoQ tolerates it.
+        ``Confirmed`` itself is **tolerated but not honoured**. memoQ 12.4.36
+        imported a file with 104 units carrying it and reported ``QA errors: 0``,
+        so it is not rejected — but the status bar counted ``TR: 0, Ed: 105``,
+        i.e. every one was read as *Edited*, not confirmed. The token memoQ writes
+        for a confirmed row is not attested anywhere in the corpus (which only
+        contains ``NotStarted``, ``PartiallyEdited`` and ``PreTranslated``), so
+        there is nothing to copy and guessing would be worse than the status quo.
+
+        It is kept because :meth:`extract_bilingual_segments` reads it back, so it
+        still carries confirmation state across a Supervertaler → Supervertaler
+        round trip; only memoQ ignores it. Settling this needs one experiment on a
+        machine with memoQ: confirm a single segment there, export the bilingual,
+        and read the value out of that trans-unit.
         """
         open_tag = unit['open_tag']
         start, end = unit['open_span']
