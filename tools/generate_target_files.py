@@ -126,16 +126,21 @@ def _report(results, markers: bool) -> str:
 
     lines += [
         "---", "",
-        "Known open defects these files will show, both documented in "
-        "`tests/test_e2e_roundtrip.py`:", "",
-        "1. **memoQ writer** — a segment whose text is split across inline-tag "
-        "boundaries keeps the *source* text while being marked Confirmed. "
-        "`_place_translation_carefully()` replaces whole-source-text inside each "
-        "individual XML text node, so when tags split the text no node matches "
-        "and every replace is a no-op.",
-        "2. **Hyperlink-only DOCX paragraph** — comes out holding source *and* "
-        "translation, because `_replace_paragraph_text()` does not clear runs "
-        "nested inside `<w:hyperlink>`.", "",
+        "## Known open defect", "",
+        "**Hyperlink-only DOCX paragraph** — a paragraph whose *only* content is a "
+        "hyperlink comes out holding the source *and* the translation, because "
+        "`_replace_paragraph_text()` does not clear runs nested inside "
+        "`<w:hyperlink>`. Paragraphs where the hyperlink is only part of the text "
+        "are unaffected. Pinned as a strict `xfail` in "
+        "`tests/test_docx_export_alignment.py`.", "",
+        "## One thing that cannot be checked without memoQ", "",
+        "The writer sets `mq:status=\"Confirmed\"` on each translated segment. That "
+        "is the token this handler has always used and the one it reads back, but "
+        "it appears in neither memoQ-authored corpus file — those only use "
+        "`NotStarted`, `PartiallyEdited` and `PreTranslated`. Absence is not proof "
+        "it is invalid, and there is no way to settle it offline. If memoQ still "
+        "reports an import warning after these files open cleanly, this is the "
+        "first thing to suspect.", "",
     ]
     return "\n".join(lines)
 

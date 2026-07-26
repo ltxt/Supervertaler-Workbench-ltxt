@@ -54,9 +54,9 @@ Three pieces:
 written is what comes back. A failure is a bug, and the message names the segment.
 
 **Goldens are a tripwire, not a specification.** They record what the handlers
-currently do, including two known defects listed in `KNOWN_DEFECTS`. A golden
-diff means something changed; deciding whether that is a fix or a regression is
-the reader's job. Regenerate with:
+currently do, including any defect not yet fixed (`KNOWN_DEFECTS`, currently
+empty). A golden diff means something changed; deciding whether that is a fix or
+a regression is the reader's job. Regenerate with:
 
 ```bash
 UPDATE_GOLDEN=1 pytest tests/test_e2e_roundtrip.py
@@ -130,7 +130,12 @@ Worth being explicit, since the suite is young:
   proves *Supervertaler* can read back what it wrote; it cannot tell you whether
   Trados Studio, memoQ or Word will open the file without complaint. That needs a
   Windows machine with those tools installed — `tools/generate_target_files.py`
-  exists to produce the documents for exactly that check.
+  exists to produce the documents for exactly that check, and it is not a
+  hypothetical gap: memoQ 12.4.36 rejected an MQXLIFF export that this suite
+  considered a clean round trip, because the handler re-serialised the whole
+  document and destroyed tag payloads that Supervertaler itself read back
+  happily. The memoQ tests in `test_e2e_roundtrip.py` now assert byte-level
+  fidelity instead of only self-consistency.
 - **The project layer has no round trip.** `.svproj` save/load and the SDLPPX
   package round trip are still covered only by the manual smoke test in
   `CLAUDE.md`. Only `test_grid_smoke.py` launches the application, and it stops at

@@ -80,7 +80,24 @@ class MQXLIFFHandler:
         self.body_element = None
         self.source_lang = None
         self.target_lang = None
-        
+        #: The file exactly as it was read, with the BOM stripped and line endings
+        #: left alone. Writing works by substring replacement on this, so
+        #: everything we did not translate comes back out byte-identical — see the
+        #: note above update_target_segments().
+        self.raw_text: Optional[str] = None
+        #: True when the loaded file began with a UTF-8 BOM / used CRLF. memoQ
+        #: writes both; end-of-line normalisation during XML parsing destroys the
+        #: latter, so both are recorded here and restored on save.
+        self.had_bom = True
+        self.had_crlf = True
+        #: ``((start, end), replacement)`` spans queued for the next save().
+        self._edits: List[Tuple[Tuple[int, int], str]] = []
+        #: Segments update_target_segments() could not write, and ones whose
+        #: formatting extent may have widened. See that method.
+        self.skipped_segments: List[Tuple[int, str, str]] = []
+        self.formatting_degraded: List[Tuple[int, str]] = []
+
+
     def load(self, file_path: str) -> bool:
         """
         Load and parse an MQXLIFF file.
@@ -96,9 +113,20 @@ class MQXLIFFHandler:
             for prefix, uri in self.NAMESPACES.items():
                 ET.register_namespace(prefix, uri)
             
+            # Keep the file as text for writing, and note the two conventions XML
+            # parsing destroys (the BOM and CRLF line endings) so save() can
+            # reproduce them. Decoded with utf-8-sig and no newline translation,
+            # so raw_text holds exactly what was on disk minus the BOM.
+            with open(file_path, 'rb') as fh:
+                raw = fh.read()
+            self.had_bom = raw.startswith(b'\xef\xbb\xbf')
+            self.raw_text = raw.decode('utf-8-sig')
+            self.had_crlf = '\r\n' in self.raw_text
+            self._edits = []
+
             self.tree = ET.parse(file_path)
             self.root = self.tree.getroot()
-            
+
             # Find the file element
             self.file_element = self.root.find('.//xliff:file', self.NAMESPACES)
             if self.file_element is None:
@@ -272,375 +300,436 @@ class MQXLIFFHandler:
         
         return full_text
     
+    # ------------------------------------------------------------------
+    # Writing targets
+    #
+    # Everything below rewrites the file as *text*, replacing only the
+    # `<target>` spans of segments that got a translation. It does not
+    # re-serialise the tree.
+    #
+    # That is a deliberate reversal of the previous approach, forced by testing
+    # the output in memoQ 12.4.36. Parsing and re-serialising an MQXLIFF through
+    # ElementTree destroys, unavoidably, things memoQ put there on purpose:
+    #
+    #   * CDATA sections            6 -> 0 (DOCX), 3 -> 0 (IDML)
+    #   * `&quot;` inside tag payloads    204 -> 0, 16 -> 0
+    #   * raw TABs in attribute values      3 -> 0, 2 -> 0  (XML attribute-value
+    #                                       normalisation — not recoverable)
+    #   * `xmlns="MQXliff"` on <mq:*>     210 -> 0, 103 -> 0
+    #   * CRLF line endings           2683 -> 0, 1331 -> 0  (XML end-of-line
+    #                                       normalisation is mandated by the spec)
+    #   * the UTF-8 BOM, the XML declaration's spelling, attribute order
+    #
+    # None of that is semantically meaningful to a conforming parser, but all of
+    # it is gratuitous: we have no business rewriting bytes we were not asked to
+    # change, and a consumer is entitled to be stricter than the spec requires.
+    # Text-level replacement makes a load→save round trip byte-identical by
+    # construction, which is both the stronger guarantee and the easier one to
+    # test. It is also what modules/sdlppx_handler.py already does — and the
+    # Trados output is accepted where the memoQ output was not.
+    # ------------------------------------------------------------------
+
+    #: Inline elements whose text is a tag payload — memoQ's own stored markup or
+    #: the placeholder ``{}`` — and never translatable content.
+    INLINE_TAGS = ('bpt', 'ept', 'ph', 'it', 'x')
+
     def update_target_segments(self, translations: List[str]) -> int:
+        """Fill in the target of every translatable segment.
+
+        ``translations`` is positional: the Nth entry belongs to the Nth segment
+        that :meth:`extract_source_segments` returned, i.e. auxiliary segments
+        (``mq:nosplitjoin="true"``) are skipped by both.
+
+        Returns the number of segments written. Two lists record what did not go
+        cleanly, and callers should surface both rather than reporting the count
+        alone:
+
+        :attr:`skipped_segments`
+            Left exactly as memoQ wrote them, and **not** marked confirmed. The
+            old code counted these as updated and confirmed them anyway, so a
+            file that still held source text in eight segments looked complete.
+        :attr:`formatting_degraded`
+            Written, with every tag present and in order, but a formatting run's
+            extent may have widened — see :meth:`_partition_runs`.
         """
-        Update target segments in the MQXLIFF with translations.
-        
-        This method attempts to preserve formatting from the source segment by:
-        1. Copying the source formatting structure
-        2. Replacing the text content with the translation
-        3. Adjusting tag IDs to avoid conflicts
-        
-        Args:
-            translations: List of translated strings (plain text)
-            
-        Returns:
-            Number of segments updated
-        """
-        if self.body_element is None:
+        self.skipped_segments = []
+        self.formatting_degraded = []
+        self._edits = []
+
+        if not self.raw_text:
             return 0
-        
-        # Find all trans-unit elements
-        trans_units = self.body_element.findall('.//xliff:trans-unit', self.NAMESPACES)
-        if not trans_units:
-            trans_units = self.body_element.findall('.//trans-unit')
-        
-        translation_idx = 0
-        segments_updated = 0
-        
-        for trans_unit in trans_units:
-            # Skip auxiliary segments
-            nosplitjoin = trans_unit.get('{MQXliff}nosplitjoin', 'false')
-            if nosplitjoin == 'true':
+
+        index = 0
+        written = 0
+        for unit in self._iter_raw_units():
+            if unit['nosplitjoin']:
                 continue
-            
-            if translation_idx >= len(translations):
+            if index >= len(translations):
                 break
-            
-            translation = translations[translation_idx]
-            translation_idx += 1
-            
-            # Find source and target elements
-            source_elem = trans_unit.find('xliff:source', self.NAMESPACES)
-            if source_elem is None:
-                source_elem = trans_unit.find('source')
-            
-            target_elem = trans_unit.find('xliff:target', self.NAMESPACES)
-            if target_elem is None:
-                target_elem = trans_unit.find('target')
-            
-            if source_elem is not None and target_elem is not None:
-                # Copy formatting from source to target
-                self._copy_formatting_to_target(source_elem, target_elem, translation)
-                segments_updated += 1
-                
-                # Update segment status to Confirmed
-                trans_unit.set('{MQXliff}status', 'Confirmed')
-        
-        return segments_updated
-    
-    def _copy_formatting_to_target(self, source_elem: ET.Element, target_elem: ET.Element, translation: str):
-        """
-        Copy formatting structure from source to target and insert translation text.
-        
-        Strategy:
-        1. If source has no formatting tags, just set plain text
-        2. If source has formatting, clone the structure and try to map text
-        3. For complex cases, preserve tag structure but use translation text
-        
-        Args:
-            source_elem: Source XML element with formatting
-            target_elem: Target XML element to populate
-            translation: Translated text (plain)
-        """
-        # Clear existing target content but preserve attributes
-        target_attribs = target_elem.attrib.copy()
-        target_elem.clear()
-        target_elem.tag = 'target'  # Ensure it's a target element
-        
-        # Restore important attributes
-        for key in ['{http://www.w3.org/XML/1998/namespace}space', 'mq:segpart']:
-            if key in target_attribs:
-                target_elem.set(key, target_attribs[key])
-        
-        # Preserve xml:space="preserve" if source has it
-        space_attr = source_elem.get('{http://www.w3.org/XML/1998/namespace}space')
-        if space_attr:
-            target_elem.set('{http://www.w3.org/XML/1998/namespace}space', space_attr)
-        
-        # Check if source has formatting tags (child elements)
-        has_formatting = len(list(source_elem)) > 0
-        
-        if not has_formatting:
-            # Simple case: no formatting tags, just set text
-            target_elem.text = translation
-        else:
-            # Complex case: has formatting tags
-            # Strategy: Clone the structure and replace text content
-            self._clone_with_translation(source_elem, target_elem, translation)
-    
-    def _clone_with_translation(self, source_elem: ET.Element, target_elem: ET.Element, translation: str):
-        """
-        Clone source element structure to target, replacing text with translation.
-        
-        Strategy: Clone the entire structure, then intelligently place translation text.
-        
-        Args:
-            source_elem: Source element to clone from
-            target_elem: Target element to populate
-            translation: Translation text to insert
-        """
-        # Extract source text for comparison
-        source_text = self._extract_plain_text(source_elem)
-        
-        # Clone all child elements (formatting tags) to preserve structure
-        # Also copy the text that appears before the first child
-        target_elem.text = source_elem.text
-        
-        for child in source_elem:
-            cloned_child = self._deep_clone_element(child)
-            target_elem.append(cloned_child)
-        
-        # Now replace the text content with the translation
-        # For complex nested structures, we need to be very careful about where we place text
-        # to avoid breaking the XML structure
-        
-        # If source and translation are identical, structure is already correct
-        if source_text.strip() == translation.strip():
-            return
-        
-        # Try to place the translation intelligently
-        self._place_translation_carefully(target_elem, source_text, translation)
-    
-    def _deep_clone_element(self, element: ET.Element) -> ET.Element:
-        """Deep clone an XML element with all its children."""
-        cloned = ET.Element(element.tag, element.attrib)
-        cloned.text = element.text
-        cloned.tail = element.tail
-        
-        for child in element:
-            cloned.append(self._deep_clone_element(child))
-        
-        return cloned
-    
-    def _place_translation_carefully(self, element: ET.Element, source_text: str, translation: str):
-        """
-        Carefully place translation text in the element structure.
-        
-        This is conservative: it only modifies text nodes that contain actual content words,
-        not formatting codes. For complex cases, it may preserve more source text structure
-        than ideal, but it won't break the XML.
-        
-        Args:
-            element: The target element to modify
-            source_text: Original source text
-            translation: Translation to place
-        """
-        # Strategy: Find text nodes that contain actual words (not just "{}" or encoded tags)
-        # and replace them with corresponding parts of the translation
-        
-        # For now, use a simple heuristic:
-        # If there's text in element.text, replace it
-        # If there's text in a child's tail (after a tag), replace it
-        # But DON'T touch text inside <bpt>/<ept> tags (that's formatting metadata)
-        
-        # Collect all "real content" text nodes
-        real_content_nodes = []
-        
-        if element.text and len(element.text.strip()) > 0:
-            # Check if it's not just whitespace or formatting codes
-            if not self._is_formatting_code(element.text):
-                real_content_nodes.append(('root_text', element.text))
-        
-        # Check child tails (text after tags)
-        for i, child in enumerate(element):
-            if child.tail and len(child.tail.strip()) > 0:
-                if not self._is_formatting_code(child.tail):
-                    real_content_nodes.append(('child_tail', i, child.tail))
-        
-        # If we found content nodes, use simple replacement strategy
-        if real_content_nodes:
-            # Simple approach: Just try string replacement in each node
-            # This works for simple cases and won't break complex structures
-            for node_info in real_content_nodes:
-                if node_info[0] == 'root_text':
-                    # Try to replace source words with translation words
-                    if element.text:
-                        element.text = element.text.replace(source_text.strip(), translation.strip())
-                elif node_info[0] == 'child_tail':
-                    idx = node_info[1]
-                    if element[idx].tail:
-                        element[idx].tail = element[idx].tail.replace(source_text.strip(), translation.strip())
-        else:
-            # No obvious content nodes, check if text is inside nested structure
-            # For these complex cases, just place translation where the source text was found
-            self._recursive_text_replace(element, source_text, translation)
-    
-    def _recursive_text_replace(self, element: ET.Element, old_text: str, new_text: str):
-        """
-        Recursively search for old_text and replace with new_text.
-        Only replaces in text nodes, not in tag attributes or structure.
-        """
-        if element.text and old_text.strip() in element.text:
-            element.text = element.text.replace(old_text.strip(), new_text.strip())
-        
-        for child in element:
-            if child.tail and old_text.strip() in child.tail:
-                child.tail = child.tail.replace(old_text.strip(), new_text.strip())
-            # Recurse into children
-            self._recursive_text_replace(child, old_text, new_text)
-    
-    def _replace_all_text_content(self, element: ET.Element, old_text: str, new_text: str):
-        """
-        Replace text content in an element tree, handling text split across nodes.
-        
-        The challenge: Source text like "Hello world" might be split as:
-        - element.text = "Hello "
-        - child[0].text = "world"
-        
-        We need to collect all content text, replace it with the translation,
-        then put it back in the structure.
-        
-        Args:
-            element: The element to process
-            old_text: The original source text (plain, no tags)
-            new_text: The translation text to insert
-        """
-        # Clean both texts for comparison
-        old_clean = old_text.strip()
-        new_clean = new_text.strip()
-        
-        # If texts are identical, no replacement needed
-        if old_clean == new_clean:
-            return
-        
-        # Find all content text nodes (excluding <bpt>/<ept> formatting codes)
-        content_nodes = []
-        
-        # Check element.text (text before first child)
-        if element.text and not self._is_formatting_code(element.text):
-            content_nodes.append(('root', None, element.text))
-        
-        # Check all children
-        for i, child in enumerate(element):
-            # For <bpt> and <ept> tags, their .text contains formatting codes like "{}" or "&lt;hlnk...&gt;"
-            # We should NOT treat this as content
-            if child.tag not in ['bpt', 'ept']:
-                if child.text and not self._is_formatting_code(child.text):
-                    content_nodes.append(('child_text', i, child.text))
-            
-            # child.tail is text AFTER the child tag, this is content
-            if child.tail and not self._is_formatting_code(child.tail):
-                content_nodes.append(('child_tail', i, child.tail))
-        
-        # If no content nodes, nothing to replace
-        if not content_nodes:
-            return
-        
-        # Strategy: Place entire translation in the first content node, clear others
-        first_node = content_nodes[0]
-        node_type, node_index, node_text = first_node
-        
-        if node_type == 'root':
-            element.text = new_clean
-        elif node_type == 'child_text':
-            element[node_index].text = new_clean
-        elif node_type == 'child_tail':
-            element[node_index].tail = new_clean
-        
-        # Clear all other content nodes
-        for node in content_nodes[1:]:
-            node_type, node_index, node_text = node
-            if node_type == 'root':
-                element.text = ""
-            elif node_type == 'child_text':
-                element[node_index].text = ""
-            elif node_type == 'child_tail':
-                element[node_index].tail = ""
+            translation = translations[index]
+            segment_index = index
+            index += 1
 
-    
-    def _is_formatting_code(self, text: str) -> bool:
+            if unit['target'] is None:
+                self.skipped_segments.append(
+                    (segment_index, unit['id'], 'segment has no <target> element'))
+                continue
+
+            new_inner, degraded = self._build_target_inner(unit, translation)
+            if new_inner is None:
+                self.skipped_segments.append(
+                    (segment_index, unit['id'],
+                     'inline tags could not be placed without corrupting them'))
+                continue
+
+            target = unit['target']
+            self._edits.append((target['inner_span'],
+                                target['open_tag'] + new_inner + target['close_tag']))
+            status_edit = self._status_edit(unit)
+            if status_edit:
+                self._edits.append(status_edit)
+            written += 1
+            if degraded:
+                self.formatting_degraded.append((segment_index, unit['id']))
+
+        return written
+
+    # -- locating things in the raw text --------------------------------
+
+    _UNIT_RE = re.compile(r'<trans-unit\b[^>]*>.*?</trans-unit>', re.DOTALL)
+    _OPEN_RE = re.compile(r'<trans-unit\b[^>]*>')
+    _ATTR_RE = re.compile(r'([A-Za-z_][\w.:-]*)\s*=\s*"([^"]*)"')
+
+    def _iter_raw_units(self):
+        """Yield one dict per ``<trans-unit>`` in the raw file, in document order.
+
+        ``nosplitjoin`` is read from the raw open tag rather than from the parsed
+        tree, so the segment numbering here cannot drift from what
+        :meth:`extract_source_segments` produced.
         """
-        Check if text is a formatting code rather than actual content.
-        Formatting codes include: "{}", "&lt;...&gt;", whitespace-only
+        for match in self._UNIT_RE.finditer(self.raw_text):
+            block = match.group(0)
+            base = match.start()
+            open_tag = self._OPEN_RE.match(block).group(0)
+            attrs = dict(self._ATTR_RE.findall(open_tag))
+            yield {
+                'id': attrs.get('id', '?'),
+                'nosplitjoin': attrs.get('mq:nosplitjoin', 'false') == 'true',
+                'span': (base, match.end()),
+                'open_span': (base, base + len(open_tag)),
+                'open_tag': open_tag,
+                'source': self._child_span(block, base, 'source'),
+                'target': self._child_span(block, base, 'target'),
+            }
+
+    def _child_span(self, block: str, base: int, name: str):
+        """Locate ``<name …>…</name>`` directly inside a trans-unit block.
+
+        Returns None when absent. ``inner_span`` is an absolute (start, end) into
+        ``self.raw_text`` covering just the element's content, which is what gets
+        replaced. A self-closing ``<target />`` yields an empty inner span placed
+        so that inserting there produces a well-formed element.
         """
+        pattern = re.compile(r'<' + name + r'\b([^>]*?)(/?)>', re.DOTALL)
+        for match in pattern.finditer(block):
+            open_attrs, self_closing = match.group(1), match.group(2)
+            if self_closing == '/':
+                # An empty <target … /> — the shape of a file that has not been
+                # pretranslated. Filling it means replacing the whole tag, so the
+                # span covers the tag itself and the replacement re-emits the open
+                # tag, the content and a close tag. `open_tag` carries the text to
+                # rebuild from.
+                return {'inner_span': (base + match.start(), base + match.end()),
+                        'open_tag': '<' + name + open_attrs.rstrip() + '>',
+                        'close_tag': '</' + name + '>',
+                        'attrs': open_attrs, 'inner': '', 'empty': True}
+            close = block.find('</' + name + '>', match.end())
+            if close < 0:
+                return None
+            return {'inner_span': (base + match.end(), base + close),
+                    'open_tag': '', 'close_tag': '',
+                    'attrs': open_attrs,
+                    'inner': block[match.end():close], 'empty': False}
+        return None
+
+    def _status_edit(self, unit):
+        """An edit setting ``mq:status="Confirmed"`` on the unit's open tag.
+
+        NOTE: the two memoQ-authored files in the test corpus only ever use
+        ``NotStarted``, ``PartiallyEdited`` and ``PreTranslated``; ``Confirmed``
+        appears in neither. It is the token this handler has always written and
+        the one :meth:`extract_bilingual_segments` reads back, so it is kept —
+        but whether memoQ 12.4 accepts it is unverified, and it is a candidate if
+        an import warning survives everything else here.
+        """
+        open_tag = unit['open_tag']
+        start, end = unit['open_span']
+        if 'mq:status="' in open_tag:
+            new = re.sub(r'mq:status="[^"]*"', 'mq:status="Confirmed"', open_tag)
+        else:
+            new = open_tag[:-1].rstrip() + ' mq:status="Confirmed">'
+        if new == open_tag:
+            return None
+        return ((start, end), new)
+
+    # -- building a target ---------------------------------------------
+
+    def _build_target_inner(self, unit, translation: str):
+        """The replacement inner XML for this unit's ``<target>``.
+
+        Returns ``(inner_xml, degraded)``, or ``(None, False)`` to decline.
+
+        The inline elements are taken from the **existing target**, not cloned
+        from the source, and are copied as raw substrings without being parsed.
+        That matters for more than escaping: in memoQ's own files a target's
+        ``rid`` is not always the source's — unit 59 of the DOCX file has
+        ``rid="1"`` in the source and ``rid="2"`` in the target, and IDML unit 4
+        has ``rid="1"`` against ``rid="3"``. ``rid`` is scoped to the document,
+        not the trans-unit, so cloning source elements into a target invents
+        duplicate ids. Reusing the target's own elements sidesteps that entirely.
+        """
+        target, source = unit['target'], unit['source']
+        # Take the inline elements from the target when it has any: those are the
+        # ones with the right rid values. Fall back to the source only for an empty
+        # target, which is what a file that was never pretranslated looks like.
+        donor = target if target['inner'].strip() else source
+        if donor is None:
+            return None, False
+
+        tokens = self._scan_inner(donor['inner'])
+        elems = [t for t in tokens if t[0] == 'elem']
+
+        if not elems:
+            # Plain text segment: nothing to preserve, nothing to get wrong.
+            return self._escape_text(translation), False
+
+        # Slot model: inner == runs[0] + elems[0] + runs[1] + … + runs[n]
+        runs, ordered = [], []
+        current = []
+        for token in tokens:
+            if token[0] == 'elem':
+                runs.append(''.join(current))
+                current = []
+                ordered.append(token[1])
+            else:
+                current.append(token[1])
+        runs.append(''.join(current))
+
+        plain_runs = [self._unescape_text(r) for r in runs]
+        payloads = [self._raw_payload(e) for e in ordered]
+
+        new_runs, degraded = self._partition_runs(plain_runs, payloads, translation)
+        if new_runs is None:
+            return None, False
+
+        out = [self._escape_text(new_runs[0])]
+        for i, raw_elem in enumerate(ordered):
+            out.append(raw_elem)
+            out.append(self._escape_text(new_runs[i + 1]))
+        return ''.join(out), degraded
+
+    def _partition_runs(self, runs: List[str], payloads: List[str], translation: str):
+        """Split ``translation`` back into one text run per slot.
+
+        A tag whose payload is *visible* in the segment text is an anchor: the
+        translator saw it and, per tag verification, kept it, so it pins down
+        exactly where a stretch of text ends. memoQ stores a payload either as
+        literal document markup (``<fld id="0" />``, ``<tbl linid="0" />``),
+        which :meth:`_extract_plain_text` passes through, or as ``{}``, which it
+        strips. Verified across the corpus: every non-``{}`` payload appears in
+        the extracted text and every ``{}`` one does not.
+
+        Between two anchors the split is unknowable — ``{}`` pairs contribute no
+        text, so nothing in the translation says where one run ends. The whole
+        stretch goes into the slot that carried the most text in the source. For
+        the common ``<bpt/>text<ept/>`` shape that is the slot *between* the
+        pair, so the formatting still wraps the translation instead of sitting
+        beside it; where several runs compete, every tag still survives in order
+        but one run's extent widens, and the caller is told.
+
+        Returns ``(None, False)`` when an anchor is missing from the translation:
+        the translator moved or deleted a tag, and guessing would corrupt it.
+        """
+        new_runs = [''] * len(runs)
+        degraded = False
+
+        def assign(lo: int, hi: int, text: str):
+            nonlocal degraded
+            span = range(lo, min(hi, len(runs) - 1) + 1)
+            if not span:
+                return
+            best = max(span, key=lambda j: (len(runs[j]), -j))
+            new_runs[best] = text
+            if text and sum(1 for j in span if runs[j].strip()) > 1:
+                degraded = True
+
+        pos = 0
+        stretch = 0
+        for i, payload in enumerate(payloads):
+            if not payload:
+                continue
+            found = translation.find(payload, pos)
+            if found < 0:
+                return None, False
+            assign(stretch, i, translation[pos:found])
+            pos = found + len(payload)
+            stretch = i + 1
+        assign(stretch, len(runs) - 1, translation[pos:])
+        return new_runs, degraded
+
+    # -- raw XML helpers ----------------------------------------------
+
+    def _raw_payload(self, raw_elem: str) -> str:
+        """The text an inline element contributes to the segment's plain text.
+
+        ``''`` for a self-closing element or the ``{}`` placeholder, which
+        :meth:`_extract_plain_text` strips and a translator therefore never sees.
+        """
+        match = re.match(r'<[^>]*?(/)?>', raw_elem)
+        if match and match.group(1):
+            return ''
+        inner = raw_elem[raw_elem.index('>') + 1:raw_elem.rindex('</')]
+        text = self._unescape_text(inner)
+        return '' if text == '{}' else text
+
+    def _scan_inner(self, inner: str):
+        """Split an element's inner XML into ``('text', s)`` and ``('elem', s)``.
+
+        Element tokens are verbatim substrings, never parsed, so CDATA sections,
+        entity spellings, attribute order and raw tabs inside them all survive.
+        """
+        tokens = []
+        buf = []
+        i, n = 0, len(inner)
+        while i < n:
+            if inner.startswith('<![CDATA[', i):
+                end = inner.find(']]>', i)
+                end = n if end < 0 else end + 3
+                buf.append(inner[i:end])
+                i = end
+                continue
+            if inner.startswith('<!--', i):
+                end = inner.find('-->', i)
+                end = n if end < 0 else end + 3
+                buf.append(inner[i:end])
+                i = end
+                continue
+            if inner[i] == '<':
+                match = re.match(r'<([A-Za-z_][\w.:-]*)', inner[i:])
+                if match:
+                    end = self._element_end(inner, i, match.group(1))
+                    if end > 0:
+                        if buf:
+                            tokens.append(('text', ''.join(buf)))
+                            buf = []
+                        tokens.append(('elem', inner[i:end]))
+                        i = end
+                        continue
+            buf.append(inner[i])
+            i += 1
+        if buf:
+            tokens.append(('text', ''.join(buf)))
+        return tokens
+
+    def _element_end(self, s: str, start: int, name: str) -> int:
+        """Index just past the element starting at ``start``, or -1."""
+        close_open = self._tag_end(s, start)
+        if close_open < 0:
+            return -1
+        if s[close_open - 2:close_open] == '/>':
+            return close_open
+        depth = 1
+        i = close_open
+        open_pat = re.compile(r'<' + re.escape(name) + r'(?=[\s/>])')
+        close_tag = '</' + name + '>'
+        while i < len(s):
+            if s.startswith('<![CDATA[', i):
+                end = s.find(']]>', i)
+                i = len(s) if end < 0 else end + 3
+                continue
+            if s.startswith(close_tag, i):
+                depth -= 1
+                i += len(close_tag)
+                if depth == 0:
+                    return i
+                continue
+            if open_pat.match(s, i):
+                depth += 1
+                nxt = self._tag_end(s, i)
+                if nxt < 0:
+                    return -1
+                if s[nxt - 2:nxt] == '/>':
+                    depth -= 1
+                i = nxt
+                continue
+            i += 1
+        return -1
+
+    @staticmethod
+    def _tag_end(s: str, start: int) -> int:
+        """Index just past the ``>`` closing the tag that starts at ``start``,
+        ignoring ``>`` inside quoted attribute values."""
+        i = start + 1
+        quote = ''
+        while i < len(s):
+            ch = s[i]
+            if quote:
+                if ch == quote:
+                    quote = ''
+            elif ch in '"\'':
+                quote = ch
+            elif ch == '>':
+                return i + 1
+            i += 1
+        return -1
+
+    @staticmethod
+    def _escape_text(text: str) -> str:
         if not text:
-            return True
-        
-        text_stripped = text.strip()
-        if not text_stripped:
-            return True  # Whitespace only
-        
-        # Check for common formatting placeholders
-        if text_stripped == "{}":
-            return True
-        
-        # Check for encoded XML tags (formatting metadata)
-        if text_stripped.startswith("&lt;") and text_stripped.endswith("&gt;"):
-            return True
-        
-        return False
+            return ''
+        return (text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
 
-    
+    @staticmethod
+    def _unescape_text(text: str) -> str:
+        if not text:
+            return ''
+        # CDATA content is literal; strip the wrappers and leave the rest alone.
+        text = re.sub(r'<!\[CDATA\[(.*?)\]\]>', r'\1', text, flags=re.DOTALL)
+        return (text.replace('&lt;', '<').replace('&gt;', '>')
+                    .replace('&quot;', '"').replace('&apos;', "'")
+                    .replace('&amp;', '&'))
+
     def save(self, output_path: str) -> bool:
-        """
-        Save the modified MQXLIFF file with proper namespace handling.
-        
-        Args:
-            output_path: Path where to save the file
-            
-        Returns:
-            True if saved successfully, False otherwise
+        """Write the file out, changing only the targets that were translated.
+
+        The original bytes are reproduced exactly everywhere else — BOM, line
+        endings, XML declaration, CDATA, entity spellings, attribute order and
+        all — because the only thing applied is a list of substring replacements.
+        A load→save with no translation applied is byte-identical to its input.
         """
         try:
-            if self.tree is None:
+            if self.raw_text is None:
                 return False
-            
-            # Register namespaces to avoid namespace prefix issues
-            # This ensures the default namespace is used correctly
-            ET.register_namespace('', 'urn:oasis:names:tc:xliff:document:1.2')
-            ET.register_namespace('mq', 'MQXliff')
-            ET.register_namespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-            
-            # Write with XML declaration and UTF-8 encoding
-            self.tree.write(output_path, encoding='utf-8', xml_declaration=True, method='xml')
-            
-            # Post-process to fix namespace issues that ElementTree might create
-            # Read the file and ensure proper structure
-            self._fix_namespace_prefixes(output_path)
-            
+
+            text = self.raw_text
+            # Apply from the end so earlier offsets stay valid.
+            for (start, end), replacement in sorted(
+                    self._edits, key=lambda e: e[0][0], reverse=True):
+                text = text[:start] + replacement + text[end:]
+
+            if self.had_crlf:
+                text = text.replace('\r\n', '\n').replace('\n', '\r\n')
+            data = text.encode('utf-8')
+            if self.had_bom:
+                data = b'\xef\xbb\xbf' + data
+
+            with open(output_path, 'wb') as fh:
+                fh.write(data)
             return True
         except Exception as e:
             print(f"[MQXLIFF] Error saving file: {e}")
             return False
-    
-    def _fix_namespace_prefixes(self, file_path: str):
-        """
-        Fix namespace prefix issues in the saved file.
-        ElementTree sometimes adds unwanted prefixes. This method ensures
-        the file matches the expected MQXLIFF format.
-        
-        Args:
-            file_path: Path to the file to fix
-        """
-        try:
-            # Read the file
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            # Fix common ElementTree namespace issues
-            # Replace xliff:xliff with xliff (default namespace)
-            content = content.replace('<xliff:xliff ', '<xliff ')
-            content = content.replace('</xliff:xliff>', '</xliff>')
-            content = content.replace('xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"',
-                                    'xmlns="urn:oasis:names:tc:xliff:document:1.2"')
-            
-            # Remove xliff: prefixes from standard XLIFF elements
-            # but keep mq: prefixes for memoQ extensions
-            for tag in ['file', 'header', 'tool', 'body', 'trans-unit', 'source', 'target', 
-                       'context-group', 'context', 'bpt', 'ept', 'ph', 'it', 'x']:
-                content = content.replace(f'<xliff:{tag} ', f'<{tag} ')
-                content = content.replace(f'<xliff:{tag}>', f'<{tag}>')
-                content = content.replace(f'</xliff:{tag}>', f'</{tag}>')
-            
-            # Write back the corrected content
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(content)
-                
-        except Exception as e:
-            print(f"[MQXLIFF] Warning: Could not fix namespace prefixes: {e}")
-            # Non-fatal - file might still work
-    
+
     def get_segment_count(self) -> int:
         """Get the number of translatable segments (excluding auxiliary segments)."""
         if self.body_element is None:

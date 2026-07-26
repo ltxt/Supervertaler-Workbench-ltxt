@@ -11,9 +11,10 @@ clean; nothing that was written comes back different. A failure here is a bug,
 not a change — the message says which segment and what happened.
 
 **Golden snapshots** (`tests/golden/*.json`) are a tripwire, not a specification.
-They record what the handlers currently do — including two known defects, called
-out in ``KNOWN_DEFECTS`` below. A golden diff means *something changed*; whether
-that is a fix or a regression is for the reader to judge. Regenerate with::
+They record what the handlers currently do, including any defect not yet fixed
+(``KNOWN_DEFECTS`` below, currently empty). A golden diff means *something
+changed*; whether that is a fix or a regression is for the reader to judge.
+Regenerate with::
 
     UPDATE_GOLDEN=1 pytest tests/test_e2e_roundtrip.py
 
@@ -53,28 +54,17 @@ UPDATE = os.environ.get("UPDATE_GOLDEN", "").strip().lower() in ("1", "true", "y
 # these sets fails the run; the sets themselves are documented so they cannot be
 # mistaken for correct behaviour, and shrinking one is a fix worth noticing.
 
-MEMOQ_WRITER_NOTE = """\
-MQXLIFFHandler._place_translation_carefully() inserts a translation by running
-`node_text.replace(whole_source_text, translation)` over each individual XML text
-node. When inline tags split a segment across several nodes, no single node holds
-the whole source text, every replace is a no-op, and the cloned source stays —
-while update_target_segments() counts the segment as updated and marks it
-Confirmed. Underneath sits the real gap: _extract_plain_text() discards memoQ's
-bpt/ept markers, so bold/italic runs never appear in the segment text and the
-writer has nothing to rebuild them from. Fixing that means teaching the MQXLIFF
-handler to surface bpt/ept as real inline tags, the way the SDLXLIFF handler
-already does."""
-
-KNOWN_DEFECTS = {
-    "mqxliff_CAT_test_DOCX_docx_lit": {
-        "segments": {9, 57, 58, 62, 66, 68, 102},
-        "note": MEMOQ_WRITER_NOTE,
-    },
-    "mqxliff_CAT_test_IDML_idml_lit": {
-        "segments": {3},
-        "note": MEMOQ_WRITER_NOTE,
-    },
-}
+#: Empty, and worth keeping that way deliberately rather than deleting the
+#: mechanism: it is what told us the memoQ writer had been fixed.
+#:
+#: It used to hold 7 DOCX and 1 IDML segment, from two defects that a user found
+#: by opening the exports in memoQ 12.4.36 — the DOCX file imported with errors
+#: and the IDML file would not open at all, silently. Both came from the writer
+#: round-tripping the file through ElementTree and placing text by
+#: whole-source-string replacement inside individual XML nodes; the writer now
+#: rewrites only the target spans, as text. See the note above
+#: MQXLIFFHandler.update_target_segments().
+KNOWN_DEFECTS: dict = {}
 
 
 # ---------------------------------------------------------------------------
@@ -222,6 +212,211 @@ def test_docx_translates_every_paragraph(results):
     assert untranslated == [], (
         f"paragraphs still holding source text: {untranslated}")
     assert result.notes["paragraphs_in_export"] == len(result.sources)
+
+
+MEMOQ_CORPUS = [
+    "memoq/CAT_test_DOCX.docx_lit.mqxliff",
+    "memoq/CAT_test_IDML.idml_lit.mqxliff",
+]
+
+
+@pytest.mark.parametrize("source_file", MEMOQ_CORPUS)
+def test_memoq_load_save_is_byte_identical(source_file, tmp_path):
+    """A load→save with nothing translated must reproduce the file exactly.
+
+    memoQ 12.4.36 rejected the old output: the DOCX file imported with errors and
+    the IDML file would not open at all, with no message. The writer had been
+    re-serialising the whole document through ElementTree, which destroys things
+    memoQ put there deliberately and cannot be talked out of — CDATA sections
+    (6 and 3 of them), `&quot;` inside tag payloads (204 and 16), raw tabs in
+    attribute values, the `xmlns="MQXliff"` on every `<mq:*>` element (210 and
+    103), CRLF line endings (2683 and 1331 lines), the BOM, and attribute order.
+
+    Writing by substring replacement makes this invariant hold by construction,
+    which is why it is worth asserting: if it ever fails, someone has gone back to
+    round-tripping the tree.
+    """
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    src = os.path.join(rh.CORPUS, source_file)
+    out = tmp_path / "identity.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    assert handler.save(str(out))
+
+    original = open(src, "rb").read()
+    written = out.read_bytes()
+    assert written == original, (
+        f"{source_file}: load→save changed {abs(len(written) - len(original))} bytes")
+
+
+@pytest.mark.parametrize("source_file", MEMOQ_CORPUS)
+def test_memoq_translation_never_touches_a_tag(source_file, tmp_path):
+    """Translating must not alter one inline tag — not its id, rid or payload.
+
+    Two separate defects meet here. The translation used to be written *inside*
+    tag payloads: a segment that was nothing but `<ph id="1">&lt;tbl linid="0"
+    /&gt;</ph>` came out as `⟦<tbl linid="0" />⟧` inside the `ph`, destroying
+    memoQ's stored markup, and that is the file memoQ refused to open.
+
+    Separately, targets were built by cloning the *source's* elements — but `rid`
+    is scoped to the document, not the trans-unit, and memoQ's own files prove it:
+    DOCX unit 59 has `rid="1"` in the source against `rid="2"` in the target, and
+    IDML unit 4 has `rid="1"` against `rid="3"`. Cloning invented duplicate rids.
+    Reusing the target's own elements avoids both.
+    """
+    import xml.etree.ElementTree as ET
+
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    inline = {"bpt", "ept", "ph", "it", "x"}
+
+    def tags(elem):
+        return [(e.tag.split("}")[-1], e.get("id"), e.get("rid"), e.text or "")
+                for e in elem.iter() if e.tag.split("}")[-1] in inline]
+
+    src = os.path.join(rh.CORPUS, source_file)
+    out = tmp_path / "translated.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+    handler.update_target_segments([rh.translate(s.plain_text or "") for s in segments])
+    assert handler.save(str(out))
+
+    ns = {"x": "urn:oasis:names:tc:xliff:document:1.2"}
+    before = ET.parse(src).getroot().findall(".//x:trans-unit", ns)
+    after = ET.parse(str(out)).getroot().findall(".//x:trans-unit", ns)
+    assert len(before) == len(after)
+
+    for old, new in zip(before, after):
+        for child in ("source", "target"):
+            a, b = old.find(f"x:{child}", ns), new.find(f"x:{child}", ns)
+            if a is None or b is None:
+                continue
+            assert tags(a) == tags(b), (
+                f"{source_file} unit {old.get('id')}: <{child}> inline tags changed\n"
+                f"  before: {tags(a)}\n  after:  {tags(b)}")
+
+
+@pytest.mark.parametrize("source_file", MEMOQ_CORPUS)
+def test_memoq_changes_nothing_outside_the_targets(source_file, tmp_path):
+    """Translating may rewrite `<target>` content and `mq:status`. Nothing else.
+
+    Blank out those two and the file must be byte-identical to its input. This is
+    the strongest statement available without memoQ itself: whatever else the
+    handler gets wrong, it is not silently editing the rest of a customer's file.
+    """
+    import re as _re
+
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    src = os.path.join(rh.CORPUS, source_file)
+    out = tmp_path / "translated.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+    handler.update_target_segments([rh.translate(s.plain_text or "") for s in segments])
+    assert handler.save(str(out))
+
+    def blank(text):
+        text = _re.sub(r"(<target\b[^>]*>).*?(</target>)", r"\1\2", text, flags=_re.DOTALL)
+        return _re.sub(r'mq:status="[^"]*"', 'mq:status=""', text)
+
+    # Both sides read as bytes and decoded: text mode would apply universal
+    # newlines and hide the very CRLF preservation this is here to protect.
+    original = blank(open(src, "rb").read().decode("utf-8-sig"))
+    written = blank(out.read_bytes().decode("utf-8-sig"))
+    assert written == original, f"{source_file}: changed something outside <target>"
+
+
+def test_memoq_fills_a_self_closing_empty_target(tmp_path):
+    """`<target … />` is what a file that was never pretranslated looks like, and
+    both corpus files are pretranslated, so nothing else covers it. Filling one
+    means replacing the whole tag rather than its content."""
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    doc = (
+        '﻿<?xml version="1.0" encoding="UTF-8"?>\r\n'
+        '<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2"'
+        ' xmlns:mq="MQXliff">\r\n'
+        '<file original="a.docx" source-language="en" target-language="nl">\r\n'
+        '<body>\r\n'
+        '<trans-unit id="1" mq:status="NotStarted">\r\n'
+        '<source xml:space="preserve">Hello <bpt id="1">{}</bpt>world<ept id="1">{}'
+        '</ept>.</source>\r\n'
+        '<target xml:space="preserve" />\r\n'
+        '</trans-unit>\r\n'
+        '</body>\r\n</file>\r\n</xliff>\r\n'
+    )
+    src = tmp_path / "empty.mqxliff"
+    src.write_bytes(doc.encode("utf-8"))
+    out = tmp_path / "filled.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(str(src))
+    assert handler.update_target_segments(["Hallo wereld."]) == 1
+    assert handler.skipped_segments == []
+    assert handler.save(str(out))
+
+    text = out.read_bytes().decode("utf-8-sig")
+    assert '<target xml:space="preserve">' in text
+    assert "</target>" in text
+    assert "<target xml:space=\"preserve\" />" not in text
+    # The bpt/ept pair survives, and the translation sits between them because
+    # that is the slot which carried the text in the source.
+    assert ('<target xml:space="preserve">Hallo wereld.<bpt id="1">{}</bpt>'
+            in text) or ('<bpt id="1">{}</bpt>Hallo wereld.<ept id="1">{}</ept>'
+                         in text), text
+    # Still parseable, and still CRLF and BOM.
+    import xml.etree.ElementTree as ET
+    ET.parse(str(out))
+    assert out.read_bytes().startswith(b"\xef\xbb\xbf")
+    assert b"\r\n" in out.read_bytes()
+
+
+def test_memoq_reports_segments_it_could_not_write(tmp_path):
+    """A segment the writer cannot place must be left alone, reported, and *not*
+    marked confirmed.
+
+    The old code counted every segment as updated and confirmed it regardless, so
+    a file still holding source text in eight of 104 segments looked complete.
+    Driving a target whose anchor tag has been deleted exercises the refusal.
+    """
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    src = os.path.join(rh.CORPUS, "memoq/CAT_test_IDML.idml_lit.mqxliff")
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+
+    # Strip every visible tag payload out of the translations. The writer can no
+    # longer locate its anchors, so it must decline rather than guess.
+    damaged = [(s.plain_text or "").replace("<", "").replace(">", "") for s in segments]
+    written = handler.update_target_segments(damaged)
+
+    assert handler.skipped_segments, "a translation with its tags removed was accepted"
+    assert written == len(segments) - len(handler.skipped_segments)
+
+    out = tmp_path / "damaged.mqxliff"
+    assert handler.save(str(out))
+
+    text = out.read_bytes().decode("utf-8-sig")
+    original = open(src, "rb").read().decode("utf-8-sig")
+    for index, unit_id, _reason in handler.skipped_segments:
+        marker = f'<trans-unit id="{unit_id}"'
+        assert marker in text
+        # The skipped unit's target must be exactly what memoQ wrote.
+        def target_of(doc):
+            start = doc.index(marker)
+            end = doc.index("</trans-unit>", start)
+            block = doc[start:end]
+            i = block.index("<target")
+            return block[i:block.index("</target>", i)]
+        assert target_of(text) == target_of(original), (
+            f"skipped unit {unit_id} was modified anyway")
 
 
 def test_phrase_placeholders_are_recognised_and_kept(results):

@@ -1,20 +1,12 @@
 {
   "export_read_back": {
     "checked": 104,
-    "matching": 97,
-    "mismatched_segments": [
-      9,
-      57,
-      58,
-      62,
-      66,
-      68,
-      102
-    ]
+    "matching": 104,
+    "mismatched_segments": []
   },
   "format": "MQXLIFF",
   "notes": {},
-  "read_back_digest": "5b26d945265411d8",
+  "read_back_digest": "ac732c52393d486c",
   "segments": 104,
   "segments_translated": 104,
   "source_file": "memoq/CAT_test_DOCX.docx_lit.mqxliff",

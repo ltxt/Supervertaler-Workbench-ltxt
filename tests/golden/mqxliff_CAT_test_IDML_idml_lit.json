@@ -1,14 +1,12 @@
 {
   "export_read_back": {
     "checked": 52,
-    "matching": 51,
-    "mismatched_segments": [
-      3
-    ]
+    "matching": 52,
+    "mismatched_segments": []
   },
   "format": "MQXLIFF",
   "notes": {},
-  "read_back_digest": "10e550ada40147e4",
+  "read_back_digest": "83075fa5bb7d1f2d",
   "segments": 52,
   "segments_translated": 52,
   "source_file": "memoq/CAT_test_IDML.idml_lit.mqxliff",
