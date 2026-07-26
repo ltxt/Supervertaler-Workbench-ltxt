@@ -96,6 +96,9 @@ class MQXLIFFHandler:
         #: formatting extent may have widened. See that method.
         self.skipped_segments: List[Tuple[int, str, str]] = []
         self.formatting_degraded: List[Tuple[int, str]] = []
+        #: ``(unit id, status)`` for segments whose mq:status was left as memoQ
+        #: wrote it because the unit carries no edit provenance — see _status_edit.
+        self.status_preserved: List[Tuple[str, str]] = []
 
 
     def load(self, file_path: str) -> bool:
@@ -354,6 +357,7 @@ class MQXLIFFHandler:
         """
         self.skipped_segments = []
         self.formatting_degraded = []
+        self.status_preserved = []
         self._edits = []
 
         if not self.raw_text:
@@ -453,17 +457,43 @@ class MQXLIFFHandler:
         return None
 
     def _status_edit(self, unit):
-        """An edit setting ``mq:status="Confirmed"`` on the unit's open tag.
+        """An edit setting ``mq:status="Confirmed"``, or None to leave it alone.
 
-        NOTE: the two memoQ-authored files in the test corpus only ever use
-        ``NotStarted``, ``PartiallyEdited`` and ``PreTranslated``; ``Confirmed``
-        appears in neither. It is the token this handler has always written and
-        the one :meth:`extract_bilingual_segments` reads back, so it is kept —
-        but whether memoQ 12.4 accepts it is unverified, and it is a candidate if
-        an import warning survives everything else here.
+        memoQ pairs an edited status with edit provenance. Measured across both
+        corpus files: every one of the 51 + 105 ``PartiallyEdited`` units carries
+        ``mq:lastchanginguser="navi"`` and a real ``mq:lastchangedtimestamp``
+        (``2026-07-25T16:28:28Z``), while the single ``PreTranslated`` unit — IDML
+        trans-unit 26 — carries neither: no user attribute at all, and
+        ``0001-01-01T00:00:00Z``, which is .NET's ``DateTime.MinValue``.
+
+        Confirming that unit anyway produced a combination memoQ never writes: an
+        edited status with no editor and a min-value timestamp. It is also
+        *exactly* one of the two things unique to the IDML file, on the very
+        trans-unit that also had its ``ph`` payload corrupted — the two were
+        confounded, and only one of them was the tag bug. Every DOCX unit was
+        already ``PartiallyEdited`` with a user and a real timestamp, so flipping
+        those kept memoQ's invariant intact, which fits the DOCX file importing
+        while the IDML file did not.
+
+        So: confirm a unit that memoQ already regards as user-edited, and
+        otherwise leave the status as it was. Fabricating a user identity or an
+        edit time into a customer's file is not a trade worth making for a status
+        flag, and it is a segment's *content* that matters. Units left alone are
+        listed in :attr:`status_preserved`.
+
+        ``Confirmed`` itself remains unverified: it appears in neither corpus file
+        (which use only ``NotStarted``, ``PartiallyEdited``, ``PreTranslated``),
+        but it is the token this handler has always written and the one
+        :meth:`extract_bilingual_segments` reads back. The 104 DOCX units carrying
+        it are the evidence that memoQ tolerates it.
         """
         open_tag = unit['open_tag']
         start, end = unit['open_span']
+
+        if 'mq:lastchanginguser="' not in open_tag:
+            self.status_preserved.append((unit['id'], self._status_of(open_tag)))
+            return None
+
         if 'mq:status="' in open_tag:
             new = re.sub(r'mq:status="[^"]*"', 'mq:status="Confirmed"', open_tag)
         else:
@@ -471,6 +501,11 @@ class MQXLIFFHandler:
         if new == open_tag:
             return None
         return ((start, end), new)
+
+    @staticmethod
+    def _status_of(open_tag: str) -> str:
+        match = re.search(r'mq:status="([^"]*)"', open_tag)
+        return match.group(1) if match else ''
 
     # -- building a target ---------------------------------------------
 

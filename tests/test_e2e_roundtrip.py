@@ -332,6 +332,49 @@ def test_memoq_changes_nothing_outside_the_targets(source_file, tmp_path):
     assert written == original, f"{source_file}: changed something outside <target>"
 
 
+@pytest.mark.parametrize("source_file", MEMOQ_CORPUS)
+def test_memoq_never_confirms_a_segment_with_no_edit_provenance(source_file, tmp_path):
+    """A confirmed segment must carry the provenance memoQ pairs with one.
+
+    Measured across both corpus files: all 51 + 105 ``PartiallyEdited`` units have
+    ``mq:lastchanginguser="navi"`` and a real ``mq:lastchangedtimestamp``, while
+    the single ``PreTranslated`` unit — IDML trans-unit 26 — has no user attribute
+    and ``0001-01-01T00:00:00Z``, .NET's ``DateTime.MinValue``. Confirming that one
+    anyway invented a combination memoQ never writes.
+
+    It mattered because it was the *second* thing unique to the IDML file, sitting
+    on the same trans-unit as the corrupted ``ph`` payload — the two were
+    confounded, so fixing only the tag bug would have left a live candidate for
+    the silent open failure. Every DOCX unit already had a user, which is
+    consistent with that file importing while the IDML one did not.
+    """
+    import re as _re
+
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    src = os.path.join(rh.CORPUS, source_file)
+    out = tmp_path / "confirmed.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+    handler.update_target_segments([rh.translate(s.plain_text or "") for s in segments])
+    assert handler.save(str(out))
+
+    text = out.read_bytes().decode("utf-8-sig")
+    offenders = []
+    for match in _re.finditer(r"<trans-unit\b[^>]*>", text):
+        tag = match.group(0)
+        if 'mq:status="Confirmed"' not in tag:
+            continue
+        if 'mq:lastchanginguser="' not in tag:
+            offenders.append(_re.search(r'id="([^"]*)"', tag).group(1))
+        if 'mq:lastchangedtimestamp="0001-01-01T00:00:00Z"' in tag:
+            offenders.append(_re.search(r'id="([^"]*)"', tag).group(1) + " (min-value time)")
+    assert offenders == [], (
+        f"{source_file}: confirmed without edit provenance: {offenders}")
+
+
 def test_memoq_fills_a_self_closing_empty_target(tmp_path):
     """`<target … />` is what a file that was never pretranslated looks like, and
     both corpus files are pretranslated, so nothing else covers it. Filling one
