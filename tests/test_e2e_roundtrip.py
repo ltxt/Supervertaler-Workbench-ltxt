@@ -141,6 +141,18 @@ def test_translating_never_disturbs_the_tags(result):
         + "; ".join(f"[{i}] {d}" for i, d in list(issues.items())[:5]))
 
 
+def test_the_exported_file_carries_the_sources_tags(result):
+    """Same claim as above, made against the bytes on disk rather than the string
+    we handed the exporter. This is what a translator actually receives, and it
+    stays meaningful even for segments the export gets wrong."""
+    if not result.read_back:
+        pytest.skip(f"{result.fmt} has no export path — parser-only check")
+    issues = result.export_verification_issues
+    assert issues == {}, (
+        f"{result.name}: the export has tag problems in {len(issues)} segment(s) — "
+        + "; ".join(f"[{i}] {d}" for i, d in list(issues.items())[:5]))
+
+
 def test_what_was_written_is_what_comes_back(result):
     """The round trip's core claim. Mismatches outside the documented known
     defects are failures."""

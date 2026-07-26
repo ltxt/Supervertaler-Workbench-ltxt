@@ -130,16 +130,34 @@ class RoundTrip:
                 out.append(i)
         return out
 
-    @property
-    def verification_issues(self) -> dict:
-        """``{segment index: description}`` for targets whose tags don't match."""
+    def _verify(self, targets: list[str]) -> dict:
         issues = {}
         for i, source in enumerate(self.sources):
-            target = self.written[i] if i < len(self.written) else ""
+            target = targets[i] if i < len(targets) else ""
             found = tp.verify_tags(source, target)
             if found:
                 issues[i] = tp.describe_issues(found)
         return issues
+
+    @property
+    def verification_issues(self) -> dict:
+        """Tag problems in what we asked the exporter to write.
+
+        Checks the *transform*: pseudo-translation must not disturb a tag.
+        """
+        return self._verify(self.written)
+
+    @property
+    def export_verification_issues(self) -> dict:
+        """Tag problems in what the exported file actually holds.
+
+        The stronger claim, and the one a translator depends on: the tags in the
+        file on disk still match the source. Mostly implied by
+        :attr:`mismatched` being empty — if the export holds exactly what we
+        wrote, and what we wrote verifies clean, so does the export — but not for
+        segments the export got wrong, which is where it earns its keep.
+        """
+        return self._verify(self.read_back) if self.read_back else {}
 
     def tag_census(self) -> dict:
         census: collections.Counter = collections.Counter()
@@ -176,6 +194,8 @@ class RoundTrip:
             "tags_by_segment": self.tags_by_segment(),
             "tag_verification_issues": {str(k): v
                                         for k, v in self.verification_issues.items()},
+            "tag_verification_issues_in_export": {
+                str(k): v for k, v in self.export_verification_issues.items()},
             "export_read_back": {
                 "checked": len(self.translated_indices),
                 "matching": len(self.translated_indices) - len(self.mismatched),
