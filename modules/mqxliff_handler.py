@@ -575,12 +575,20 @@ class MQXLIFFHandler:
         the extracted text and every ``{}`` one does not.
 
         Between two anchors the split is unknowable — ``{}`` pairs contribute no
-        text, so nothing in the translation says where one run ends. The whole
-        stretch goes into the slot that carried the most text in the source. For
-        the common ``<bpt/>text<ept/>`` shape that is the slot *between* the
-        pair, so the formatting still wraps the translation instead of sitting
-        beside it; where several runs compete, every tag still survives in order
-        but one run's extent widens, and the caller is told.
+        text, so nothing in the translation says where one run ends. The text is
+        therefore shared out across the stretch's slots in proportion to how much
+        each carried in the source, snapped to word boundaries by
+        :meth:`_share_out`. That reproduces the common shapes correctly: a lone
+        ``<bpt/>text<ept/>`` puts everything between the pair, and a run of
+        individually-formatted words keeps one word per format.
+
+        Giving the whole stretch to a single slot — the obvious first thing to try
+        — is badly wrong in practice. DOCX trans-unit 10 is
+        ``<b>Bold</b>, <i>italic</i>, <u>underline</u>, <sub>H2O subscript</sub>,
+        <sup>E=mc2 superscript</sup>, …``; the longest source run is
+        ``E=mc2 superscript``, so every word landed inside the *superscript* pair
+        and the other four pairs came out wrapping nothing. memoQ rendered the
+        whole line small and raised, and empty tag pairs are their own problem.
 
         Returns ``(None, False)`` when an anchor is missing from the translation:
         the translator moved or deleted a tag, and guessing would corrupt it.
@@ -590,12 +598,16 @@ class MQXLIFFHandler:
 
         def assign(lo: int, hi: int, text: str):
             nonlocal degraded
-            span = range(lo, min(hi, len(runs) - 1) + 1)
-            if not span:
+            hi = min(hi, len(runs) - 1)
+            if lo > hi:
                 return
-            best = max(span, key=lambda j: (len(runs[j]), -j))
-            new_runs[best] = text
-            if text and sum(1 for j in span if runs[j].strip()) > 1:
+            if lo == hi:
+                new_runs[lo] = text
+                return
+            for offset, piece in enumerate(
+                    self._share_stretch([runs[j] for j in range(lo, hi + 1)], text)):
+                new_runs[lo + offset] = piece
+            if text and sum(1 for j in range(lo, hi + 1) if runs[j].strip()) > 1:
                 degraded = True
 
         pos = 0
@@ -611,6 +623,116 @@ class MQXLIFFHandler:
             stretch = i + 1
         assign(stretch, len(runs) - 1, translation[pos:])
         return new_runs, degraded
+
+    _WORDLIKE = re.compile(r'\w', re.UNICODE)
+
+    @classmethod
+    def _share_stretch(cls, source_runs: List[str], text: str) -> List[str]:
+        """Divide ``text`` among a stretch of slots with no tag anchors.
+
+        Proportional sharing alone drifts. In DOCX trans-unit 10 —
+        ``<b>Bold</b>, <i>italic</i>, <u>underline</u>, …`` — the slots alternate
+        between a formatted word and a bare ``", "``. A two-character slot cannot
+        hold a whole word, so the first word that will not fit spills forward and
+        every formatting run after it lands one word late: underline ended up
+        wrapping ``H2Ó`` instead of ``úñdéřlíñé``.
+
+        The separators are the way out. A source run with no word characters in it
+        — punctuation and spaces — is text a translation almost always keeps
+        verbatim, so it can be *found* in the translation and used as an anchor
+        just like a visible tag payload. Everything between two such anchors is
+        then shared proportionally, over a short enough span for drift not to
+        matter. If a separator cannot be found, it simply stops being an anchor.
+        """
+        out = [''] * len(source_runs)
+        pos = 0
+        pending = []          # slots awaiting text, since the last anchor
+        last_filled = 0       # where to append text that has no slot of its own
+
+        def flush(upto: int, chunk: str):
+            nonlocal last_filled
+            if not pending:
+                # No slot is waiting, so this text would otherwise be dropped.
+                # Losing it is not an option — append it where the last text went.
+                out[last_filled] += chunk
+                return
+            for offset, piece in enumerate(
+                    cls._share_out([source_runs[j] for j in pending], chunk)):
+                out[pending[offset]] = piece
+            last_filled = pending[-1]
+
+        for index, run in enumerate(source_runs):
+            is_separator = run and not cls._WORDLIKE.search(run)
+            found = text.find(run, pos) if is_separator else -1
+            if found < 0:
+                pending.append(index)
+                continue
+            # Everything before the separator belongs to the slots before it.
+            flush(index, text[pos:found])
+            out[index] = run
+            last_filled = index
+            pos = found + len(run)
+            pending = []
+
+        flush(len(source_runs), text[pos:])
+        return out
+
+    @staticmethod
+    def _share_out(source_runs: List[str], text: str) -> List[str]:
+        """Divide ``text`` among slots in proportion to ``source_runs``' lengths.
+
+        Cuts are pulled to the nearest word boundary, so a translation is never
+        split mid-word, and a slot that was empty in the source stays empty — that
+        is what keeps a formatting pair from ending up wrapping nothing.
+
+        It is a heuristic, and it has to be: nothing in the translated string says
+        where one formatting run ends when the tags between them are invisible
+        ``{}`` placeholders. Proportional sharing is right for the shapes that
+        actually occur — one formatted word per run, or a single run spanning the
+        whole segment — and for a reordered translation it is at least no worse
+        than any other guess. Callers are told via ``formatting_degraded``.
+        """
+        if not source_runs:
+            return []
+        total = sum(len(r) for r in source_runs)
+        if not text or total == 0:
+            # Nothing to apportion by: give it all to the first slot that held
+            # text, or failing that the first slot.
+            out = [''] * len(source_runs)
+            target = next((i for i, r in enumerate(source_runs) if r.strip()), 0)
+            out[target] = text
+            return out
+
+        out = []
+        pos = 0
+        running = 0
+        for run in source_runs[:-1]:
+            running += len(run)
+            want = round(len(text) * running / total)
+            cut = MQXLIFFHandler._snap_to_word(text, want, pos)
+            out.append(text[pos:cut])
+            pos = cut
+        out.append(text[pos:])
+        return out
+
+    @staticmethod
+    def _snap_to_word(text: str, want: int, floor: int) -> int:
+        """The nearest position to ``want`` that does not split a word.
+
+        Never returns less than ``floor`` (cuts must advance) or more than
+        ``len(text)``.
+        """
+        want = max(floor, min(want, len(text)))
+        if want in (floor, len(text)) or text[want - 1].isspace():
+            return want
+        # Cut *after* the whitespace in both directions, so the space stays with
+        # the run that precedes it rather than being pulled inside the next tag.
+        for delta in range(1, 12):
+            if want - delta > floor and text[want - delta - 1].isspace():
+                return want - delta
+            if want + delta <= len(text) and text[want + delta - 1].isspace():
+                return want + delta
+        return want
 
     # -- raw XML helpers ----------------------------------------------
 

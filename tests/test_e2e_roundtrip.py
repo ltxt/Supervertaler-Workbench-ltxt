@@ -375,6 +375,82 @@ def test_memoq_never_confirms_a_segment_with_no_edit_provenance(source_file, tmp
         f"{source_file}: confirmed without edit provenance: {offenders}")
 
 
+def test_memoq_keeps_each_format_on_its_own_words(tmp_path):
+    """Formatting must land on the words it wrapped in the source.
+
+    DOCX trans-unit 10 is the hard case: `<b>Bold</b>, <i>italic</i>,
+    <u>underline</u>, <sub>H2O subscript</sub>, <sup>E=mc2 superscript</sup>, …`,
+    five formatting pairs whose `{}` payloads are invisible in the segment text, so
+    nothing in the translation says where one run ends.
+
+    Two earlier attempts were visibly wrong in memoQ. Giving the whole stretch to
+    the longest source run put every word inside the *superscript* pair and left
+    the other four wrapping nothing — the row rendered small and raised. Sharing
+    the text out purely in proportion to run length drifted, because a
+    two-character `", "` slot cannot hold a whole word: the spill pushed every
+    format one word late, and underline ended up around `H2Ó`.
+
+    Anchoring on the separators fixes it, and this pins the result.
+    """
+    import re as _re
+
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    src = os.path.join(rh.CORPUS, "memoq/CAT_test_DOCX.docx_lit.mqxliff")
+    out = tmp_path / "aligned.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+    handler.update_target_segments([rh.translate(s.plain_text or "") for s in segments])
+    assert handler.save(str(out))
+
+    text = out.read_bytes().decode("utf-8-sig")
+    start = text.index('<trans-unit id="10"')
+    block = text[start:text.index("</trans-unit>", start)]
+    target = _re.search(r"<target\b[^>]*>(.*?)</target>", block, _re.DOTALL).group(1)
+
+    # Each pair must wrap exactly one translated equivalent of what it wrapped.
+    for ctype, expected in [("bold", "Bóld"), ("italic", "ítálíç"),
+                            ("underlined", "úñdéřlíñé"),
+                            ("x-sub", "H2Ó šúbšçřípt"),
+                            ("x-sup", "É=mç2 šúpéřšçřípt")]:
+        pattern = (r'<bpt id="\d+" ctype="' + _re.escape(ctype) + r'">\{\}</bpt>'
+                   r"(.*?)<ept[^>]*>\{\}</ept>")
+        match = _re.search(pattern, target, _re.DOTALL)
+        assert match, f"no {ctype} pair in the target: {target}"
+        assert expected in match.group(1), (
+            f"{ctype} wraps {match.group(1)!r}, expected it to contain {expected!r}")
+
+
+@pytest.mark.parametrize("source_file", MEMOQ_CORPUS)
+def test_memoq_introduces_no_empty_tag_pairs(source_file, tmp_path):
+    """Writing must not leave a formatting pair wrapping nothing.
+
+    memoQ's own files do contain empty pairs — 28 in the DOCX one — so the test is
+    that the count does not *grow*, not that it is zero. An earlier distribution
+    rule added four to a single segment by giving all of its text to one pair.
+    """
+    import re as _re
+
+    from modules.mqxliff_handler import MQXLIFFHandler
+
+    pattern = _re.compile(r"<bpt\b[^>]*>\{\}</bpt>\s*<ept\b[^>]*>\{\}</ept>")
+    src = os.path.join(rh.CORPUS, source_file)
+    out = tmp_path / "pairs.mqxliff"
+
+    handler = MQXLIFFHandler()
+    assert handler.load(src)
+    segments = handler.extract_source_segments()
+    handler.update_target_segments([rh.translate(s.plain_text or "") for s in segments])
+    assert handler.save(str(out))
+
+    before = len(pattern.findall(open(src, "rb").read().decode("utf-8-sig")))
+    after = len(pattern.findall(out.read_bytes().decode("utf-8-sig")))
+    assert after <= before, (
+        f"{source_file}: empty tag pairs grew from {before} to {after}")
+
+
 def test_memoq_fills_a_self_closing_empty_target(tmp_path):
     """`<target … />` is what a file that was never pretranslated looks like, and
     both corpus files are pretranslated, so nothing else covers it. Filling one
@@ -408,11 +484,17 @@ def test_memoq_fills_a_self_closing_empty_target(tmp_path):
     assert '<target xml:space="preserve">' in text
     assert "</target>" in text
     assert "<target xml:space=\"preserve\" />" not in text
-    # The bpt/ept pair survives, and the translation sits between them because
-    # that is the slot which carried the text in the source.
-    assert ('<target xml:space="preserve">Hallo wereld.<bpt id="1">{}</bpt>'
-            in text) or ('<bpt id="1">{}</bpt>Hallo wereld.<ept id="1">{}</ept>'
-                         in text), text
+    # The pair wrapped "world" in the source, so it must wrap the translated word
+    # — not the whole segment, and not the wrong word. Search inside the <target>
+    # only: <source> holds an identically-shaped pair and comes first.
+    import re as _re
+    target_xml = _re.search(r"<target\b[^>]*>(.*?)</target>", text, _re.DOTALL)
+    assert target_xml, text
+    wrapped = _re.search(r'<bpt id="1">\{\}</bpt>(.*?)<ept id="1">\{\}</ept>',
+                         target_xml.group(1), _re.DOTALL)
+    assert wrapped, target_xml.group(1)
+    assert wrapped.group(1).strip() == "wereld", (
+        f"the pair wraps {wrapped.group(1)!r}, expected 'wereld'")
     # Still parseable, and still CRLF and BOM.
     import xml.etree.ElementTree as ET
     ET.parse(str(out))
